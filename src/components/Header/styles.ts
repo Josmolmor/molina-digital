@@ -4,6 +4,7 @@ export const Container = styled.nav`
   align-items: center;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 2rem;
   padding: 2rem 0;
 `;
 

@@ -1,7 +1,8 @@
-import { Container, Intro } from './styles';
+import { Container, Intro, Profile } from './styles';
 
 const Home = () => (
   <Container>
+    <Profile src="https://github.com/josmolmor.png" alt="A photo of myself!" />
     <Intro>
       What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and
       typesetting industry. Lorem Ipsum has been the industry&apos;s standard
