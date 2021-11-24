@@ -1,15 +1,15 @@
-import ArchiaBold_woff from 'assets/fonts/archia-bold.woff';
-import ArchiaBold_woff2 from 'assets/fonts/archia-bold.woff2';
-import ArchiaLight_woff from 'assets/fonts/archia-light.woff';
-import ArchiaLight_woff2 from 'assets/fonts/archia-light.woff2';
-import ArchiaMedium_woff from 'assets/fonts/archia-medium.woff';
-import ArchiaMedium_woff2 from 'assets/fonts/archia-medium.woff2';
-import ArchiaRegular_woff from 'assets/fonts/archia-regular.woff';
-import ArchiaRegular_woff2 from 'assets/fonts/archia-regular.woff2';
-import ArchiaSemiBold_woff from 'assets/fonts/archia-semibold.woff';
-import ArchiaSemiBold_woff2 from 'assets/fonts/archia-semibold.woff2';
-import ArchiaThin_woff from 'assets/fonts/archia-thin.woff';
-import ArchiaThin_woff2 from 'assets/fonts/archia-thin.woff2';
+import ArchiaBold_woff from 'public/static/fonts/archia-bold.woff';
+import ArchiaBold_woff2 from 'public/static/fonts/archia-bold.woff2';
+import ArchiaLight_woff from 'public/static/fonts/archia-light.woff';
+import ArchiaLight_woff2 from 'public/static/fonts/archia-light.woff2';
+import ArchiaMedium_woff from 'public/static/fonts/archia-medium.woff';
+import ArchiaMedium_woff2 from 'public/static/fonts/archia-medium.woff2';
+import ArchiaRegular_woff from 'public/static/fonts/archia-regular.woff';
+import ArchiaRegular_woff2 from 'public/static/fonts/archia-regular.woff2';
+import ArchiaSemiBold_woff from 'public/static/fonts/archia-semibold.woff';
+import ArchiaSemiBold_woff2 from 'public/static/fonts/archia-semibold.woff2';
+import ArchiaThin_woff from 'public/static/fonts/archia-thin.woff';
+import ArchiaThin_woff2 from 'public/static/fonts/archia-thin.woff2';
 import { css } from 'styled-components';
 
 const fonts = css`
