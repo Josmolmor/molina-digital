@@ -1,5 +1,12 @@
 import HomeComponent from 'components/Home';
 
-const Home = () => <HomeComponent />;
+import { Projects } from './styles';
+
+const Home = () => (
+  <>
+    <HomeComponent />
+    <Projects />
+  </>
+);
 
 export default Home;

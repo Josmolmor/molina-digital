@@ -18,8 +18,11 @@ export const Intro = styled.p`
 `;
 
 export const Profile = styled.img`
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 50%;
   height: 5rem;
+  padding: 0.25rem;
+  pointer-events: none;
   width: 5rem;
 
   ${from.tablet} {
