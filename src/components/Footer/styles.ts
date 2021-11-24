@@ -1,10 +1,11 @@
 import { GithubIcon, LinkedinIcon, TwitterIcon } from 'components/Icons';
 import styled, { css } from 'styled-components';
 
-export const Container = styled.div`
+export const Container = styled.footer`
   display: flex;
-  justify-content: center;
   gap: 1rem;
+  justify-content: center;
+  padding: 2rem 0;
 `;
 
 const commonIconCss = css`

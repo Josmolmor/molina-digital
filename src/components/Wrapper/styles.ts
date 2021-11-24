@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { from } from 'styles/responsive';
 
-const MaxWidth = styled.div`
+const MaxWidth = styled.main`
   max-width: 75rem;
   padding-left: 1rem;
   padding-right: 1rem;

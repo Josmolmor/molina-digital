@@ -1,3 +1,5 @@
-const About = () => <h1>About</h1>;
+import About from 'components/About';
 
-export default About;
+const AboutContainer = () => <About />;
+
+export default AboutContainer;

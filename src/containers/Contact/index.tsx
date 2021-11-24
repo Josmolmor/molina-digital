@@ -1,3 +1,5 @@
-const Contact = () => <h1>Contact</h1>;
+import Contact from 'components/Contact';
 
-export default Contact;
+const ContactContainer = () => <Contact />;
+
+export default ContactContainer;
