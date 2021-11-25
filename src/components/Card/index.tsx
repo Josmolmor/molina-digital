@@ -42,7 +42,8 @@ const Card: FC<Props> = ({
         )}
       </Heading>
       <Subheading>
-        <Year>{year}</Year>&nbsp;·&nbsp;<Role>{role}</Role>
+        <Year>{year}</Year>
+        <Role>&nbsp;·&nbsp;{role}</Role>
       </Subheading>
       <RichText
         richText={description}

@@ -1,13 +1,19 @@
 import {
   ApolloIcon,
+  CypressIcon,
   GraphqlIcon,
   HtmlIcon,
   JavascriptIcon,
+  JestIcon,
+  MdxIcon,
   NestJsIcon,
+  NextJsIcon,
   ReactIcon,
   SassIcon,
   StrapiIcon,
   TypescriptIcon,
+  VueIcon,
+  WebpackIcon,
 } from 'components/Icons';
 import styled, { css } from 'styled-components';
 
@@ -60,6 +66,30 @@ export const JavascriptLogo = styled(JavascriptIcon)`
 `;
 
 export const HtmlLogo = styled(HtmlIcon)`
+  ${commonSvgCss};
+`;
+
+export const VueLogo = styled(VueIcon)`
+  ${commonSvgCss};
+`;
+
+export const WebpackLogo = styled(WebpackIcon)`
+  ${commonSvgCss};
+`;
+
+export const MdxLogo = styled(MdxIcon)`
+  ${commonSvgCss};
+`;
+
+export const JestLogo = styled(JestIcon)`
+  ${commonSvgCss};
+`;
+
+export const CypressLogo = styled(CypressIcon)`
+  ${commonSvgCss};
+`;
+
+export const NextJsLogo = styled(NextJsIcon)`
   ${commonSvgCss};
 `;
 

@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { fancyAnchor } from 'styles/mixins';
 import addAlpha from 'utils/addAlpha';
 
 export const Container = styled.div<{ borderColor?: string }>`
@@ -11,6 +12,20 @@ export const Container = styled.div<{ borderColor?: string }>`
     css`
       background-color: ${addAlpha(borderColor, 0.2)};
       border: 1px solid ${borderColor};
+
+      p,
+      span,
+      em,
+      a {
+        &::-moz-selection {
+          /* Code for Firefox */
+          background: ${addAlpha(borderColor, 0.5)};
+        }
+
+        &::selection {
+          background: ${addAlpha(borderColor, 0.5)};
+        }
+      }
     `};
 `;
 
@@ -24,6 +39,10 @@ export const Description = styled.p`
   display: block;
   font-size: 0.75rem;
   margin: 0.5rem 0;
+
+  a {
+    ${fancyAnchor};
+  }
 `;
 
 export const TagsContainer = styled.div`
@@ -56,16 +75,21 @@ export const Subheading = styled.div`
   margin: 0.25rem 0 0.5rem;
   font-size: 0.75rem;
   font-weight: ${({ theme }) => theme.weights.semiBold};
-  opacity: 0.5;
 `;
 
-export const Year = styled.span``;
+const cssSubtitle = css`
+  color: ${({ theme }) => addAlpha(theme.colors.white, 0.5)};
+`;
 
-export const Role = styled.span``;
+export const Year = styled.span`
+  ${cssSubtitle};
+`;
+
+export const Role = styled.span`
+  ${cssSubtitle};
+`;
 
 export const LearnMoreButton = styled.a`
-  color: inherit;
-  text-decoration: none;
   margin-left: auto;
   display: flex;
   align-items: center;

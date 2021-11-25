@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { fancyAnchor } from 'styles/mixins';
 import { from } from 'styles/responsive';
 
 export const Container = styled.section``;
@@ -48,4 +49,8 @@ export const Title = styled.h2`
 export const Subtitle = styled.h2`
   padding-bottom: 0.25rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+`;
+
+export const Link = styled.a`
+  ${fancyAnchor};
 `;

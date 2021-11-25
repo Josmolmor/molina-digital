@@ -11,7 +11,7 @@ export const getStaticProps: GetStaticProps =
   async ({}: GetStaticPropsContext) => {
     const prismicResults = await PrismicClient.query(
       Prismic.predicates.at('document.type', 'project'),
-      { orderings: '[my.project.year, document.first_publication_date]' },
+      { orderings: '[my.project.year desc, document.first_publication_date]' },
     );
     return {
       props: {

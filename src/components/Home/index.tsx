@@ -1,4 +1,12 @@
-import { Container, Content, Profile, Subtitle, Text, Title } from './styles';
+import {
+  Container,
+  Content,
+  Link,
+  Profile,
+  Subtitle,
+  Text,
+  Title,
+} from './styles';
 
 const Home = () => (
   <Container>
@@ -15,6 +23,11 @@ const Home = () => (
           development. I also love design and have a pretty vast experience with
           tools like Photoshop, Illustrator and After effects as well as more
           web focused tools like Figma or Sketch.
+          <br />
+          <br />
+          Before being hired by <Link href="https://z1.digital/">Z1</Link> (my
+          current employer), I was working on a IT consult working with C#, PHP,
+          Sharepoint and SQL.
         </Text>
         <Subtitle>What I do</Subtitle>
         <Text>

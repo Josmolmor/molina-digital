@@ -3,14 +3,20 @@ import type { FC } from 'react';
 import {
   ApolloLogo,
   Container,
+  CypressLogo,
   GraphqlLogo,
   HtmlLogo,
   JavascriptLogo,
+  JestLogo,
+  MdxLogo,
   NestJsLogo,
+  NextJsLogo,
   ReactLogo,
   SassLogo,
   StrapiLogo,
   TypescriptLogo,
+  VueLogo,
+  WebpackLogo,
   WordMark,
 } from './styles';
 import type Props from './types';
@@ -41,6 +47,18 @@ const Badge: FC<Props> = ({ title, children }) => {
         return <JavascriptLogo />;
       case 'html':
         return <HtmlLogo />;
+      case 'vue':
+        return <VueLogo />;
+      case 'webpack':
+        return <WebpackLogo />;
+      case 'mdx':
+        return <MdxLogo />;
+      case 'jest':
+        return <JestLogo />;
+      case 'cypress':
+        return <CypressLogo />;
+      case 'nextjs':
+        return <NextJsLogo />;
     }
   }
 

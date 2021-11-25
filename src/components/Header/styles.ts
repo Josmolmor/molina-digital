@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { fancyAnchor } from 'styles/mixins';
 
 export const Container = styled.nav`
   align-items: center;
@@ -13,8 +14,6 @@ export const Faded = styled.span`
 `;
 
 export const Logo = styled.a`
-  color: inherit;
-  text-decoration: none;
   &:hover {
     ${Faded} {
       color: rgba(255, 255, 255, 0.25);
@@ -23,8 +22,7 @@ export const Logo = styled.a`
 `;
 
 export const Link = styled.a`
-  color: inherit;
-  text-decoration: none;
+  ${fancyAnchor};
 `;
 
 export const LinksContainer = styled.div`
@@ -40,5 +38,5 @@ export const Title = styled.span`
 
 export const Subtitle = styled.span`
   font-weight: ${({ theme }) => theme.weights.semiBold};
-  padding: 0.5rem;
+  padding: 0.5rem 0;
 `;

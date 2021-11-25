@@ -25,11 +25,6 @@ export const Header = () => (
           <Subtitle>Contact</Subtitle>
         </Link>
       </NextLink>
-      <NextLink passHref href="/about">
-        <Link>
-          <Subtitle>About</Subtitle>
-        </Link>
-      </NextLink>
     </LinksContainer>
   </Container>
 );

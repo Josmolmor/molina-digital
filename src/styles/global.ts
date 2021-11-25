@@ -22,6 +22,15 @@ const GlobalStyle = createGlobalStyle`
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+  
+  a {
+    color: inherit;
+    display:inline-block;
+    font-weight: 600;
+    margin: 0;
+    text-decoration: none;
+  }
+  
   #__next {
     display: flex;
     min-height: 100vh;
