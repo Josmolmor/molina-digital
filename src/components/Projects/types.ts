@@ -1,4 +1,4 @@
-import type { PrismicDocument } from 'context/types';
+import type { PrismicDocument } from 'context/Prismic/types';
 
 type Props = {
   className?: string;

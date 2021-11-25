@@ -1,4 +1,4 @@
-import type { PrismicContextType } from 'context/types';
+import type { PrismicContextType } from 'context/Prismic/types';
 import { createContext, useContext } from 'react';
 
 export const prismicContextDefaultState: PrismicContextType = {

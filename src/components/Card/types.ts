@@ -1,4 +1,4 @@
-import type { NormalizedProject } from 'context/types';
+import type { NormalizedProject } from 'context/Prismic/types';
 
 type Props = {
   className?: string;

@@ -1,5 +1,5 @@
 import HomeComponent from 'components/Home';
-import { usePrismic } from 'context/state';
+import { usePrismic } from 'context/Prismic/state';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 

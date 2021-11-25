@@ -16,7 +16,7 @@ const Home = () => (
         alt="A photo of myself!"
       />
       <div>
-        <Title>Who am I</Title>
+        <Title>Who I am</Title>
         <Text>
           Front-end engineer based in Seville, Spain with{' '}
           {new Date().getFullYear() - 2016} years of experience on web

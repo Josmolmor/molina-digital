@@ -2,21 +2,26 @@ import Footer from 'components/Footer';
 import Head from 'components/Head';
 import Header from 'components/Header';
 import Wrapper from 'components/Wrapper';
-import { PrismicProvider } from 'context/provider';
+import { PrismicProvider } from 'context/Prismic/provider';
 import type { AppProps } from 'next/app';
-import {} from 'next-seo';
+import { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from 'styles/global';
-import theme from 'styles/themes';
+import { dark, light } from 'styles/themes';
 
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
   return (
     <PrismicProvider>
       <Head />
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={isDarkTheme ? dark : light}>
         <GlobalStyle />
         <Wrapper>
-          <Header />
+          <Header
+            isDarkTheme={isDarkTheme}
+            setIsDarkTheme={() => setIsDarkTheme(!isDarkTheme)}
+          />
           <Component {...pageProps} />
           <Footer />
         </Wrapper>

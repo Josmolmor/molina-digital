@@ -1,8 +1,8 @@
-import type { Result } from 'context/types';
 import type { FC } from 'react';
 import { useState } from 'react';
 
 import { PrismicContext } from './state';
+import type { Result } from './types';
 
 export const PrismicProvider: FC = ({ children }) => {
   const [result, setResults] = useState<Result | null>(null);

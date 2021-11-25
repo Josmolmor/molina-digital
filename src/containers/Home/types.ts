@@ -1,4 +1,4 @@
-import type { Result } from 'context/types';
+import type { Result } from 'context/Prismic/types';
 
 type Props = {
   results: Result;

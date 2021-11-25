@@ -1,4 +1,4 @@
-import normalizeProject from 'context/helpers/normalizeProject';
+import normalizeProject from 'context/Prismic/helpers/normalizeProject';
 import type { FC } from 'react';
 
 import { Card, Container } from './styles';

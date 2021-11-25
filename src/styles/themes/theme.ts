@@ -1,6 +1,6 @@
-import type theme from './';
+import type { light as exampleTheme } from './';
 
-export type Theme = typeof theme;
+export type Theme = typeof exampleTheme;
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */

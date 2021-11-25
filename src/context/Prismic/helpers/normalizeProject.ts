@@ -1,4 +1,4 @@
-import type { NormalizedProject, Project } from 'context/types';
+import type { NormalizedProject, Project } from 'context/Prismic/types';
 
 function normalizeProject(project: Project): NormalizedProject {
   return {

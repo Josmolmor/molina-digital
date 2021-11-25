@@ -23,7 +23,7 @@ export const Text = styled.p`
 
 export const Profile = styled.img`
   background-color: black;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid ${({ theme }) => theme.colors.grey50};
   border-radius: 50%;
   height: 5rem;
   padding: 0.25rem;
@@ -42,13 +42,13 @@ export const Profile = styled.img`
 
 export const Title = styled.h2`
   padding-bottom: 0.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grey50};
   margin-top: 0;
 `;
 
 export const Subtitle = styled.h2`
   padding-bottom: 0.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grey50};
 `;
 
 export const Link = styled.a`

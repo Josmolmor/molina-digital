@@ -1,17 +1,26 @@
 import NextLink from 'next/link';
+import type { FC } from 'react';
 
 import {
   Container,
   Faded,
+  IconContainer,
   Link,
   LinksContainer,
   Logo,
+  MoonIcon,
   Subtitle,
+  SunIcon,
   Title,
 } from './styles';
+import type Props from './types';
 
-export const Header = () => (
-  <Container>
+export const Header: FC<Props> = ({
+  isDarkTheme,
+  setIsDarkTheme,
+  className,
+}) => (
+  <Container className={className}>
     <NextLink passHref href="/">
       <Logo>
         <Title>
@@ -25,6 +34,16 @@ export const Header = () => (
           <Subtitle>Contact</Subtitle>
         </Link>
       </NextLink>
+      {!isDarkTheme && (
+        <IconContainer onClick={setIsDarkTheme}>
+          <SunIcon />
+        </IconContainer>
+      )}
+      {isDarkTheme && (
+        <IconContainer onClick={setIsDarkTheme}>
+          <MoonIcon />
+        </IconContainer>
+      )}
     </LinksContainer>
   </Container>
 );
