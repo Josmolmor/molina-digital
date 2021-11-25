@@ -1,6 +1,30 @@
+import Prismic from '@prismicio/client';
+import { PrismicClient } from 'api/Prismic/config';
 import Home from 'containers/Home';
-import type { NextPage } from 'next';
+import type {
+  GetStaticProps,
+  GetStaticPropsContext,
+  InferGetServerSidePropsType,
+} from 'next';
 
-const HomePage: NextPage = () => <Home />;
+export const getStaticProps: GetStaticProps =
+  async ({}: GetStaticPropsContext) => {
+    const prismicResults = await PrismicClient.query(
+      Prismic.predicates.at('document.type', 'project'),
+      { orderings: '[my.project.year, document.first_publication_date]' },
+    );
+    return {
+      props: {
+        prismicResults,
+      },
+      revalidate: 60,
+    };
+  };
+
+const HomePage = ({
+  prismicResults,
+}: InferGetServerSidePropsType<typeof getStaticProps>) => (
+  <Home results={prismicResults} />
+);
 
 export default HomePage;

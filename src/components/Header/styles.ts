@@ -8,6 +8,20 @@ export const Container = styled.nav`
   padding: 2rem 0;
 `;
 
+export const Faded = styled.span`
+  transition: color 0.5s ease;
+`;
+
+export const Logo = styled.a`
+  color: inherit;
+  text-decoration: none;
+  &:hover {
+    ${Faded} {
+      color: rgba(255, 255, 255, 0.25);
+    }
+  }
+`;
+
 export const Link = styled.a`
   color: inherit;
   text-decoration: none;
@@ -22,10 +36,6 @@ export const LinksContainer = styled.div`
 export const Title = styled.span`
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.weights.bold};
-`;
-
-export const Faded = styled.span`
-  color: rgba(255, 255, 255, 0.25);
 `;
 
 export const Subtitle = styled.span`

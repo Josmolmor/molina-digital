@@ -1,14 +1,35 @@
-import Card from 'components/Card';
+import normalizeProject from 'context/helpers/normalizeProject';
 import type { FC } from 'react';
 
-import { Container } from './styles';
+import { Card, Container } from './styles';
 import type Props from './types';
 
-const Projects: FC<Props> = ({ className }) => (
+const Projects: FC<Props> = ({ results, className }) => (
   <Container className={className}>
-    {[1, 2, 3, 4, 5].map((i) => (
-      <Card key={i} />
-    ))}
+    {results?.map(({ data: project }) => {
+      const {
+        name,
+        role,
+        description,
+        techStack,
+        mainColor,
+        websiteUrl,
+        year,
+      } = normalizeProject(project);
+
+      return (
+        <Card
+          name={name}
+          key={name}
+          role={role}
+          description={description}
+          techStack={techStack}
+          mainColor={mainColor}
+          websiteUrl={websiteUrl}
+          year={year}
+        />
+      );
+    })}
   </Container>
 );
 

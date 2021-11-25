@@ -35,7 +35,9 @@
       "containers/*": ["src/containers/*"],
       "pages/*": ["src/pages/*"],
       "styles/*": ["src/styles/*"],
-      "utils/*": ["src/utils/*"]
+      "utils/*": ["src/utils/*"],
+      "context/*": ["src/context/*"],
+      "api/*": ["src/api/*"]
     }
   },
   "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"],

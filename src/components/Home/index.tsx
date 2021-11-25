@@ -1,19 +1,38 @@
-import { Container, Intro, Profile } from './styles';
+import { Container, Content, Profile, Subtitle, Text, Title } from './styles';
 
 const Home = () => (
   <Container>
-    <Profile src="https://github.com/josmolmor.png" alt="A photo of myself!" />
-    <Intro>
-      What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the printing and
-      typesetting industry. Lorem Ipsum has been the industry&apos;s standard
-      dummy text ever since the 1500s, when an unknown printer took a galley of
-      type and scrambled it to make a type specimen book. It has survived not
-      only five centuries, but also the leap into electronic typesetting,
-      remaining essentially unchanged. It was popularised in the 1960s with the
-      release of Letraset sheets containing Lorem Ipsum passages, and more
-      recently with desktop publishing software like Aldus PageMaker including
-      versions of Lorem Ipsum.
-    </Intro>
+    <Content>
+      <Profile
+        src="https://github.com/josmolmor.png"
+        alt="A photo of myself!"
+      />
+      <div>
+        <Title>Who am I</Title>
+        <Text>
+          Front-end engineer based in Seville, Spain with{' '}
+          {new Date().getFullYear() - 2016} years of experience on web
+          development. I also love design and have a pretty vast experience with
+          tools like Photoshop, Illustrator and After effects as well as more
+          web focused tools like Figma or Sketch.
+        </Text>
+        <Subtitle>What I do</Subtitle>
+        <Text>
+          Although my main role is usually to develop, I have some experience as
+          DRI / PM and like to talk to clients and manage groups of people and
+          projects.
+          <br />
+          <br />
+          As developer I&apos;m a strong believer in the use of modularized
+          project structure to ease any change needed in the future and
+          developer understanding (even if he/she just started working on the
+          project) as well as code quality; any project should always use
+          ESLint, Prettier, and Typescript from scratch. These code quality
+          tools are usually handled and run on the pre-commit hook by Husky and
+          Lint-Staged.
+        </Text>
+      </div>
+    </Content>
   </Container>
 );
 

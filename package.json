@@ -23,10 +23,13 @@
     "*.{svg}": "prettier --write --parser html"
   },
   "dependencies": {
+    "@prismicio/client": "^5.1.0",
     "next": "latest",
     "next-seo": "^4.28.1",
+    "prismic-reactjs-custom": "^1.0.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-feather": "^2.0.9",
     "styled-components": "^5.3.3",
     "styled-normalize": "^8.0.7"
   },

@@ -5,6 +5,7 @@ import {
   Faded,
   Link,
   LinksContainer,
+  Logo,
   Subtitle,
   Title,
 } from './styles';
@@ -12,11 +13,11 @@ import {
 export const Header = () => (
   <Container>
     <NextLink passHref href="/">
-      <Link>
+      <Logo>
         <Title>
           <Faded>J M</Faded> Molina
         </Title>
-      </Link>
+      </Logo>
     </NextLink>
     <LinksContainer>
       <NextLink passHref href="/contact">
