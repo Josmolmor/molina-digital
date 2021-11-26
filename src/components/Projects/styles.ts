@@ -2,10 +2,10 @@ import CardComponent from 'components/Card';
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  margin-top: 2rem;
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 export const Card = styled(CardComponent)``;

@@ -1,32 +1,57 @@
+import { Globe } from 'react-feather';
 import styled, { css } from 'styled-components';
 import { fancyAnchor } from 'styles/mixins';
+import { from } from 'styles/responsive';
 import addAlpha from 'utils/addAlpha';
 
-export const Container = styled.div<{ borderColor?: string }>`
-  border-radius: 0.25rem;
+export const Image = styled.img`
+  display: block;
+  max-width: 75vw;
+  width: 100%;
+`;
+
+export const Container = styled.div<{
+  $borderColor?: string;
+}>`
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  ${({ borderColor }) =>
-    borderColor &&
-    css`
-      background-color: ${addAlpha(borderColor, 0.2)};
-      border: 1px solid ${borderColor};
+  gap: 1.5rem;
+  justify-content: center;
 
+  ${from.tablet} {
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  ${({ $borderColor }) =>
+    $borderColor &&
+    css`
+      background-color: ${addAlpha($borderColor, 0.1)};
+      border: 1px solid ${$borderColor};
+
+      img,
       p,
       span,
       em,
       a {
         &::-moz-selection {
           /* Code for Firefox */
-          background: ${addAlpha(borderColor, 0.5)};
+          background: ${addAlpha($borderColor, 0.5)};
         }
 
         &::selection {
-          background: ${addAlpha(borderColor, 0.5)};
+          background: ${addAlpha($borderColor, 0.5)};
         }
       }
     `};
+`;
+
+export const ImageContent = styled.div``;
+
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1rem 1rem 0;
 `;
 
 export const Title = styled.span`
@@ -49,6 +74,7 @@ export const TagsContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 1.5rem;
+  margin-left: auto;
   gap: 0.25rem;
 `;
 
@@ -78,7 +104,7 @@ export const Subheading = styled.div`
 `;
 
 const cssSubtitle = css`
-  color: ${({ theme }) => addAlpha(theme.colors.white, 0.5)};
+  color: ${({ theme }) => addAlpha(theme.colors.fontColor, 0.5)};
 `;
 
 export const Year = styled.span`
@@ -89,19 +115,6 @@ export const Role = styled.span`
   ${cssSubtitle};
 `;
 
-export const LearnMoreButton = styled.a`
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-
-  > svg {
-    margin-left: 0.25rem;
-    transition: transform 0.5s ease;
-  }
-
-  &:hover {
-    > svg {
-      transform: translateX(4px);
-    }
-  }
+export const GlobeIcon = styled(Globe)`
+  color: ${({ theme }) => theme.colors.fontColor};
 `;

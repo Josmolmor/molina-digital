@@ -15,6 +15,7 @@ const Projects: FC<Props> = ({ results, className }) => (
         mainColor,
         websiteUrl,
         year,
+        imageGallery,
       } = normalizeProject(project);
 
       return (
@@ -27,6 +28,7 @@ const Projects: FC<Props> = ({ results, className }) => (
           mainColor={mainColor}
           websiteUrl={websiteUrl}
           year={year}
+          imageGallery={imageGallery}
         />
       );
     })}

@@ -16,19 +16,26 @@ import {
   WebpackIcon,
 } from 'components/Icons';
 import styled, { css } from 'styled-components';
+import addAlpha from 'utils/addAlpha';
 
-export const Container = styled.div`
-  background-color: ${({ theme }) => theme.colors.white};
+export const Container = styled.div<{ $color?: string }>`
+  background-color: ${({ theme }) => addAlpha(theme.colors.background, 0.75)};
   border-right: 0.25rem;
   border-radius: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0.25rem;
+
+  ${({ $color }) =>
+    $color &&
+    css`
+      span, svg {
+        color: ${$color}
+      `};
 `;
 
 const commonSvgCss = css`
-  color: ${({ theme }) => theme.colors.black};
   height: 1.5rem;
   width: 1.5rem;
 `;

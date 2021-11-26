@@ -6,8 +6,8 @@ export const Container = styled.nav`
   align-items: center;
   display: flex;
   justify-content: space-between;
+  padding: 1rem 0;
   margin-bottom: 2rem;
-  padding: 2rem 0;
 `;
 
 export const Faded = styled.span`
@@ -50,10 +50,10 @@ export const IconContainer = styled.div`
   display: flex;
   justify-content: center;
   padding: 0.5rem;
-  transition: background-color 0.5s ease;
+  transition: transform 1s ease;
 
   &:hover {
-    background-color: lightgray;
+    transform: rotate(360deg);
   }
 `;
 

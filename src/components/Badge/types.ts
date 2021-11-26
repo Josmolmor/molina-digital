@@ -1,5 +1,6 @@
 type Props = {
   title: string;
+  color?: string;
   className?: string;
 };
 

@@ -6,11 +6,11 @@ export const Container = styled.footer`
   gap: 1rem;
   justify-content: center;
   margin-top: 3rem;
-  padding: 2rem 0;
+  padding: 1.5rem 0;
 `;
 
 const commonIconCss = css`
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.fontColor};
   height: 2rem;
   width: 2rem;
 `;

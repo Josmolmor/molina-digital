@@ -9,6 +9,7 @@ type Props = {
   mainColor: NormalizedProject['mainColor'];
   websiteUrl: NormalizedProject['websiteUrl'];
   year: NormalizedProject['year'];
+  imageGallery: NormalizedProject['imageGallery'];
 };
 
 export default Props;
