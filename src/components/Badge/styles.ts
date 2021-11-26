@@ -18,21 +18,15 @@ import {
 import styled, { css } from 'styled-components';
 import addAlpha from 'utils/addAlpha';
 
-export const Container = styled.div<{ $color?: string }>`
+export const Container = styled.div`
   background-color: ${({ theme }) => addAlpha(theme.colors.background, 0.75)};
   border-right: 0.25rem;
   border-radius: 0.25rem;
+  color: ${({ theme }) => theme.colors.fontColor};
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0.25rem;
-
-  ${({ $color }) =>
-    $color &&
-    css`
-      span, svg {
-        color: ${$color}
-      `};
 `;
 
 const commonSvgCss = css`
@@ -65,7 +59,8 @@ export const ApolloLogo = styled(ApolloIcon)`
 `;
 
 export const SassLogo = styled(SassIcon)`
-  ${commonSvgCss};
+  height: 2rem;
+  width: 2rem;
 `;
 
 export const JavascriptLogo = styled(JavascriptIcon)`
@@ -81,11 +76,13 @@ export const VueLogo = styled(VueIcon)`
 `;
 
 export const WebpackLogo = styled(WebpackIcon)`
-  ${commonSvgCss};
+  height: 2rem;
+  width: 2rem;
 `;
 
 export const MdxLogo = styled(MdxIcon)`
-  ${commonSvgCss};
+  height: 3rem;
+  width: 3rem;
 `;
 
 export const JestLogo = styled(JestIcon)`
@@ -97,11 +94,12 @@ export const CypressLogo = styled(CypressIcon)`
 `;
 
 export const NextJsLogo = styled(NextJsIcon)`
-  ${commonSvgCss};
+  height: 3rem;
+  width: 3rem;
 `;
 
 export const WordMark = styled.span`
-  color: ${({ theme }) => theme.colors.black};
+  color: ${({ theme }) => theme.colors.fontColor};
   font-size: 0.875rem;
   font-weight: ${({ theme }) => theme.weights.semiBold};
   pointer-events: none;

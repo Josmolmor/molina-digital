@@ -21,7 +21,7 @@ import {
 } from './styles';
 import type Props from './types';
 
-const Badge: FC<Props> = ({ title, color, children }) => {
+const Badge: FC<Props> = ({ title, children }) => {
   function handleContent() {
     switch (title.toLowerCase()) {
       default:
@@ -63,7 +63,7 @@ const Badge: FC<Props> = ({ title, color, children }) => {
   }
 
   return (
-    <Container title={title} $color={color}>
+    <Container title={title}>
       {handleContent()}
       {children}
     </Container>

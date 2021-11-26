@@ -13,12 +13,11 @@ const GlobalStyle = createGlobalStyle`
   html, body {
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.fontColor};
+    line-height: 1.5;
   }
   
   body {
-    font-family: 'Archia', 'Termina', -apple-system, BlinkMacSystemFont, "Segoe UI",
-    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-    "Helvetica Neue", sans-serif;
+    font-family: 'Poppins', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

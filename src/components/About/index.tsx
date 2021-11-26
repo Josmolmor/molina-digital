@@ -32,17 +32,16 @@ const About = () => (
         <Subtitle>What I do</Subtitle>
         <Text>
           Although my main role is usually to develop, I have some experience as
-          DRI / PM and like to talk to clients and manage groups of people and
-          projects.
+          DRI / PM and like talking to clients and managing projects and groups
+          of people.
           <br />
           <br />
           As developer I&apos;m a strong believer in the use of modularized
           project structure to ease any change needed in the future and
           developer understanding (even if he/she just started working on the
-          project) as well as code quality; any project should always use
-          ESLint, Prettier, and Typescript from scratch. These code quality
-          tools are usually handled and run on the pre-commit hook by Husky and
-          Lint-Staged.
+          project) as well as code quality; I&apos;m used to work (and encourage
+          everyone to use every time) with tools like ESLint, Prettier,
+          Typescript, Husky and Lint-Staged.
         </Text>
       </div>
     </Content>

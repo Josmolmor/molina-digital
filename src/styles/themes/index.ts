@@ -19,7 +19,7 @@ export const light = {
   ...commonCss,
   colors: {
     ...commonCss.colors,
-    background: '#EFEDE9',
+    background: '#f4f4f4',
     fontColor: '#221e1f',
   },
 };

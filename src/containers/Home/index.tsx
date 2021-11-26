@@ -3,7 +3,7 @@ import { usePrismic } from 'context/Prismic/state';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 
-import { Container, Projects } from './styles';
+import { Container, FixedImage, Projects } from './styles';
 import type Props from './types';
 
 const Home: FC<Props> = ({ results, className }) => {
@@ -19,6 +19,10 @@ const Home: FC<Props> = ({ results, className }) => {
     <Container className={className}>
       <HomeComponent />
       <Projects results={projectTypeResults} />
+      <FixedImage
+        src="/static/images/projects.svg"
+        alt="Illustration of a rocket taking off!"
+      />
     </Container>
   );
 };

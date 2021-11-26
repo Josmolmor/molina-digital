@@ -1,34 +1,26 @@
-import { Globe } from 'react-feather';
+import { ArrowRight, ExternalLink } from 'react-feather';
 import styled, { css } from 'styled-components';
 import { fancyAnchor } from 'styles/mixins';
 import { from } from 'styles/responsive';
 import addAlpha from 'utils/addAlpha';
 
-export const Image = styled.img`
-  display: block;
-  max-width: 75vw;
-  width: 100%;
-`;
-
 export const Container = styled.div<{
   $borderColor?: string;
 }>`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 1.5rem;
   justify-content: center;
 
   ${from.tablet} {
     flex-direction: row;
     gap: 2rem;
+    justify-content: space-between;
   }
 
   ${({ $borderColor }) =>
     $borderColor &&
     css`
-      background-color: ${addAlpha($borderColor, 0.1)};
-      border: 1px solid ${$borderColor};
-
       img,
       p,
       span,
@@ -46,24 +38,21 @@ export const Container = styled.div<{
     `};
 `;
 
-export const ImageContent = styled.div``;
-
 export const Content = styled.div`
   display: flex;
+  flex-basis: 50%;
   flex-direction: column;
-  padding: 1rem 1rem 1rem 0;
 `;
 
 export const Title = styled.span`
-  font-weight: ${({ theme }) => theme.weights.semiBold};
-  font-size: 1.25rem;
+  font-family: 'Staatliches', sans-serif;
+  font-size: 1.5rem;
   display: block;
 `;
 
 export const Description = styled.p`
   display: block;
-  font-size: 0.75rem;
-  margin: 0.5rem 0;
+  margin: 0 0 0.5rem 0;
 
   a {
     ${fancyAnchor};
@@ -87,20 +76,17 @@ export const Tags = styled.div`
 export const TopSide = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
 `;
 
 export const Heading = styled.div`
+  align-items: baseline;
   display: flex;
-  justify-content: space-between;
 `;
 
 export const Subheading = styled.div`
   align-items: center;
   display: flex;
-  margin: 0.25rem 0 0.5rem;
-  font-size: 0.75rem;
-  font-weight: ${({ theme }) => theme.weights.semiBold};
+  margin: 0.5rem 0 1rem;
 `;
 
 const cssSubtitle = css`
@@ -115,6 +101,74 @@ export const Role = styled.span`
   ${cssSubtitle};
 `;
 
-export const GlobeIcon = styled(Globe)`
+export const GlobeIcon = styled(ExternalLink)`
   color: ${({ theme }) => theme.colors.fontColor};
+  margin-left: 0.5rem;
+`;
+
+export const ArrowRightIcon = styled(ArrowRight)<{ $mainColor?: string }>`
+  border-radius: 50%;
+  cursor: pointer;
+  height: 3rem;
+  width: 3rem;
+  margin-right: 1rem;
+  transition: opacity 0.5s ease-in-out, transform 15s ease-in-out;
+  opacity: 0;
+
+  ${({ $mainColor }) =>
+    $mainColor &&
+    css`
+      background-color: ${$mainColor};
+      color: ${({ theme }) => addAlpha(theme.colors.white, 1)};
+    `}
+`;
+
+export const ArrowContainer = styled.div`
+  align-items: center;
+  bottom: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  left: 80%;
+  position: absolute;
+  right: 0;
+  top: 0;
+`;
+
+export const ImageContent = styled.div`
+  position: relative;
+  flex-basis: 45%;
+
+  @keyframes hover {
+    0% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(10px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
+  &:hover {
+    ${ArrowRightIcon} {
+      opacity: 1;
+      // transform: translateX(10px);
+      -webkit-animation: hover 1s forwards ease; /* for less modern browsers */
+      animation: hover 1s forwards ease;
+    }
+  }
+`;
+
+export const Image = styled.img`
+  display: block;
+  max-height: 70rem;
+  object-fit: contain;
+  pointer-events: none;
+  width: 100%;
+
+  ${from.tablet} {
+    max-width: 75vw;
+  }
 `;

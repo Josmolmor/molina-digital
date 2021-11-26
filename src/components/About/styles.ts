@@ -40,13 +40,10 @@ export const Profile = styled.img`
 `;
 
 export const Title = styled.h2`
-  padding-bottom: 0.25rem;
   margin-top: 0;
 `;
 
-export const Subtitle = styled.h2`
-  padding-bottom: 0.25rem;
-`;
+export const Subtitle = styled.h2``;
 
 export const Link = styled.a`
   ${fancyAnchor};

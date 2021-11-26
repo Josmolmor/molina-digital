@@ -34,6 +34,7 @@ export const LinksContainer = styled.div`
 `;
 
 export const Title = styled.span`
+  font-family: 'Staatliches', sans-serif;
   font-size: 1.5rem;
   font-weight: ${({ theme }) => theme.weights.bold};
 `;

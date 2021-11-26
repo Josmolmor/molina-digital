@@ -3,10 +3,10 @@ import styled, { css } from 'styled-components';
 
 export const Container = styled.footer`
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   justify-content: center;
   margin-top: 3rem;
-  padding: 1.5rem 0;
+  padding: 2rem 0 3rem;
 `;
 
 const commonIconCss = css`
