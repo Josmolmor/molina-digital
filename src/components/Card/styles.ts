@@ -46,6 +46,7 @@ export const Content = styled.div`
 
 export const Title = styled.span`
   font-family: 'Staatliches', sans-serif;
+  letter-spacing: 0.1rem;
   font-size: 1.5rem;
   display: block;
 `;
@@ -89,16 +90,8 @@ export const Subheading = styled.div`
   margin: 0.5rem 0 1rem;
 `;
 
-const cssSubtitle = css`
+export const Subtitle = styled.span`
   color: ${({ theme }) => addAlpha(theme.colors.fontColor, 0.5)};
-`;
-
-export const Year = styled.span`
-  ${cssSubtitle};
-`;
-
-export const Role = styled.span`
-  ${cssSubtitle};
 `;
 
 export const GlobeIcon = styled(ExternalLink)`

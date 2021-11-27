@@ -1,5 +1,5 @@
-import { Container } from './styles';
+import About from 'components/About';
 
-const Home = () => <Container></Container>;
+const Home = () => <About />;
 
 export default Home;

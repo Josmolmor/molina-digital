@@ -15,13 +15,12 @@ import {
   Heading,
   Image,
   ImageContent,
-  Role,
   Subheading,
+  Subtitle,
   Tags,
   TagsContainer,
   Title,
   TopSide,
-  Year,
 } from './styles';
 import type Props from './types';
 
@@ -79,8 +78,9 @@ const Card: FC<Props> = ({
             )}
           </Heading>
           <Subheading>
-            <Year>{year}</Year>
-            <Role>&nbsp;·&nbsp;{role}</Role>
+            <Subtitle>
+              {year}&nbsp;·&nbsp;{role}
+            </Subtitle>
           </Subheading>
           <RichText
             richText={description}

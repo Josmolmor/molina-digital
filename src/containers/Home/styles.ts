@@ -26,4 +26,5 @@ export const FixedImage = styled.img`
   right: 1.25rem;
   height: 20rem;
   animation: float 6s ease-in-out infinite;
+  pointer-events: none;
 `;
