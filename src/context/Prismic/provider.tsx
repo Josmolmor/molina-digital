@@ -2,16 +2,16 @@ import type { FC } from 'react';
 import { useState } from 'react';
 
 import { PrismicContext } from './state';
-import type { Result } from './types';
+import type { Project, Result } from './types';
 
 export const PrismicProvider: FC = ({ children }) => {
-  const [result, setResults] = useState<Result | null>(null);
+  const [result, setResults] = useState<Result<Project> | null>(null);
 
   return (
     <PrismicContext.Provider
       value={{
         projects: result,
-        updateProjects: (docs: Result) => setResults(docs),
+        updateProjects: (docs: Result<Project>) => setResults(docs),
       }}
     >
       {children}
