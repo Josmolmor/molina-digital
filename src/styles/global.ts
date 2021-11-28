@@ -38,30 +38,30 @@ const GlobalStyle = createGlobalStyle`
   @keyframes floatDesktop {
     0% {
       filter: drop-shadow(0 10px 0.35rem rgba(0, 0, 0, 0.5));
-        transform: translateY(0);
+        transform: translateY(0) translateZ(0);
     }
     50% {
       filter: drop-shadow(0 30px 0.75rem rgba(0, 0, 0, 0.25));
-        transform: translateY(-10vh);
+        transform: translateY(-5vh) translateZ(-10vh);
     }
     100% {
       filter: drop-shadow(0 10px 0.35rem rgba(0, 0, 0, 0.5));
-        transform: translateY(0);
+        transform: translateY(0) translateZ(0);
     }
   }
 
   @keyframes float {
     0% {
       filter: drop-shadow(0 10px 0.35rem rgba(0, 0, 0, 0.5));
-      transform: translateY(-10vh);
+      transform: translateY(-5vh) translateZ(-10vh);
     }
     50% {
       filter: drop-shadow(0 30px 0.75rem rgba(0, 0, 0, 0.25));
-      transform: translateY(-20vh);
+      transform: translateY(-10vh) translateZ(-20vh);
     }
     100% {
       filter: drop-shadow(0 10px 0.35rem rgba(0, 0, 0, 0.5));
-      transform: translateY(-10vh);
+      transform: translateY(-5vh) translateZ(-10vh);
     }
   }
 `;

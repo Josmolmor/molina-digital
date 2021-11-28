@@ -156,9 +156,11 @@ export const ImageContent = styled.div`
 
 export const Image = styled.img`
   display: block;
-  max-height: 70rem;
-  object-fit: contain;
+  max-height: 40rem;
+  object-fit: cover;
+  object-position: top center;
   pointer-events: none;
+  height: 100%;
   width: 100%;
 
   ${from.tablet} {

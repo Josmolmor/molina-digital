@@ -29,6 +29,7 @@ const About = () => {
           style={{
             background: gradient,
           }}
+          loading="lazy"
         />
         <TopSide>
           <Title>Who I am</Title>
@@ -42,10 +43,10 @@ const About = () => {
             <br />
             Before being hired by <Link href="https://z1.digital/">Z1</Link> (my
             current employer), I was working on a IT consult working with C#,
-            PHP, Sharepoint and SQL.
+            PHP, Sharepoint and SQL for 3yrs.
           </Text>
           <Subtitle>What I do</Subtitle>
-          <RobotImage src="/static/images/robot.svg" alt="" />
+          <RobotImage src="/static/images/robot.svg" alt="" loading="lazy" />
           <Text>
             Although my main role is usually to develop, I have some experience
             as DRI / PM and like talking to clients and managing projects and
@@ -54,10 +55,13 @@ const About = () => {
             <br />
             As developer I&apos;m a strong believer in the use of modularized
             project structure to ease any change needed in the future and
-            developer understanding (even if he/she just started working on the
-            project) as well as code quality; I&apos;m used to work (and
-            encourage everyone to use every time) with tools like ESLint,
-            Prettier, Typescript, Husky and Lint-Staged.
+            developer understanding as well as code quality; I&apos;m used to
+            work (and encourage everyone to use every time) with tools like
+            ESLint, Prettier, Typescript, Husky and Lint-Staged.
+            <br />
+            <br />
+            You can learn a bit more about my favorite languages, frameworks and
+            tools on the work section.
           </Text>
           <CtaContainer>
             <NextLink passHref href="/work">

@@ -10,8 +10,8 @@ function normalizeProject(project: Project): NormalizedProject {
     role: project.role,
     techStack: project.tech_stack,
     websiteUrl: {
-      linkType: project.website_url.link_type,
-      url: project.website_url.url,
+      linkType: project.website_url?.link_type,
+      url: project.website_url?.url,
     },
   };
 }

@@ -26,4 +26,8 @@ const loadFontsPlugin = (nextConfig = {}) =>
     },
   });
 
-module.exports = withPlugins([loadFontsPlugin]);
+module.exports = withPlugins([loadFontsPlugin], {
+  images: {
+    domains: ['images.prismic.io'],
+  },
+});

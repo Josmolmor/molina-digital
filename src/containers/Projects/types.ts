@@ -1,7 +1,7 @@
-import type { Result } from 'context/Prismic/types';
+import type { NormalizedProject } from 'context/Prismic/types';
 
 type Props = {
-  results: Result;
+  results: NormalizedProject[];
   className?: string;
 };
 

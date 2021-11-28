@@ -1,8 +1,10 @@
+import ContactForm from 'components/ContactForm';
+
 import { Container } from './styles';
 
 const Contact = () => (
   <Container>
-    <h1>Contact</h1>
+    <ContactForm />
   </Container>
 );
 

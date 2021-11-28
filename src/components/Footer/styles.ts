@@ -17,17 +17,11 @@ const commonIconCss = css`
   width: 2rem;
 `;
 
-export const Github = styled(GithubIcon)`
-  ${commonIconCss};
-`;
+export const Github = styled(GithubIcon)``;
 
-export const Linkedin = styled(LinkedinIcon)`
-  ${commonIconCss};
-`;
+export const Linkedin = styled(LinkedinIcon)``;
 
-export const Twitter = styled(TwitterIcon)`
-  ${commonIconCss};
-`;
+export const Twitter = styled(TwitterIcon)``;
 
 const commonImageCss = css`
   bottom: 0;
@@ -53,4 +47,8 @@ export const LeftFixedImage = styled.img`
 export const RightFixedImage = styled(LeftFixedImage)`
   left: 0;
   right: -1rem;
+`;
+
+export const Link = styled.a`
+  ${commonIconCss};
 `;

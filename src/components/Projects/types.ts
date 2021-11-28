@@ -1,8 +1,8 @@
-import type { PrismicDocument } from 'context/Prismic/types';
+import type { NormalizedProject } from 'context/Prismic/types';
 
 type Props = {
   className?: string;
-  results?: PrismicDocument[];
+  results?: NormalizedProject[];
 };
 
 export default Props;

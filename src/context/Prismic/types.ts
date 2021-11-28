@@ -45,20 +45,9 @@ export type PrismicDocument = {
   url: string | null;
 };
 
-export type Result = {
-  license: string;
-  next_page: number | null;
-  page: number;
-  prev_page: number | null;
-  results: PrismicDocument[];
-  results_per_page: number;
-  results_size: number;
-  total_pages: number;
-  total_results_size: number;
-  version: string;
-};
+export type Result<T> = Array<{ node: T }>;
 
 export type PrismicContextType = {
-  projects: Result | null;
-  updateProjects: (res: Result) => void;
+  projects: Result<Project> | null;
+  updateProjects: (res: Result<Project>) => void;
 };

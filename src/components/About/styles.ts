@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { fancyAnchor } from 'styles/mixins';
+import { commonButtonCss, fancyAnchor } from 'styles/mixins';
 import { from } from 'styles/responsive';
 import addAlpha from 'utils/addAlpha';
 
@@ -85,24 +85,10 @@ export const CtaContainer = styled.div`
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: flex-start;
-  margin: 2rem 0 0;
+  margin: 3rem 0 0;
 
   ${from.tablet} {
     gap: 2rem;
-  }
-`;
-
-const commonButtonCss = css`
-  border-radius: 0.5rem;
-  flex-shrink: 0;
-  padding: 1rem 3rem;
-  text-align: center;
-  text-transform: uppercase;
-  transition: color 0.25s ease, background-color 0.25s ease;
-  width: 100%;
-
-  ${from.mobile} {
-    width: auto;
   }
 `;
 
@@ -117,8 +103,8 @@ export const CtaButton = styled.a`
 `;
 
 export const CtaButtonSecondary = styled.a`
-  border: 2px solid ${({ theme }) => theme.colors.fontColor};
   ${commonButtonCss};
+  border: 2px solid ${({ theme }) => theme.colors.fontColor};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.fontColor};
@@ -134,8 +120,12 @@ export const RobotImage = styled.img`
   height: 20rem;
   width: 20rem;
   position: absolute;
-  right: -2rem;
+  right: -6rem;
   top: -2rem;
   opacity: 0.25;
   pointer-events: none;
+
+  ${from.mobile} {
+    right: -2rem;
+  }
 `;

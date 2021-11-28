@@ -29,31 +29,33 @@ export const Title = styled.h1`
 
 export const HandImage = styled.img`
   pointer-events: none;
-  height: 10rem;
-  width: 10rem;
   position: absolute;
   right: 1rem;
-  top: 1rem;
   transform: rotate(-60deg);
+  height: 5rem;
+  width: 5rem;
+  top: 7rem;
+
+  ${from.tablet} {
+    height: 10rem;
+    width: 10rem;
+    top: 1rem;
+  }
 `;
 
 export const DesignImage = styled.img`
-  pointer-events: none;
-  height: 20rem;
-  width: 20rem;
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  transform: rotate(-30deg);
-`;
-
-export const Image = styled.img`
-  height: 10rem;
-  width: 10rem;
-  position: absolute;
-  right: 10rem;
-  top: 35%;
-  transform: rotate(45deg) translateY(-70%);
+  height: 6rem;
+  width: 6rem;
+  bottom: -7rem;
   opacity: 0.5;
   pointer-events: none;
+  position: absolute;
+  right: 1rem;
+  transform: rotate(-30deg);
+
+  ${from.tablet} {
+    height: 15rem;
+    width: 15rem;
+    bottom: 1rem;
+  }
 `;

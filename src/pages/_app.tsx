@@ -8,7 +8,6 @@ import { useEffect, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import GlobalStyle from 'styles/global';
 import { dark, light } from 'styles/themes';
-
 export default function App({ Component, pageProps }: AppProps): JSX.Element {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
 

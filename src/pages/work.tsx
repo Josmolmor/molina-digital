@@ -1,30 +1,40 @@
-import Prismic from '@prismicio/client';
-import { PrismicClient } from 'api/Prismic/config';
+import { getAllProjects } from 'api/Prismic';
 import Projects from 'containers/Projects';
-import type {
-  GetStaticProps,
-  GetStaticPropsContext,
-  InferGetServerSidePropsType,
-} from 'next';
+import normalizeProject from 'context/Prismic/helpers/normalizeProject';
+import type { NormalizedProject } from 'context/Prismic/types';
+import type { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
+import { useRouter } from 'next/router';
+import { NextSeo } from 'next-seo';
 
-export const getStaticProps: GetStaticProps =
-  async ({}: GetStaticPropsContext) => {
-    const prismicResults = await PrismicClient.query(
-      Prismic.predicates.at('document.type', 'project'),
-      { orderings: '[my.project.year desc, document.first_publication_date]' },
-    );
-    return {
-      props: {
-        prismicResults,
-      },
-      revalidate: 60,
-    };
+export async function getStaticProps({ previewData }: GetStaticPropsContext) {
+  const allProjects = await getAllProjects(previewData);
+
+  return {
+    props: { allProjects },
   };
+}
 
 const WorkPage = ({
-  prismicResults,
-}: InferGetServerSidePropsType<typeof getStaticProps>) => (
-  <Projects results={prismicResults} />
-);
+  allProjects,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const { isFallback } = useRouter();
+  const normalizedProjects: NormalizedProject[] = allProjects?.map(
+    ({ node: project }) => normalizeProject(project),
+  );
+
+  return (
+    <>
+      <NextSeo
+        title="Work"
+        description="Check out some of the latests projects I've worked on."
+      />
+      {isFallback ? (
+        <h1>Loading</h1>
+      ) : (
+        <Projects results={normalizedProjects} />
+      )}
+    </>
+  );
+};
 
 export default WorkPage;

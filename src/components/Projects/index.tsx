@@ -1,4 +1,3 @@
-import normalizeProject from 'context/Prismic/helpers/normalizeProject';
 import type { FC } from 'react';
 
 import {
@@ -7,7 +6,6 @@ import {
   Content,
   DesignImage,
   HandImage,
-  Image,
   Title,
 } from './styles';
 import type Props from './types';
@@ -15,12 +13,15 @@ import type Props from './types';
 const Projects: FC<Props> = ({ results, className }) => (
   <Container className={className}>
     <Title>Check out the latest projects I&apos;ve worked on</Title>
-    <HandImage src="/static/images/Poking_2_R-Angle_B2_0001.png" alt="" />
-    <DesignImage src="/static/images/design.svg" alt="" />
+    <HandImage
+      src="/static/images/Poking_2_R-Angle_B2_0001.png"
+      alt=""
+      loading="lazy"
+    />
+    <DesignImage src="/static/images/design.svg" alt="" loading="lazy" />
     <Content>
-      <Image src="/static/images/doodle-7 1.svg" alt="" />
-      {results?.map(({ data: project }) => {
-        const {
+      {results?.map(
+        ({
           name,
           role,
           description,
@@ -29,9 +30,7 @@ const Projects: FC<Props> = ({ results, className }) => (
           websiteUrl,
           year,
           imageGallery,
-        } = normalizeProject(project);
-
-        return (
+        }) => (
           <Card
             name={name}
             key={name}
@@ -43,8 +42,8 @@ const Projects: FC<Props> = ({ results, className }) => (
             year={year}
             imageGallery={imageGallery}
           />
-        );
-      })}
+        ),
+      )}
     </Content>
   </Container>
 );
