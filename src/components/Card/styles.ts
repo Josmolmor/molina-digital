@@ -102,11 +102,16 @@ export const GlobeIcon = styled(ExternalLink)`
 export const ArrowRightIcon = styled(ArrowRight)<{ $mainColor?: string }>`
   border-radius: 50%;
   cursor: pointer;
+  flex-shrink: 0;
   height: 3rem;
   width: 3rem;
   margin-right: 1rem;
   transition: opacity 0.5s ease-in-out, transform 15s ease-in-out;
-  opacity: 0;
+  opacity: 0.5;
+
+  ${from.tablet} {
+    opacity: 0;
+  }
 
   ${({ $mainColor }) =>
     $mainColor &&

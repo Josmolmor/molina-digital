@@ -33,12 +33,14 @@ export const Form = styled.form`
 
 export const Header = styled.h1`
   margin: 0 0 0.5rem;
+  word-break: break-word;
 `;
 
 export const Subtitle = styled.span`
   display: block;
   font-size: 1rem;
   font-weight: normal;
+  word-break: break-word;
 `;
 
 export const Label = styled.label`
