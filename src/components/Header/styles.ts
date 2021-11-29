@@ -42,6 +42,7 @@ export const LinksContainer = styled.div`
   position: absolute;
   right: 0;
   top: 3rem;
+  z-index: 1;
 
   ${from.tablet} {
     align-items: center;
