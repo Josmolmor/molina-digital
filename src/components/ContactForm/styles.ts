@@ -19,7 +19,7 @@ export const Form = styled.form`
   flex-direction: column;
   gap: 1rem;
   padding: 2rem 1rem;
-  max-width: 90vw;
+  max-width: 80vw;
 
   ${from.mobile} {
     padding: 2rem;
