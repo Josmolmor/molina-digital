@@ -46,7 +46,7 @@ export const Header: FC<Props> = ({
       <NextLink passHref href="/">
         <Logo>
           <Title>
-            <Faded>J M</Faded> Molina
+            <Faded>JM</Faded> Molina
           </Title>
         </Logo>
       </NextLink>
