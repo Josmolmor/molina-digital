@@ -5,15 +5,20 @@ import { from } from 'styles/responsive';
 import addAlpha from 'utils/addAlpha';
 
 export const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  position: relative;
+`;
+
+export const Form = styled.form`
   background-color: ${({ theme }) => theme.colors.fontColor};
   border-radius: 1rem;
   color: ${({ theme }) => theme.colors.background};
   display: flex;
-  justify-content: center;
-  margin: auto;
-  max-width: 40rem;
+  flex-direction: column;
+  gap: 1rem;
   padding: 2rem 1rem;
-  position: relative;
 
   ${from.mobile} {
     padding: 2rem;
@@ -22,13 +27,6 @@ export const Container = styled.div`
   ${from.tablet} {
     padding: 3rem;
   }
-`;
-
-export const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
 `;
 
 export const Header = styled.h1`
