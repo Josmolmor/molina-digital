@@ -135,6 +135,7 @@ export const ErrorMessage = styled.p`
   color: tomato;
   margin: 0;
   word-break: break-word;
+  max-width: 34rem;
 `;
 
 export const SuccessContent = styled.div`
