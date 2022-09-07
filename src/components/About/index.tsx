@@ -41,9 +41,8 @@ const About = () => {
             more web focused tools like Figma or Sketch.
             <br />
             <br />
-            Before being hired by <Link href="https://z1.digital/">Z1</Link> (my
-            current employer), I was working on a IT consult working with C#,
-            PHP, Sharepoint and SQL for 3yrs.
+            Currently working with the awesome <Link href="https://www.icims.com/products/talent-cloud-platform/video-studio/">iCIMS</Link> Video Studio team with.
+            Previously worked for <Link href="https://z1.digital/">Z1</Link> where I learned all I know about React.
           </Text>
           <Subtitle>What I do</Subtitle>
           <RobotImage src="/static/images/robot.svg" alt="" loading="lazy" />
