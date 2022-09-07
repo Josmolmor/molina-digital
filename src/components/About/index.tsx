@@ -41,8 +41,12 @@ const About = () => {
             more web focused tools like Figma or Sketch.
             <br />
             <br />
-            Currently working with the awesome <Link href="https://www.icims.com/products/talent-cloud-platform/video-studio/">iCIMS</Link> Video Studio team with.
-            Previously worked for <Link href="https://z1.digital/">Z1</Link> where I learned all I know about React.
+            Currently working with the awesome{' '}
+            <Link href="https://www.icims.com/products/talent-cloud-platform/video-studio/">
+              iCIMS
+            </Link>{' '}
+            Video Studio team. Previously worked for{' '}
+            <Link href="https://z1.digital/">Z1</Link>.
           </Text>
           <Subtitle>What I do</Subtitle>
           <RobotImage src="/static/images/robot.svg" alt="" loading="lazy" />
