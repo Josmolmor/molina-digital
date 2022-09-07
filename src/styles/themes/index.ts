@@ -28,7 +28,7 @@ export const dark = {
   ...commonCss,
   colors: {
     ...commonCss.colors,
-    background: '#161415',
+    background: '#000000',
     fontColor: '#ffffff',
   },
 };
