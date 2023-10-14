@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   extends: ['plugin:prettier/recommended'],
-  plugins: ['simple-import-sort'],
+  plugins: ['simple-import-sort', 'unused-imports'],
   parserOptions: {
     ecmaVersion: 2021,
   },
@@ -80,6 +80,17 @@ module.exports = {
         ],
         'simple-import-sort/imports': 'error',
         'simple-import-sort/exports': 'error',
+        'no-unused-vars': 'off', // or "@typescript-eslint/no-unused-vars": "off",
+        'unused-imports/no-unused-imports': 'error',
+        'unused-imports/no-unused-vars': [
+          'warn',
+          {
+            vars: 'all',
+            varsIgnorePattern: '^_',
+            args: 'after-used',
+            argsIgnorePattern: '^_',
+          },
+        ],
       },
       overrides: [
         // Always prefer default exports, except in files where typically we'd

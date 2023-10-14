@@ -1,6 +1,7 @@
 export { default as ApolloIcon } from './Apollo';
 export { default as CypressIcon } from './Cypress';
 export { default as GithubIcon } from './Github';
+export { default as GmailIcon } from './Gmail';
 export { default as GraphqlIcon } from './Graphql';
 export { default as HtmlIcon } from './Html';
 export { default as JavascriptIcon } from './Javascript';

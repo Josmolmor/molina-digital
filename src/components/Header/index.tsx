@@ -9,16 +9,10 @@ import {
   Container,
   Faded,
   IconContainer,
-  Link,
-  LinksContainer,
   Logo,
-  MenuIcon,
-  MenuIconContainer,
   MoonIcon,
-  Subtitle,
   SunIcon,
   Title,
-  XIcon,
 } from './styles';
 import type Props from './types';
 
@@ -50,13 +44,13 @@ export const Header: FC<Props> = ({
           </Title>
         </Logo>
       </NextLink>
-      {isMobile && (
+      {/*{isMobile && (
         <MenuIconContainer onClick={() => setShowMenu(!showMenu)}>
           {!showMenu && <MenuIcon />}
           {showMenu && <XIcon />}
         </MenuIconContainer>
       )}
-      {(!isMobile || (isMobile && showMenu)) && (
+     {(!isMobile || (isMobile && showMenu)) && (
         <LinksContainer ref={ref}>
           <NextLink passHref href="/work">
             <Link>
@@ -68,18 +62,15 @@ export const Header: FC<Props> = ({
               <Subtitle>Contact</Subtitle>
             </Link>
           </NextLink>
-          {!isDarkTheme && (
-            <IconContainer onClick={setIsDarkTheme}>
-              <SunIcon />
-            </IconContainer>
-          )}
           {isDarkTheme && (
             <IconContainer onClick={setIsDarkTheme}>
-              <MoonIcon />
+              {isDarkTheme ? <SunIcon /> : <MoonIcon />}
             </IconContainer>
           )}
-        </LinksContainer>
-      )}
+        </LinksContainer>*/}
+      <IconContainer onClick={setIsDarkTheme}>
+        {!isDarkTheme ? <SunIcon /> : <MoonIcon />}
+      </IconContainer>
     </Container>
   );
 };

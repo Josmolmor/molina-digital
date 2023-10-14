@@ -1,4 +1,4 @@
-import Contact from 'containers/Contact';
+import Contact from '../src/containers/Contact';
 import type { NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 

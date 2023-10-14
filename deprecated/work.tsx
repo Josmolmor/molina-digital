@@ -1,7 +1,7 @@
-import { getAllProjects } from 'api/Prismic';
-import Projects from 'containers/Projects';
-import normalizeProject from 'context/Prismic/helpers/normalizeProject';
-import type { NormalizedProject } from 'context/Prismic/types';
+import { getAllProjects } from '../src/api/Prismic';
+import Projects from '../src/containers/Projects';
+import normalizeProject from '../src/context/Prismic/helpers/normalizeProject';
+import type { NormalizedProject } from '../src/context/Prismic/types';
 import type { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';

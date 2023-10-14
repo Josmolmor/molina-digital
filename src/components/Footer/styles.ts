@@ -1,4 +1,9 @@
-import { GithubIcon, LinkedinIcon, TwitterIcon } from 'components/Icons';
+import {
+  GithubIcon,
+  GmailIcon,
+  LinkedinIcon,
+  TwitterIcon,
+} from 'components/Icons';
 import styled, { css } from 'styled-components';
 import { from } from 'styles/responsive';
 
@@ -22,6 +27,8 @@ export const Github = styled(GithubIcon)``;
 export const Linkedin = styled(LinkedinIcon)``;
 
 export const Twitter = styled(TwitterIcon)``;
+
+export const Gmail = styled(GmailIcon)``;
 
 const commonImageCss = css`
   bottom: 0;

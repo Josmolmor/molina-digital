@@ -14,18 +14,27 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
   /* Check for dark theme set as default on browser */
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      window
-        .matchMedia('(prefers-color-scheme: dark)')
-        .addEventListener('change', (e) => setIsDarkTheme(e.matches));
-
-      setIsDarkTheme(window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-      // Remove listener
-      return () => {
+      const localStorageThemeValue = localStorage.getItem(
+        'jmmolina-theme-dark',
+      );
+      if (localStorageThemeValue) {
+        return setIsDarkTheme(localStorageThemeValue.toLowerCase() === 'true');
+      } else {
         window
           .matchMedia('(prefers-color-scheme: dark)')
-          .removeEventListener('change', () => {});
-      };
+          .addEventListener('change', (e) => setIsDarkTheme(e.matches));
+
+        setIsDarkTheme(
+          window.matchMedia('(prefers-color-scheme: dark)').matches,
+        );
+
+        // Remove listener
+        return () => {
+          window
+            .matchMedia('(prefers-color-scheme: dark)')
+            .removeEventListener('change', () => {});
+        };
+      }
     }
     return undefined;
   }, []);
@@ -38,7 +47,10 @@ export default function App({ Component, pageProps }: AppProps): JSX.Element {
         <Wrapper>
           <Header
             isDarkTheme={isDarkTheme}
-            setIsDarkTheme={() => setIsDarkTheme(!isDarkTheme)}
+            setIsDarkTheme={() => {
+              localStorage.setItem('jmmolina-theme-dark', String(!isDarkTheme));
+              return setIsDarkTheme(!isDarkTheme);
+            }}
           />
           <Component {...pageProps} />
           <Footer />

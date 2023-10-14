@@ -2,14 +2,7 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 
-import {
-  Container,
-  Github,
-  LeftFixedImage,
-  Link,
-  Linkedin,
-  Twitter,
-} from './styles';
+import { Container, Github, Gmail, Link, Linkedin } from './styles';
 
 const Footer = () => {
   const { pathname } = useRouter();
@@ -30,6 +23,11 @@ const Footer = () => {
 
   return (
     <Container>
+      <NextLink passHref href="mailto:molinamw+digital@gmail.com">
+        <Link>
+          <Gmail />
+        </Link>
+      </NextLink>
       <NextLink passHref href="https://github.com/Josmolmor">
         <Link target="_blank">
           <Github />
@@ -40,12 +38,12 @@ const Footer = () => {
           <Linkedin />
         </Link>
       </NextLink>
-      <NextLink passHref href="https://twitter.com/JosMolMor">
+      {/* <NextLink passHref href="https://twitter.com/JosMolMor">
         <Link target="_blank">
           <Twitter />
         </Link>
-      </NextLink>
-      {illustration && <LeftFixedImage src={illustration} alt="Illustration" />}
+      </NextLink>*/}
+      {/*{illustration && <LeftFixedImage src={illustration} alt="Illustration" />}*/}
     </Container>
   );
 };
