@@ -38,13 +38,13 @@ const Home = () => (
         >
           Babel <ExternalLink />
         </a>
-        <Small>(2016-2019)</Small>
+        <Small>(2016-2020)</Small>
       </Li>
       <Li>
         <a href="https://z1.digital/" target="_blank" rel="noreferrer">
           Z1 <ExternalLink />
         </a>
-        <Small>(2019-2021)</Small>
+        <Small>(2019-2022)</Small>
       </Li>
     </Ul>
     <br />
