@@ -1,8 +1,6 @@
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 import type { FC } from 'react';
-import { useEffect, useRef, useState } from 'react';
-import { from, useMediaQuery } from 'styles/responsive';
+import { useRef } from 'react';
 
 import useOnClickOutside from '../../hooks/useClickOutside';
 import {
@@ -21,16 +19,15 @@ export const Header: FC<Props> = ({
   setIsDarkTheme,
   className,
 }) => {
-  const { pathname } = useRouter();
-  const isMobile = !useMediaQuery(from.tablet);
-  const [showMenu, setShowMenu] = useState(false);
+  // const isMobile = !useMediaQuery(from.tablet);
+  // const [showMenu, setShowMenu] = useState(false);
 
-  useEffect(() => setShowMenu(false), [isMobile, pathname]);
+  // useEffect(() => setShowMenu(false), [isMobile, pathname]);
 
   const ref = useRef(null);
 
   const handleClickOutside = () => {
-    setShowMenu(false);
+    // setShowMenu(false);
   };
 
   useOnClickOutside(ref, handleClickOutside);

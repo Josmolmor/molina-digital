@@ -1,12 +1,11 @@
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { Container, Github, Gmail, Link, Linkedin } from './styles';
 
 const Footer = () => {
   const { pathname } = useRouter();
-  const [illustration, setIllustration] = useState<string | null>(null);
 
   const handleIllustration = useCallback(() => {
     switch (pathname) {
@@ -18,7 +17,7 @@ const Footer = () => {
   }, [pathname]);
 
   useEffect(() => {
-    setIllustration(handleIllustration());
+    // setIllustration(handleIllustration());
   }, [handleIllustration, pathname]);
 
   return (
