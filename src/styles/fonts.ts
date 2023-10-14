@@ -19,7 +19,7 @@ const fonts = css`
       url('${ArchiaBold_woff}') format('woff');
     font-weight: 700;
     font-style: normal;
-    font-display: swap;
+    font-display: block;
   }
   @font-face {
     font-family: 'Archia';
@@ -27,7 +27,7 @@ const fonts = css`
       url('${ArchiaSemiBold_woff}') format('woff');
     font-weight: 600;
     font-style: normal;
-    font-display: swap;
+    font-display: block;
   }
   @font-face {
     font-family: 'Archia';
@@ -35,7 +35,7 @@ const fonts = css`
       url('${ArchiaMedium_woff}') format('woff');
     font-weight: 500;
     font-style: normal;
-    font-display: swap;
+    font-display: block;
   }
   @font-face {
     font-family: 'Archia';
@@ -43,7 +43,7 @@ const fonts = css`
       url('${ArchiaRegular_woff}') format('woff');
     font-weight: 400;
     font-style: normal;
-    font-display: swap;
+    font-display: block;
   }
   @font-face {
     font-family: 'Archia';
@@ -51,7 +51,7 @@ const fonts = css`
       url('${ArchiaLight_woff}') format('woff');
     font-weight: 300;
     font-style: normal;
-    font-display: swap;
+    font-display: block;
   }
   @font-face {
     font-family: 'Archia';
@@ -59,7 +59,7 @@ const fonts = css`
       url('${ArchiaThin_woff}') format('woff');
     font-weight: 100;
     font-style: normal;
-    font-display: swap;
+    font-display: block;
   }
 `;
 
