@@ -36,7 +36,7 @@ const Home = () => (
         </a>
         <Small>Jan 2019 - Feb 2022</Small>
       </Li>
-       <Li>
+      <Li>
         <a
           href="https://www.babelgroup.com/en"
           target="_blank"
