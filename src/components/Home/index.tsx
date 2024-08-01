@@ -22,15 +22,21 @@ const Home = () => (
         target="_blank"
         rel="noreferrer"
       >
-        iCIMS Video Studio
+        iCIMS Video Studio (Feb 2022 - Present)
       </a>{' '}
       team.
     </span>
     <br />
     <br />
-    <span>Previous work:</span>
+    <span>Previous work</span>
     <Ul>
       <Li>
+        <a href="https://z1.digital/" target="_blank" rel="noreferrer">
+          Z1 <ExternalLink />
+        </a>
+        <Small>Jan 2019 - Feb 2022</Small>
+      </Li>
+       <Li>
         <a
           href="https://www.babelgroup.com/en"
           target="_blank"
@@ -38,31 +44,23 @@ const Home = () => (
         >
           Babel <ExternalLink />
         </a>
-        <Small>(2016-2020)</Small>
-      </Li>
-      <Li>
-        <a href="https://z1.digital/" target="_blank" rel="noreferrer">
-          Z1 <ExternalLink />
-        </a>
-        <Small>(2019-2022)</Small>
+        <Small>Mar 2016 - Jan 2019</Small>
       </Li>
     </Ul>
     <br />
-    <span>Tech Stack:</span>
+    <span>Tech Stack</span>
     <Grid>
       <Li>React</Li>
       <Li>NextJS</Li>
       <Li>Vue</Li>
+      <Li>Angular</Li>
       <Li>Typescript</Li>
       <Li>WebPack</Li>
+      <Li>Vite</Li>
       <Li>Sass</Li>
       <Li>Jest</Li>
+      <Li>Vitest</Li>
       <Li>Cypress</Li>
-      <Li>MDX</Li>
-      <Li>Strapi</Li>
-      <Li>GraphQL</Li>
-      <Li>Apollo</Li>
-      <Li>NestJS</Li>
     </Grid>
   </Container>
 );
