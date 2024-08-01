@@ -4,7 +4,7 @@ import { Container, Grid, Li, Small, Ul } from './styles';
 
 const Home = () => (
   <Container>
-    <span>Front-end engineer born and based in Seville, Spain with </span>
+    <span>Software engineer born and based in Seville, Spain with </span>
     {new Date().getFullYear() - 2016} years of experience on web development.
     <br />
     <br />
