@@ -43,6 +43,7 @@ export const Small = styled.span`
 `;
 
 export const Grid = styled.ul`
+  padding: 0 0 0 16px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   grid-gap: 16px;
