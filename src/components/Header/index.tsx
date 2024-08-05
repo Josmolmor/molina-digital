@@ -66,7 +66,7 @@ export const Header: FC<Props> = ({
           )}
         </LinksContainer>*/}
       <IconContainer onClick={setIsDarkTheme}>
-        {!isDarkTheme ? <SunIcon /> : <MoonIcon />}
+        {!isDarkTheme ? <MoonIcon /> : <SunIcon />}
       </IconContainer>
     </Container>
   );
