@@ -4,31 +4,63 @@ import { Container, Grid, Li, Small, Ul } from './styles';
 
 const Home = () => (
   <Container>
-    <span>Software engineer born and based in Seville, Spain with </span>
-    {new Date().getFullYear() - 2016} years of experience on web development.
-    <br />
-    <br />
+    <h1>Me</h1>
     <span>
-      Also in love with design with a pretty vast experience with tools like
-      Photoshop, Illustrator and After effects as well as more web focused tools
-      like Figma or Sketch.
+      Software engineer born and based in Seville, Spain. Graduated on Computer
+      Science from the University of Seville in 2016. Currently living with my
+      wonderful girlfriend and my awesome black pomerania named Balú.
     </span>
+    <h1>Engineering</h1>
+    With {new Date().getFullYear() - 2016} years of experience on web
+    development, I like to focus on up-to-date technologies while ensuring
+    meticulous design and attention to detail.
     <br />
     <br />
+    Focused primarily on front-end work due to its strong design component but
+    also with experience working on back-end and full-stack projects.
+    <h1>Management</h1>
     <span>
+      During my time on Z1 I spent a decent amount of time co-managing the
+      front-end development team, mentored junior developers, and handled
+      performance evaluations and reviews while also doing my coding duties.
+      <br />
+      <br />
+      While on iCIMS, I spent a year acting as Scrum Master where I helped the
+      Product Manager during the grooming process ensuring smooth sprint
+      planning and hosted Agile ceremonies like daily stand-ups, sprint reviews,
+      and retrospectives.
+    </span>
+    <h1>Design</h1>
+    <span>
+      With a creative mind, I&apos;ve always been passionate about design and
+      strive to integrate it into my daily work, both in visual design (UI) and
+      in logical and functional aspects. I have extensive experience with
+      industry-standard tools such as Photoshop, Illustrator, and After Effects,
+      as well as web-focused tools like Figma and Sketch.
+    </span>
+    <h1>Experience</h1>
+    <span>
+      Started working as an intern on 2016 when I wasn&apos;t even done with my
+      college degree and been happily coding since then.
+      <br />
+      <br />
       Currently working with the awesome{' '}
       <a
         href="https://www.icims.com/products/talent-cloud-platform/video-studio/"
         target="_blank"
         rel="noreferrer"
       >
-        iCIMS Video Studio (Feb 2022 - Present)
+        Video Studio
       </a>{' '}
-      team.
+      team (Feb 2022 - Present) under the{' '}
+      <a href="https://www.icims.com/" target="_blank" rel="noreferrer">
+        iCIMS
+      </a>{' '}
+      org.
     </span>
     <br />
     <br />
-    <span>Previous work</span>
+    <span>Previous work:</span>
     <Ul>
       <Li>
         <a href="https://z1.digital/" target="_blank" rel="noreferrer">
@@ -47,20 +79,22 @@ const Home = () => (
         <Small>Mar 2016 - Jan 2019</Small>
       </Li>
     </Ul>
-    <br />
-    <span>Tech Stack</span>
+    <h1>Tech stack</h1>
     <Grid>
+      <Li>Vue</Li>
+      <Li>Vite</Li>
       <Li>React</Li>
       <Li>NextJS</Li>
-      <Li>Vue</Li>
       <Li>Angular</Li>
       <Li>Typescript</Li>
       <Li>WebPack</Li>
-      <Li>Vite</Li>
       <Li>Sass</Li>
       <Li>Jest</Li>
       <Li>Vitest</Li>
       <Li>Cypress</Li>
+      <Li>CircleCI</Li>
+      <Li>MABL</Li>
+      <Li>Browser extensions</Li>
     </Grid>
   </Container>
 );
