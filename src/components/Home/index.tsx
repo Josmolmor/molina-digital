@@ -81,20 +81,24 @@ const Home = () => (
     </Ul>
     <h1>Tech stack</h1>
     <Grid>
-      <Li>Vue</Li>
-      <Li>Vite</Li>
-      <Li>React</Li>
-      <Li>NextJS</Li>
-      <Li>Angular</Li>
-      <Li>Typescript</Li>
-      <Li>WebPack</Li>
-      <Li>Sass</Li>
-      <Li>Jest</Li>
-      <Li>Vitest</Li>
-      <Li>Cypress</Li>
-      <Li>CircleCI</Li>
-      <Li>MABL</Li>
-      <Li>Browser extensions</Li>
+      {[
+        'vue',
+        'vite',
+        'react',
+        'nextjs',
+        'angular',
+        'typescript',
+        'webpack',
+        'sass',
+        'jest',
+        'vitest',
+        'cypress',
+        'circleci',
+        'mabl',
+        'browser extensions',
+      ].map((string) => (
+        <Li key={string}>{string}</Li>
+      ))}
     </Grid>
   </Container>
 );

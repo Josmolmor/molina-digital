@@ -37,6 +37,9 @@ const Footer = () => {
           <Linkedin />
         </Link>
       </NextLink>
+      <NextLink passHref href="/quizling">
+        <Link className="quizling">¿?</Link>
+      </NextLink>
       {/* <NextLink passHref href="https://twitter.com/JosMolMor">
         <Link target="_blank">
           <Twitter />

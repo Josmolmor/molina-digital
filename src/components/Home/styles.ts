@@ -16,6 +16,7 @@ export const Ul = styled.ul`
 
 export const Li = styled.li`
   list-style: none;
+  text-transform: capitalize;
 
   a {
     display: inline-flex;

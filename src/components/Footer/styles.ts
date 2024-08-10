@@ -58,4 +58,16 @@ export const RightFixedImage = styled(LeftFixedImage)`
 
 export const Link = styled.a`
   ${commonIconCss};
+
+  &.quizling {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    color: black;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: -2px;
+  }
 `;
