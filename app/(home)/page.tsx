@@ -10,7 +10,7 @@ const Home = () => {
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-4 mb-4">
           <div className="relative avatar-container">
-            <div className="h-16 w-16 rounded-full bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-50% to-emerald-500 to-90% transition-transform duration-500 ease-in-out avatar-bg hover:rotate-[720deg]"></div>
+            <div className="h-16 w-16 rounded-full bg-gradient-to-r from-yellow-500 from-10% via-orange-500 via-50% to-rose-500 to-90% dark:from-indigo-500 dark:via-sky-500 dark:to-emerald-500 transition-transform duration-500 ease-in-out avatar-bg hover:rotate-[720deg]"></div>
             <Image
               src="/me.jpg"
               alt="Your Name"

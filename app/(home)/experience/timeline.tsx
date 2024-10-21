@@ -1,6 +1,5 @@
 import { CalendarDays, MapPin, ArrowUpRight, Hash } from 'lucide-react';
 import timelineItems, { StackItem } from '@/data/timeline';
-import { Button } from '@/components/ui/button';
 import AngularIcon from '@/components/icons/AngularIcon';
 import ApolloIcon from '@/components/icons/ApolloIcon';
 import CircleCIIcon from '@/components/icons/CircleIcon';
@@ -30,8 +29,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { useEffect } from 'react';
-import TimeLineHeading from './timeline-heading';
+import SectionHeading from '../section-heading';
 
 const parseStackName = (stack: string): string => {
   switch (stack) {
@@ -118,7 +116,7 @@ export function renderIcon(stackName: StackItem) {
 const ExperiencePage = () => {
   return (
     <div className="">
-      <TimeLineHeading />
+      <SectionHeading title="Experience" />
       <p className="mb-8 blur-appear">
         Over 8 years of experience as a software engineer, specializing in
         front-end development with technologies like React, Next.js, Vue, and

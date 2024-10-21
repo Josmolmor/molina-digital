@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Hash } from 'lucide-react';
 import { useEffect } from 'react';
 
-const SideProjectsHeading = () => {
+const SideProjectsHeading = ({ title }: { title: string }) => {
   const scrollToHash = (hashValue: string) => {
     window.history.replaceState(null, '', `#${hashValue}`);
     const element = document.getElementById(hashValue);
@@ -21,15 +21,18 @@ const SideProjectsHeading = () => {
   }, []);
 
   return (
-    <h1 id="side-projects" className="text-2xl font-semibold mb-4">
+    <h1
+      id="side-projects"
+      className="text-3xl font-bold text-foreground tracking-tight mb-4"
+    >
       <Button
         variant="link"
         onClick={() => scrollToHash('side-projects')}
-        className="p-1 text-foreground"
+        className="p-1 text-foreground w-auto"
       >
-        <Hash className="w-4 h-4 inline-block" fill="currentColor" />
+        <Hash className="w-6 h-6" />
       </Button>
-      Side projects
+      {title}
     </h1>
   );
 };

@@ -1,7 +1,5 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Github, Hash } from 'lucide-react';
-import SideProjectsHeading from './side-projects-heading';
 import GithubIcon from '@/components/icons/GithubIcon';
 import {
   Tooltip,
@@ -9,6 +7,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import SectionHeading from '../section-heading';
 
 const projects = [
   {
@@ -29,7 +28,7 @@ const projects = [
 export default function SideProjects() {
   return (
     <div className="container mx-auto animate-fade-in">
-      <SideProjectsHeading />
+      <SectionHeading title="Side Projects" />
       <p className="mb-2">
         Often built using release candidate or canary versions of major
         frameworks and new trendy libraries as part of my exploration of new
@@ -53,7 +52,7 @@ export default function SideProjects() {
                   width={0}
                   height={0}
                   sizes="100vw"
-                  className="object-cover group-hover:scale-105 transform transition-transform duration-300 h-auto w-full"
+                  className="aspect-video object-cover group-hover:scale-105 transform transition-transform duration-300 h-auto w-full"
                 />
               </div>
               <CardHeader className="pt-4 px-2 pb-0">
