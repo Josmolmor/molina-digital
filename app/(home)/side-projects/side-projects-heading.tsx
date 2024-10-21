@@ -14,11 +14,11 @@ const SideProjectsHeading = () => {
   };
 
   useEffect(() => {
-    const hash = window.location.hash.replace('#', '');
+    const hash = window?.location?.hash?.replace('#', '');
     if (hash) {
       scrollToHash(hash);
     }
-  }, [window.location.hash]);
+  }, []);
 
   return (
     <h1 id="side-projects" className="text-2xl font-semibold mb-4">

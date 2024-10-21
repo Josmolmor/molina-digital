@@ -12,6 +12,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { FlaskRound } from 'lucide-react';
 
 const Header = () => {
   const toggleTheme = () => {
@@ -24,7 +25,7 @@ const Header = () => {
   };
 
   return (
-    <header className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20 bg-background shadow-lg rounded-xl p-2 gap-2 flex items-center flex-wrap border">
+    <header className="fixed bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20 bg-background shadow-lg rounded-xl p-2 gap-2 flex items-center border">
       <Tooltip>
         <TooltipTrigger asChild>
           <div className="flex items-center gap-2">
@@ -32,7 +33,7 @@ const Header = () => {
               href="mailto:molinamw+digital@gmail.com"
               target="_blank"
               className="opacity-0 animate-appear delay-[0s] hover:bg-border/80 p-2 rounded-lg"
-              style={{ '--delay': '0s' }}
+              style={{ '--delay': '0s' } as any}
             >
               <GmailIcon className="h-6 w-6" />
             </Link>
@@ -50,7 +51,7 @@ const Header = () => {
               href="https://github.com/Josmolmor"
               target="_blank"
               className="opacity-0 animate-appear delay-[0.25s] hover:bg-border/80 p-2 rounded-lg"
-              style={{ '--delay': '0.25s' }}
+              style={{ '--delay': '0.25s' } as any}
             >
               <GithubIcon className="h-6 w-6" />
             </Link>
@@ -68,7 +69,7 @@ const Header = () => {
               href="https://www.linkedin.com/in/josmolmor/"
               target="_blank"
               className="opacity-0 animate-appear delay-[0.5s] hover:bg-border/80 p-2 rounded-lg"
-              style={{ '--delay': '0.5s' }}
+              style={{ '--delay': '0.5s' } as any}
             >
               <LinkedinIcon className="h-6 w-6" />
             </Link>
@@ -86,7 +87,7 @@ const Header = () => {
               href="https://codepen.io/jmmolina"
               target="_blank"
               className="opacity-0 animate-appear delay-[0.75s] hover:bg-border/80 p-2 rounded-lg"
-              style={{ '--delay': '0.75s' }}
+              style={{ '--delay': '0.75s' } as any}
             >
               <CodepenIcon className="h-6 w-6" />
             </Link>
@@ -100,9 +101,26 @@ const Header = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <div className="flex items-center gap-2">
+            <Link
+              href="/lab"
+              className="opacity-0 animate-appear delay-[0.75s] hover:bg-border/80 p-2 rounded-lg"
+              style={{ '--delay': '1s' } as any}
+            >
+              <FlaskRound className="h-6 w-6" />
+            </Link>
+          </div>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>The Lab</p>
+        </TooltipContent>
+      </Tooltip>
+
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div className="flex items-center gap-2">
             <button
-              className="theme-picker opacity-0 animate-appear delay-[1.25s] hover:bg-border/80 p-2 rounded-lg"
-              style={{ '--delay': '1s' }}
+              className="opacity-0 animate-appear delay-[1.25s] hover:bg-border/80 p-2 rounded-lg"
+              style={{ '--delay': '1.25s' } as any}
               onClick={toggleTheme}
             >
               <SwatchIcon className="h-6 w-6" />

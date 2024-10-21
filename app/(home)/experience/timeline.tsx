@@ -158,7 +158,7 @@ const ExperiencePage = () => {
                     <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
                   </a>
                 )}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 flex-wrap">
                   <span className="flex items-center text-muted-foreground text-sm">
                     <CalendarDays className="w-4 h-4 mr-2" />
                     {item.date}
@@ -173,12 +173,12 @@ const ExperiencePage = () => {
               </div>
 
               <p
-                className="mt-4 "
+                className="flex flex-col mt-4 "
                 dangerouslySetInnerHTML={{ __html: item.description }}
               />
 
               {item.stack && (
-                <div className="flex items-center gap-4 mt-4">
+                <div className="flex items-center gap-4 mt-4 flex-wrap">
                   {item.stack.map((tech, techIndex) => (
                     <Tooltip key={techIndex}>
                       <TooltipTrigger asChild>

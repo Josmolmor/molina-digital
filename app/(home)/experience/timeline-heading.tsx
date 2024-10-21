@@ -20,7 +20,7 @@ const TimeLineHeading = () => {
     if (hash) {
       scrollToHash(hash);
     }
-  }, [window.location.hash]);
+  }, []);
 
   return (
     <h1 id="experience" className="text-2xl font-semibold mb-4 blur-appear">

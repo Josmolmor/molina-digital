@@ -8,6 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const projects = [
   {
@@ -39,14 +40,11 @@ export default function SideProjects() {
       <p className="mb-4">Check out some of my recent work:</p>
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
         {projects.map((project) => (
-          <div
-            key={project.name}
-            className="flex flex-col gap-3 relative bg-background"
-          >
+          <Card className="relative" key={project.name}>
             <Link
               href={project.to}
               target="_blank"
-              className="group flex flex-col gap-3 rounded-lg overflow-hidden p-2"
+              className="group flex flex-col rounded-lg overflow-hidden p-2 h-full"
             >
               <div className="aspect-w-16 aspect-h-9 overflow-hidden rounded-lg">
                 <Image
@@ -58,10 +56,16 @@ export default function SideProjects() {
                   className="object-cover group-hover:scale-105 transform transition-transform duration-300 h-auto w-full"
                 />
               </div>
-              <span className="text-lg font-semibold">{project.name}</span>
-              <p className="text-sm text-muted-foreground group-hover:underline">
-                {project.description}
-              </p>
+              <CardHeader className="pt-4 px-2 pb-0">
+                <CardTitle className="text-lg font-semibold">
+                  {project.name}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-2">
+                <p className="text-sm text-muted-foreground group-hover:underline">
+                  {project.description}
+                </p>
+              </CardContent>
             </Link>
 
             <Tooltip>
@@ -78,7 +82,7 @@ export default function SideProjects() {
                 <p>Check out the code on Github</p>
               </TooltipContent>
             </Tooltip>
-          </div>
+          </Card>
         ))}
       </div>
     </div>
