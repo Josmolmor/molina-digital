@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Button } from '../ui/button';
 import { Copy } from 'lucide-react';
@@ -14,18 +14,14 @@ const TextSelectionComponent = () => {
 
   const handleSelection = () => {
     const selection = window.getSelection()?.toString();
-    if (selection) {
+    if (selection && selection !== '') {
       setSelectedText(selection);
     }
   };
 
-  useEffect(() => {
-    console.log(selectedText, isOpen);
-    if (selectedText && !isOpen) {
-      console.log('opening');
-      handleOpen();
-    }
-  }, [selectedText]);
+  const handleCopy = () => {
+    navigator.clipboard.writeText(selectedText);
+  };
 
   return (
     <div
@@ -44,7 +40,7 @@ const TextSelectionComponent = () => {
           <div className="flex flex-col">
             <h1 className="text-xl font-semibold mb-2">Selected text</h1>
             <p className="text-sm text-muted-foreground mb-4">{selectedText}</p>
-            <Button size="sm" onClick={handleClose} className="self-end">
+            <Button size="sm" onClick={handleCopy} className="self-end">
               <Copy />
             </Button>
           </div>
