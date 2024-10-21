@@ -173,7 +173,7 @@ const ExperiencePage = () => {
               </div>
 
               <p
-                className="flex flex-col mt-4 "
+                className="mt-4 "
                 dangerouslySetInnerHTML={{ __html: item.description }}
               />
 

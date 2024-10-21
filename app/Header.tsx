@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import GmailIcon from '@/components/icons/GmailIcon';
 import GithubIcon from '@/components/icons/GithubIcon';
@@ -12,9 +11,14 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { FlaskRound } from 'lucide-react';
+import { FlaskRound, Home } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const Header = () => {
+  const pathname = usePathname();
+  console.log(pathname);
+  const isTheLab = pathname === '/lab';
+
   const toggleTheme = () => {
     const isDark = document.documentElement.classList.toggle('dark');
     isDark
@@ -102,16 +106,20 @@ const Header = () => {
         <TooltipTrigger asChild>
           <div className="flex items-center gap-2">
             <Link
-              href="/lab"
+              href={isTheLab ? '/' : '/lab'}
               className="opacity-0 animate-appear delay-[0.75s] hover:bg-border/80 p-2 rounded-lg"
               style={{ '--delay': '1s' } as any}
             >
-              <FlaskRound className="h-6 w-6" />
+              {isTheLab ? (
+                <Home className="h-6 w-6" />
+              ) : (
+                <FlaskRound className="h-6 w-6" />
+              )}
             </Link>
           </div>
         </TooltipTrigger>
         <TooltipContent>
-          <p>The Lab</p>
+          <p>{isTheLab ? 'Home' : 'The Lab'}</p>
         </TooltipContent>
       </Tooltip>
 
