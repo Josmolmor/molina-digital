@@ -8,6 +8,7 @@ interface Experiment {
   description: string;
   date: string;
   tags: string[];
+  component: ReactNode;
 }
 
 export function ExperimentCard({
@@ -19,7 +20,7 @@ export function ExperimentCard({
 }) {
   return (
     <Card className="overflow-hidden">
-      <CardHeader>
+      <CardHeader className="pb-4">
         <div className="flex justify-between items-start mb-2">
           <CardTitle className="text-xl font-semibold">
             {experiment.title}
@@ -34,6 +35,7 @@ export function ExperimentCard({
       </CardHeader>
       <CardContent>
         {children}
+        {experiment.component}
         <div className="mt-4 flex flex-wrap gap-1">
           {experiment.tags.map((tag) => (
             <Badge

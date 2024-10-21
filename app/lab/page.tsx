@@ -1,28 +1,16 @@
+import SelectedText from '@/components/lab/SelectedText';
 import { ExperimentCard } from './ExperimentCard';
 
 // This would typically come from a database or API
 const experiments = [
   {
     id: 1,
-    title: '3D Parallax Effect',
-    description: 'A depth-based parallax scrolling effect using Three.js',
-    date: '2023-10-15',
-    tags: ['Three.js', 'WebGL', 'Animation'],
-  },
-  {
-    id: 2,
-    title: 'Neumorphic UI Kit',
+    title: 'Text selection',
     description:
-      'A collection of neumorphic design components built with React',
-    date: '2023-09-22',
-    tags: ['React', 'CSS', 'UI Design'],
-  },
-  {
-    id: 3,
-    title: 'Voice-Controlled UI',
-    description: 'Experimental interface navigable through voice commands',
-    date: '2023-08-07',
-    tags: ['Web Speech API', 'Accessibility', 'JavaScript'],
+      'A simple text selection component that triggers a popover with some interactions.',
+    date: '2024-10-22',
+    tags: ['react', 'tailwindcss', 'framer motion'],
+    component: <SelectedText />,
   },
 ];
 

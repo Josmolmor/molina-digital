@@ -107,9 +107,9 @@ export default async function RootLayout({
         className={`${manrope.className} ${archiaFont.className} antialiased min-h-[100dvh] pt-12 pb-24`}
       >
         <main className="max-w-4xl flex flex-col gap-16 mx-auto px-8 sm:px-12">
-          <TooltipProvider delayDuration={200}>
+          <TooltipProvider>
             <Header />
-            <>{children}</>
+            {children}
           </TooltipProvider>
         </main>
       </body>

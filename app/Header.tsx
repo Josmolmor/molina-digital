@@ -16,7 +16,6 @@ import { usePathname } from 'next/navigation';
 
 const Header = () => {
   const pathname = usePathname();
-  console.log(pathname);
   const isTheLab = pathname === '/lab';
 
   const toggleTheme = () => {
