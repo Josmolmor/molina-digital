@@ -5,12 +5,14 @@ import localFont from 'next/font/local';
 import './globals.css';
 import { Manrope } from 'next/font/google';
 import Header from './Header';
+import { cookies } from 'next/headers';
 
 export const metadata: Metadata = {
   title: 'Frontend Senior Software engineer',
   description:
     "Hey, I'm Molina, get to know me and my work a bit more by checking out my site.",
-  keywords: 'expenses, split, budgeting, finance, cooba',
+  keywords:
+    'frontend, engineering, software, development, react, next, tailwindcss',
   authors: [
     {
       name: 'Jose M Molina - https://molina.digital',
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
         url: 'images/cooba-meta-img.jpg',
         width: 800,
         height: 600,
-        alt: 'Cooba - Split Your Expenses',
+        alt: 'JM Molina - Senior Software engineer',
       },
     ],
     type: 'website',
@@ -83,8 +85,24 @@ export default async function RootLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const storedTheme = (await cookies()).get('molina-digital-theme')?.value;
+
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                if (${storedTheme === 'dark'} || (${!storedTheme} && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark')
+                  document.documentElement.style.setProperty('color-scheme', 'dark')
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${manrope.className} ${archiaFont.className} antialiased min-h-[100dvh] pt-12 pb-24`}
       >

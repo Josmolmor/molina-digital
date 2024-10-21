@@ -69,7 +69,7 @@ export default function SideProjects() {
                 <Link
                   href={`https://github.com/Josmolmor/${project.name}`}
                   target="_blank"
-                  className="absolute right-2 top-2 z-50 flex items-center gap-2 bg-background hover:bg-background/50 p-2 rounded-lg transition-colors w-fit"
+                  className="absolute right-2 top-2 z-50 flex items-center gap-2 bg-background hover:bg-primary p-2 rounded-bl-lg rounded-tr-lg transition-colors w-fit"
                 >
                   <GithubIcon className="w-4 h-4" />
                 </Link>

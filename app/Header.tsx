@@ -14,22 +14,13 @@ import {
 } from '@/components/ui/tooltip';
 
 const Header = () => {
-  const [theme, setTheme] = useState('light');
-  const [nextTheme, setNextTheme] = useState('dark');
-
-  // Simulate delay animations
-  useEffect(() => {
-    if (theme === 'light') {
-      setNextTheme('dark');
-    } else if (theme === 'dark') {
-      setNextTheme('sepia');
-    } else if (theme === 'sepia') {
-      setNextTheme('light');
-    }
-  }, [theme]);
-
   const toggleTheme = () => {
-    setTheme(nextTheme);
+    const isDark = document.documentElement.classList.toggle('dark');
+    isDark
+      ? document.documentElement.style.setProperty('color-scheme', 'dark')
+      : document.documentElement.style.removeProperty('color-scheme');
+    // setting SameSite property to satisfy relevant console warning. Use SameSite=None if site relies on cross-site requests
+    document.cookie = `molina-digital-theme=${isDark ? 'dark' : 'light'}; SameSite=Lax; Path=/;`;
   };
 
   return (

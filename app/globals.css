@@ -37,6 +37,7 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --filter: invert(0);
+    --selection: 196 100% 50%;
   }
 
   .dark {
@@ -65,17 +66,15 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --filter: invert(1);
+    --selection: 342 100% 50%;
   }
 }
 
 @layer base {
   * {
     @apply border-border;
-    transition:
-      background-color 0.35s ease,
-      border 0.35s ease;
-    will-change: background-color, border;
   }
+
   body {
     @apply bg-background text-foreground;
 
@@ -95,6 +94,14 @@
       200px 200px,
       40px 40px;
     background-repeat: round, space;
+  }
+
+  ::-moz-selection {
+    background-color: hsl(var(--selection));
+  }
+
+  ::selection {
+    background-color: hsl(var(--selection));
   }
 }
 

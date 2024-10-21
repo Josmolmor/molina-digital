@@ -133,7 +133,7 @@ const ExperiencePage = () => {
           <div key={item.id} className="flex gap-6">
             <div className="relative flex items-start justify-center rounded-full">
               {item.icon ? (
-                <div className="bg-primary/20 rounded-full p-2 text-primary">
+                <div className="bg-primary/10 text-primary dark:bg-primary dark:text-foreground rounded-full p-2">
                   <item.icon className="w-4 h-4" />
                 </div>
               ) : (
@@ -147,18 +147,17 @@ const ExperiencePage = () => {
             {/* Timeline content */}
             <div className="flex-1">
               <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-bold">{item.title}</h2>
-                  {item.url && (
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <ArrowUpRight className="w-4 h-4" />
-                    </a>
-                  )}
-                </div>
+                {item.url && (
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center gap-1 w-fit"
+                  >
+                    <h2 className="text-lg font-bold">{item.title}</h2>
+                    <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  </a>
+                )}
                 <div className="flex items-center gap-4">
                   <span className="flex items-center text-muted-foreground text-sm">
                     <CalendarDays className="w-4 h-4 mr-2" />
@@ -205,10 +204,10 @@ const ExperiencePage = () => {
                   href={item.recommendationLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-4 flex items-center gap-2 text-primary w-fit"
+                  className="mt-4 flex items-center gap-1 text-primary w-fit font-semibold hover:underline group"
                 >
                   <span>Recommendation Letters</span>
-                  <ArrowUpRight className="w-4 h-4" />
+                  <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </a>
               )}
             </div>
