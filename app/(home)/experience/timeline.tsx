@@ -30,35 +30,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import SectionHeading from '../section-heading';
-
-const parseStackName = (stack: string): string => {
-  switch (stack) {
-    case 'extension':
-      return 'Browser extensions';
-    case 'circle':
-      return 'CircleCI';
-    case 'nextjs':
-      return 'NextJS';
-    case 'graphql':
-      return 'GraphQL';
-    case 'styledcomponents':
-      return 'Styled components';
-    case 'mdx':
-      return 'MDX';
-    case 'sharp':
-      return 'C#';
-    case 'dotnet':
-      return '.Net';
-    case 'php':
-      return 'PHP';
-    case 'sql':
-      return 'SQL';
-    case 'language':
-      return 'Internationalization/Localization';
-    default:
-      return stack.charAt(0).toUpperCase() + stack.slice(1);
-  }
-};
+import VitestIcon from '@/components/icons/Vitest';
 
 export function renderIcon(stackName: StackItem) {
   switch (stackName) {
@@ -110,6 +82,8 @@ export function renderIcon(stackName: StackItem) {
       return <SqlIcon />;
     case 'language':
       return <LanguageIcon />;
+    case 'vitest':
+      return <VitestIcon />;
   }
 }
 
@@ -128,7 +102,7 @@ const ExperiencePage = () => {
 
       <div className="flex flex-col gap-16">
         {timelineItems.map((item, index) => (
-          <div key={item.id} className="flex gap-6">
+          <div key={item.id} className="flex gap-3 sm:gap-4 md:gap-6">
             <div className="relative flex items-start justify-center rounded-full">
               {item.icon ? (
                 <div className="bg-primary/10 text-primary dark:bg-primary dark:text-foreground rounded-full p-2">
@@ -158,12 +132,12 @@ const ExperiencePage = () => {
                 )}
                 <div className="flex items-center gap-4 flex-wrap">
                   <span className="flex items-center text-muted-foreground text-sm">
-                    <CalendarDays className="w-4 h-4 mr-2" />
+                    <CalendarDays className="w-4 h-4 mr-2 flex-shrink-0" />
                     {item.date}
                   </span>
                   {item.location && (
-                    <span className="flex items-center text-muted-foreground text-sm">
-                      <MapPin className="w-4 h-4 mr-2" />
+                    <span className="flex items-start sm:items-center text-muted-foreground text-sm">
+                      <MapPin className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5 sm:mt-0" />
                       {item.location}
                     </span>
                   )}
@@ -182,15 +156,13 @@ const ExperiencePage = () => {
                       <TooltipTrigger asChild>
                         <div className="flex items-center gap-2">
                           <span className="text-foreground/80">
-                            {renderIcon(tech)}
-                            <span className="sr-only hidden">
-                              {parseStackName(tech)}
-                            </span>
+                            {renderIcon(tech.id)}
+                            <span className="sr-only hidden">{tech.name}</span>
                           </span>
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>{parseStackName(tech)}</p>
+                        <p>{tech.name}</p>
                       </TooltipContent>
                     </Tooltip>
                   ))}
@@ -204,8 +176,10 @@ const ExperiencePage = () => {
                   rel="noopener noreferrer"
                   className="mt-4 flex items-center gap-1 text-primary w-fit font-semibold hover:underline group"
                 >
-                  <span>Recommendation Letters</span>
-                  <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  <span className="flex items-center gap-2 flex-wrap">
+                    Recommendation Letters{' '}
+                    <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  </span>
                 </a>
               )}
             </div>
