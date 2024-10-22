@@ -36,7 +36,15 @@ export default function SideProjects() {
         projects showcase my passion for experimenting with new ideas, refining
         product designs, and enhancing UX.
       </p>
-      <p className="mb-4">Check out some of my recent work:</p>
+      <p className="mb-4 flex gap-1">
+        Check out some of my recent work below and visit{' '}
+        <Link
+          href="/lab"
+          className="flex items-center gap-1 text-primary w-fit font-semibold hover:underline group"
+        >
+          the lab
+        </Link>
+      </p>
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
         {projects.map((project) => (
           <Card className="relative" key={project.name}>

@@ -12,18 +12,24 @@ import {
   SphereGeometry,
   MeshBasicMaterial,
   Clock,
-  Raycaster,
   Vector2,
 } from 'three';
 
 export default function Component() {
   const mountRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<{
+    scene: Scene;
+    camera: PerspectiveCamera;
+    renderer: WebGLRenderer;
+    cube: Mesh;
+    animationFrameId: number | null;
+  } | null>(null);
 
   useEffect(() => {
     if (!mountRef.current) return;
 
-    let width = mountRef.current.clientWidth;
-    let height = mountRef.current.clientHeight;
+    const width = mountRef.current.clientWidth;
+    const height = mountRef.current.clientHeight;
 
     const scene = new Scene();
     const camera = new PerspectiveCamera(75, width / height, 1, 1000);
@@ -58,17 +64,12 @@ export default function Component() {
 
     const clock = new Clock();
 
-    // Raycaster for mouse interaction
-    const raycaster = new Raycaster();
     const mouse = new Vector2();
     let isDragging = false;
     let previousMousePosition = { x: 0, y: 0 };
 
     const animate = () => {
-      requestAnimationFrame(animate);
-
       const time = Date.now() * 0.0005;
-      const delta = clock.getDelta();
 
       cube.rotation.x += 0.01;
       cube.rotation.y += 0.01;
@@ -91,9 +92,8 @@ export default function Component() {
       light4.position.z = Math.sin(time * 0.5) * 30;
 
       renderer.render(scene, camera);
+      sceneRef.current!.animationFrameId = requestAnimationFrame(animate);
     };
-
-    animate();
 
     const onMouseDown = (event: MouseEvent) => {
       event.preventDefault();
@@ -134,7 +134,6 @@ export default function Component() {
       };
     };
 
-    // Touch events
     const onTouchStart = (event: TouchEvent) => {
       event.preventDefault();
       isDragging = true;
@@ -183,10 +182,34 @@ export default function Component() {
     renderer.domElement.addEventListener('touchmove', onTouchMove, false);
     renderer.domElement.addEventListener('touchend', onTouchEnd, false);
 
+    sceneRef.current = {
+      scene,
+      camera,
+      renderer,
+      cube,
+      animationFrameId: null,
+    };
+    animate();
+
     return () => {
-      if (mountRef.current) {
-        mountRef.current.removeChild(renderer.domElement);
+      const currentScene = sceneRef.current;
+      if (currentScene) {
+        // Cancel the animation frame if it exists.
+        if (currentScene.animationFrameId !== null) {
+          cancelAnimationFrame(currentScene.animationFrameId);
+        }
+        currentScene.renderer.dispose();
+        currentScene.renderer.forceContextLoss();
+        currentScene.renderer.domElement.remove();
+        sceneRef.current = null;
       }
+
+      if (mountRef.current) {
+        while (mountRef.current.firstChild) {
+          mountRef.current.removeChild(mountRef.current.firstChild);
+        }
+      }
+
       renderer.domElement.removeEventListener('mousedown', onMouseDown);
       renderer.domElement.removeEventListener('mousemove', onMouseMove);
       renderer.domElement.removeEventListener('mouseup', onMouseUp);
