@@ -52,7 +52,7 @@ export default function SideProjects() {
                   width={0}
                   height={0}
                   sizes="100vw"
-                  className="aspect-video object-cover group-hover:scale-105 transform transition-transform duration-300 h-auto w-full"
+                  className="aspect-video object-cover group-hover:scale-105 transform transition-transform duration-300 h-auto w-full invert dark:invert-0"
                 />
               </div>
               <CardHeader className="pt-4 px-2 pb-0">
@@ -72,7 +72,7 @@ export default function SideProjects() {
                 <Link
                   href={`https://github.com/Josmolmor/${project.name}`}
                   target="_blank"
-                  className="absolute right-2 top-2 z-50 flex items-center gap-2 bg-background hover:bg-primary p-2 rounded-bl-lg rounded-tr-lg transition-colors w-fit"
+                  className="absolute right-2 top-2 z-50 flex items-center gap-2 bg-card hover:bg-border p-2 rounded-bl-lg rounded-tr-lg transition-colors w-fit"
                 >
                   <GithubIcon className="w-4 h-4" />
                 </Link>

@@ -31,6 +31,7 @@
     --ring: 253 91% 58%;
     --radius: 0.5rem;
     --selection: 196 100% 50%;
+    --filter: invert(1);
   }
 
   .dark {
@@ -54,6 +55,7 @@
     --destructive-foreground: 0 0% 100%;
     --ring: 253 91% 58%;
     --selection: 342 100% 50%;
+    --filter: invert(0);
   }
 }
 

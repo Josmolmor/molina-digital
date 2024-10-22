@@ -1,4 +1,3 @@
-import SelectedText from '@/components/lab/SelectedText';
 import { ExperimentCard } from './ExperimentCard';
 
 // This would typically come from a database or API
@@ -10,7 +9,7 @@ const experiments = [
       'A simple text selection component that triggers a popover with some interactions.',
     date: '2024-10-22',
     tags: ['react', 'tailwindcss', 'framer motion'],
-    component: <SelectedText />,
+    component: <h1>Hello</h1>,
   },
 ];
 
