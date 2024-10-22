@@ -9,7 +9,7 @@ const experiments = [
     title: 'Image magnifier',
     description:
       'A simple image magnifier. Slide values are x2, x4, x6, and x8.',
-    date: '2024-10-22',
+    date: '2024-10-20',
     tags: ['react', 'shadcn', 'tailwindcss'],
     component: (
       <Magnify
