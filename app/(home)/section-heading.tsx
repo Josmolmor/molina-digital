@@ -25,14 +25,14 @@ const SectionHeading = ({ title }: { title: string }) => {
   return (
     <h1
       id={id}
-      className="text-3xl font-bold text-foreground tracking-tight mb-4"
+      className="text-3xl font-bold text-foreground tracking-tight mb-4 scroll-mt-4"
     >
       <Button
         variant="link"
         onClick={scrollToHash}
-        className="p-1 text-foreground w-auto"
+        className="p-1 text-foreground w-auto hover:animate-shrinkGrow focus:animate-shrinkGrow"
       >
-        <Hash className="w-6 h-6" />
+        <Hash className="w-5 h-5" />
       </Button>
       {title}
     </h1>

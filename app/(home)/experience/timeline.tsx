@@ -138,7 +138,7 @@ const ExperiencePage = () => {
                 <div className="w-8 h-8 bg-primary rounded-full"></div>
               )}
               {index < timelineItems.length - 1 && (
-                <div className="absolute top-12 w-px h-full bg-border"></div>
+                <div className="absolute top-12 w-px h-full border-l border-dashed border-muted dark:border-border"></div>
               )}
             </div>
 
