@@ -8,7 +8,7 @@ interface Experiment {
   description: string;
   date: string;
   tags: string[];
-  component: ReactNode;
+  component?: ReactNode;
 }
 
 export function ExperimentCard({

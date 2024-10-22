@@ -75,7 +75,7 @@
       ),
       radial-gradient(
         circle at center,
-        color-mix(in oklch, hsl(var(--foreground)) 25%, hsl(var(--background)))
+        color-mix(in oklch, hsl(var(--foreground)) 33%, hsl(var(--background)))
           0.25px,
         transparent 1.5px
       );

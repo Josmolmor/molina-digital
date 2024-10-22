@@ -59,11 +59,6 @@ const config: Config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
-      animation: {
-        blur: 'blur-fade-in .5s ease-in forwards',
-        shrinkGrow:
-          'shrinkGrow .5s cubic-bezier(0.65, -0.25, 0.25, 1.75) forwards',
-      },
       keyframes: {
         blurFadeIn: {
           '0%': {
@@ -81,6 +76,16 @@ const config: Config = {
           '0%, 100%': { transform: 'scale(1)' }, // Normal size at the start and end
           '50%': { transform: 'scale(0.75)' }, // Shrinks to 0.5 at the middle
         },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+      },
+      animation: {
+        blur: 'blur-fade-in .5s ease-in forwards',
+        shrinkGrow:
+          'shrinkGrow .5s cubic-bezier(0.65, -0.25, 0.25, 1.75) forwards',
+        float: 'float 4s ease-in-out infinite',
       },
     },
   },
