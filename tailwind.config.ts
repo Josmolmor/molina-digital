@@ -60,7 +60,7 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
-        blurFadeIn: {
+        blur: {
           '0%': {
             opacity: '0',
             filter: 'blur(2px)',
@@ -82,7 +82,7 @@ const config: Config = {
         },
       },
       animation: {
-        blur: 'blur-fade-in .5s ease-in forwards',
+        blur: 'blur 1s ease-in forwards',
         shrinkGrow:
           'shrinkGrow .5s cubic-bezier(0.65, -0.25, 0.25, 1.75) forwards',
         float: 'float 4s ease-in-out infinite',

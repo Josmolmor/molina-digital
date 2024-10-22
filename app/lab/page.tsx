@@ -26,7 +26,10 @@ export default function LabPage() {
       <div className="grid grid-cols-1 gap-8">
         {experiments.map((experiment) => (
           <ExperimentCard key={experiment.id} experiment={experiment}>
-            <Magnify src="/assets/images/07.png" alt="" />
+            <Magnify
+              src={`/assets/images/${Math.floor(Math.random() * (22 - 1 + 1) + 1)}.png`}
+              alt=""
+            />
           </ExperimentCard>
         ))}
       </div>

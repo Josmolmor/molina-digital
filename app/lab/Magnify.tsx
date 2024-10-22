@@ -14,7 +14,7 @@ interface MagnifyProps {
 const Magnify: FC<MagnifyProps> = ({
   src,
   alt,
-  magnification = 2,
+  magnification = 4,
   className,
 }) => {
   const [magnifyFactor, setMagnifyFactor] = useState(magnification);
@@ -72,7 +72,7 @@ const Magnify: FC<MagnifyProps> = ({
       ></Slider>
 
       <div
-        className={`relative overflow-hidden ${className || ''} h-[400] w-[400] m-auto`}
+        className={`relative overflow-hidden ${className || ''} h-[400] w-[400] m-auto animate-blur`}
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -86,20 +86,19 @@ const Magnify: FC<MagnifyProps> = ({
         <Image
           src={src}
           alt={alt}
-          className="w-full h-auto object-cover"
+          className="w-full h-auto object-cover aspect-square "
           layout="fill"
           priority
         />
 
         {isMagnifying && (
           <div
-            className="absolute inset-0 z-10 pointer-events-none h-[150] w-[150] border border-border rounded-full shadow-md"
+            className="absolute inset-0 z-10 pointer-events-none h-[150] w-[150] border border-border rounded-full shadow-md -translate-x-1/2 -translate-y-1/2"
             aria-hidden="true"
             style={{
               backgroundImage: `url(${src})`,
               backgroundSize: `${magnifyFactor * 100}%`,
               backgroundPosition: `${cursorPosition.x}% ${cursorPosition.y}%`,
-              transform: `translate(-50%, -50%)`,
               top: `${cursorPosition.y}%`,
               left: `${cursorPosition.x}%`,
             }}
