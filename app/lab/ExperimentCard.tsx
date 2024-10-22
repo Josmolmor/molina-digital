@@ -20,8 +20,8 @@ export function ExperimentCard({
 }) {
   return (
     <Card className="overflow-hidden">
-      <CardHeader className="pb-4">
-        <div className="flex justify-between items-start mb-2">
+      <CardHeader className="space-y-2">
+        <div className="flex justify-between items-start flex-wrap">
           <CardTitle className="text-xl font-semibold">
             {experiment.title}
           </CardTitle>
@@ -32,11 +32,7 @@ export function ExperimentCard({
         <p className="text-sm text-muted-foreground">
           {experiment.description}
         </p>
-      </CardHeader>
-      <CardContent>
-        {children}
-        {experiment.component}
-        <div className="mt-4 flex flex-wrap gap-1">
+        <div className="flex flex-wrap gap-2 pt-2">
           {experiment.tags.map((tag) => (
             <Badge
               key={tag}
@@ -47,6 +43,10 @@ export function ExperimentCard({
             </Badge>
           ))}
         </div>
+      </CardHeader>
+      <CardContent className="h-auto">
+        {children}
+        {experiment.component}
       </CardContent>
     </Card>
   );

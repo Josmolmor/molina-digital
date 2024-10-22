@@ -1,6 +1,6 @@
 import { ExperimentCard } from './ExperimentCard';
-import Image from 'next/image';
 import Magnify from './Magnify';
+import ThreeDCube from './RotatingCube';
 
 // This would typically come from a database or API
 const experiments = [
@@ -8,9 +8,24 @@ const experiments = [
     id: 1,
     title: 'Image magnifier',
     description:
-      'A simple image magnifier. Should work on both web and mobile.',
+      'A simple image magnifier. Slide values are x2, x4, x6, and x8.',
     date: '2024-10-22',
     tags: ['react', 'shadcn', 'tailwindcss'],
+    component: (
+      <Magnify
+        src={`/assets/images/${Math.floor(Math.random() * (22 - 1 + 1) + 1)}.png`}
+        alt=""
+      />
+    ),
+  },
+  {
+    id: 2,
+    title: 'All of the lights',
+    description:
+      'A rotating cube with colored lights orbiting around it, continuously changing positions and illuminating the scene dynamically using threeJS. Try moving the cube around',
+    date: '2024-10-22',
+    tags: ['react', 'threeJS', 'tailwindcss'],
+    component: <ThreeDCube />,
   },
 ];
 
@@ -25,12 +40,10 @@ export default function LabPage() {
       </p>
       <div className="grid grid-cols-1 gap-8">
         {experiments.map((experiment) => (
-          <ExperimentCard key={experiment.id} experiment={experiment}>
-            <Magnify
-              src={`/assets/images/${Math.floor(Math.random() * (22 - 1 + 1) + 1)}.png`}
-              alt=""
-            />
-          </ExperimentCard>
+          <ExperimentCard
+            key={experiment.id}
+            experiment={experiment}
+          ></ExperimentCard>
         ))}
       </div>
     </div>

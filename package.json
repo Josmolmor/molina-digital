@@ -23,11 +23,13 @@
     "next": "15.0.0-canary.202",
     "react": "19.0.0-rc-cd22717c-20241013",
     "react-dom": "19.0.0-rc-cd22717c-20241013",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "three": "^0.169.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.25",
     "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/three": "^0.169.0",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "tailwind-merge": "^2.5.4",

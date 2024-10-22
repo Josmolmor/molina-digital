@@ -72,7 +72,7 @@ const Magnify: FC<MagnifyProps> = ({
       ></Slider>
 
       <div
-        className={`relative overflow-hidden ${className || ''} h-[400] w-[400] m-auto animate-blur`}
+        className={`relative overflow-hidden ${className || ''} h-[400px] w-full m-auto animate-blur`}
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -86,8 +86,12 @@ const Magnify: FC<MagnifyProps> = ({
         <Image
           src={src}
           alt={alt}
-          className="w-full h-auto object-cover aspect-square "
-          layout="fill"
+          className="aspect-square"
+          fill
+          sizes="100vw"
+          style={{
+            objectFit: 'contain',
+          }}
           priority
         />
 
