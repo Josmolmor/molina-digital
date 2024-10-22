@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Hash } from 'lucide-react';
 import { useEffect } from 'react';
 
-const SideProjectsHeading = ({ title }: { title: string }) => {
-  const scrollToHash = (hashValue: string) => {
-    window.history.replaceState(null, '', `#${hashValue}`);
-    const element = document.getElementById(hashValue);
+const SectionHeading = ({ title }: { title: string }) => {
+  const id = title.replace(' ', '-').toLowerCase();
+
+  const scrollToHash = () => {
+    window.history.replaceState(null, '', `#${id}`);
+    const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
@@ -16,18 +18,18 @@ const SideProjectsHeading = ({ title }: { title: string }) => {
   useEffect(() => {
     const hash = window?.location?.hash?.replace('#', '');
     if (hash) {
-      scrollToHash(hash);
+      scrollToHash();
     }
   }, []);
 
   return (
     <h1
-      id="side-projects"
+      id={id}
       className="text-3xl font-bold text-foreground tracking-tight mb-4"
     >
       <Button
         variant="link"
-        onClick={() => scrollToHash('side-projects')}
+        onClick={scrollToHash}
         className="p-1 text-foreground w-auto"
       >
         <Hash className="w-6 h-6" />
@@ -37,4 +39,4 @@ const SideProjectsHeading = ({ title }: { title: string }) => {
   );
 };
 
-export default SideProjectsHeading;
+export default SectionHeading;
