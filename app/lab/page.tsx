@@ -31,8 +31,8 @@ const experiments = [
 
 export default function LabPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">The Lab</h1>
+    <div className="mx-auto">
+      <h1 className="text-4xl font-bold mb-6">The Lab</h1>
       <p className="mb-8">
         Welcome to my digital laboratory. Here, you'll find a collection of
         UI/UX experiments and component designs I've worked on. Each entry
