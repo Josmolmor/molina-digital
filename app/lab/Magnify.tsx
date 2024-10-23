@@ -97,7 +97,7 @@ const Magnify: FC<MagnifyProps> = ({
 
         {isMagnifying && (
           <div
-            className="absolute inset-0 z-10 pointer-events-none h-[150] w-[150] border border-border rounded-full shadow-md -translate-x-1/2 -translate-y-1/2"
+            className="absolute inset-0 z-10 pointer-events-none border border-border rounded-full shadow-md -translate-x-1/2 -translate-y-1/2"
             aria-hidden="true"
             style={{
               backgroundImage: `url(${src})`,
@@ -105,6 +105,8 @@ const Magnify: FC<MagnifyProps> = ({
               backgroundPosition: `${cursorPosition.x}% ${cursorPosition.y}%`,
               top: `${cursorPosition.y}%`,
               left: `${cursorPosition.x}%`,
+              height: '150px',
+              width: '150px',
             }}
           />
         )}
