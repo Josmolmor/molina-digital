@@ -130,7 +130,7 @@ const ExperiencePage = () => {
                     <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
                   </a>
                 )}
-                <div className="flex items-center gap-4 flex-wrap">
+                <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
                   <span className="flex items-center text-muted-foreground text-sm">
                     <CalendarDays className="w-4 h-4 mr-2 flex-shrink-0" />
                     {item.date}
