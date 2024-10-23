@@ -1,14 +1,14 @@
-## Built using a NextJS Typescript Boilerplate
+## Website
 
-Configured with:
+https://molina.digital
 
-- [Typescript](https://www.typescriptlang.org/)
-- Linting with [ESLint](https://eslint.org/)
-- Formatting with [Prettier](https://prettier.io/)
-- Linting, typechecking and formatting on by default using [`husky`](https://github.com/typicode/husky) for commit hooks
-- Testing with [Jest](https://jestjs.io/) and [`react-testing-library`](https://testing-library.com/docs/react-testing-library/intro)
+## Tech stack
 
-This is an amalgamation of the 2 existing examples:
+- **Frontend:** Next, Typescript
+- **Styling:** Tailwind, shadcn
+- **Others:** threeJS
 
-- [with-typescript-eslint-jest](https://github.com/vercel/next.js/tree/canary/examples/with-typescript-eslint-jest)
-- [with-typescript-styled-components](https://github.com/vercel/next.js/tree/canary/examples/with-typescript-styled-components)
+---
+
+<br/>
+<img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExY3A1am5zeXFlOWZ5c3E3YWJtbGlsenpod2c2a3ljN3d4cjE3NmJ2eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AEJWP0nxdZPc9VzGmk/giphy.webp" />
