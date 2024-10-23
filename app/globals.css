@@ -85,6 +85,10 @@
     background-repeat: round, space;
   }
 
+  canvas {
+    border-radius: var(--radius);
+  }
+
   ::-moz-selection {
     background-color: hsl(var(--selection));
   }
