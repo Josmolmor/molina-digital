@@ -28,6 +28,7 @@ const SectionHeading = ({ title }: { title: string }) => {
       className="text-3xl font-bold text-foreground tracking-tight mb-4 scroll-mt-4"
     >
       <Button
+        aria-label={`Scroll to ${title}`}
         variant="link"
         onClick={scrollToHash}
         className="p-1 text-foreground w-auto hover:animate-shrinkGrow focus:animate-shrinkGrow"

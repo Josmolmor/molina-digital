@@ -33,6 +33,7 @@ const Header = () => {
         <TooltipTrigger asChild>
           <div className="flex items-center gap-2">
             <Link
+              aria-label="Open your email client to contact me"
               href="mailto:molinamw+digital@gmail.com"
               target="_blank"
               className="opacity-0 animate-appear delay-[0s] hover:bg-border/80 p-2 rounded-lg"
@@ -51,6 +52,7 @@ const Header = () => {
         <TooltipTrigger asChild>
           <div className="flex items-center gap-2">
             <Link
+              aria-label="Open my Github profile page in a new tab"
               href="https://github.com/Josmolmor"
               target="_blank"
               className="opacity-0 animate-appear delay-[0.25s] hover:bg-border/80 p-2 rounded-lg"
@@ -69,6 +71,7 @@ const Header = () => {
         <TooltipTrigger asChild>
           <div className="flex items-center gap-2">
             <Link
+              aria-label="Open my Linkedin profile page in a new tab"
               href="https://www.linkedin.com/in/josmolmor/"
               target="_blank"
               className="opacity-0 animate-appear delay-[0.5s] hover:bg-border/80 p-2 rounded-lg"
@@ -87,6 +90,7 @@ const Header = () => {
         <TooltipTrigger asChild>
           <div className="flex items-center gap-2">
             <Link
+              aria-label="Open my Codepen profile page in a new tab"
               href="https://codepen.io/jmmolina"
               target="_blank"
               className="opacity-0 animate-appear delay-[0.75s] hover:bg-border/80 p-2 rounded-lg"
@@ -105,6 +109,7 @@ const Header = () => {
         <TooltipTrigger asChild>
           <div className="flex items-center gap-2">
             <Link
+              aria-label="Navigate to the 'lab' section of my website"
               href={isTheLab ? '/' : '/lab'}
               className="opacity-0 animate-appear delay-[0.75s] hover:bg-border/80 p-2 rounded-lg"
               style={{ '--delay': '1s' } as any}
@@ -126,6 +131,7 @@ const Header = () => {
         <TooltipTrigger asChild>
           <div className="flex items-center gap-2">
             <button
+              aria-label="Switch theme"
               className="opacity-0 animate-appear delay-[1.25s] hover:bg-border/80 p-2 rounded-lg"
               style={{ '--delay': '1.25s' } as any}
               onClick={toggleTheme}

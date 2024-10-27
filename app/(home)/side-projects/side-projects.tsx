@@ -49,6 +49,7 @@ export default function SideProjects() {
         {projects.map((project) => (
           <Card className="relative" key={project.name}>
             <Link
+              aria-label={`Go to the deployed live site for ${project.name}'s project. The URL is ${project.to}`}
               href={project.to}
               target="_blank"
               className="group flex flex-col rounded-lg overflow-hidden p-2 h-full"
@@ -78,6 +79,7 @@ export default function SideProjects() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
+                  aria-label={`Go to the ${project.name}'s github repository`}
                   href={`https://github.com/Josmolmor/${project.name}`}
                   target="_blank"
                   className="absolute right-2 top-2 z-50 flex items-center gap-2 bg-card hover:bg-border p-2 rounded-bl-lg rounded-tr-lg transition-colors w-fit"

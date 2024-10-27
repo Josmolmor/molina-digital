@@ -76,6 +76,7 @@ const archiaFont = localFont({
 
 export const viewport: Viewport = {
   maximumScale: 1,
+  userScalable: true,
 };
 
 const manrope = Manrope({ subsets: ['latin'] });
