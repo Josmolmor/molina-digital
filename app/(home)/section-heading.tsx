@@ -17,10 +17,10 @@ const SectionHeading = ({ title }: { title: string }) => {
 
   useEffect(() => {
     const hash = window?.location?.hash?.replace('#', '');
-    if (hash) {
+    if (hash === id) {
       scrollToHash();
     }
-  }, []);
+  }, [id]);
 
   return (
     <h1
