@@ -27,7 +27,7 @@ const Home = () => {
           </div>
         </div>
         <p className="flex flex-col gap-4">
-          <span>Moving pixels since 2016.</span>
+          <span>Squinting at a screen to count pixels for a living.</span>
           <span>
             As a software engineer specializing in front-end web development, I
             create accessible, intuitive, and responsive user interfaces that
