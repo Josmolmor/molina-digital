@@ -3,6 +3,7 @@ import {
   Code,
   Earth,
   Paintbrush,
+  Spline,
   LucideProps,
 } from 'lucide-react';
 import { ForwardRefExoticComponent, RefAttributes } from 'react';
@@ -32,7 +33,8 @@ export type StackItem =
   | 'php'
   | 'sql'
   | 'language'
-  | 'vitest';
+  | 'vitest'
+  | 'trpc';
 
 export type TimelineItem = {
   id: string;
@@ -49,6 +51,21 @@ export type TimelineItem = {
 };
 
 const timelineItems: TimelineItem[] = [
+  {
+    id: '5',
+    icon: Spline,
+    title: 'LottieFiles',
+    url: 'https://lottiefiles.com',
+    date: 'Jan 2025 - Present',
+    location: 'Remote (San Francisco, California)',
+    description: 'Web/Workflow team',
+    stack: [
+      { id: 'react', name: 'React' },
+      { id: 'typescript', name: 'Typescript' },
+      { id: 'graphql', name: 'GraphQL' },
+      { id: 'trpc', name: 'tRPC' },
+    ],
+  },
   {
     id: '1',
     icon: Earth,

@@ -31,6 +31,7 @@ import {
 } from '@/components/ui/tooltip';
 import SectionHeading from '../section-heading';
 import VitestIcon from '@/components/icons/Vitest';
+import TrpcIcon from '@/components/icons/TrpcIcon';
 
 export function renderIcon(stackName: StackItem) {
   switch (stackName) {
@@ -84,6 +85,8 @@ export function renderIcon(stackName: StackItem) {
       return <LanguageIcon />;
     case 'vitest':
       return <VitestIcon />;
+    case 'trpc':
+      return <TrpcIcon />;
   }
 }
 

@@ -1,6 +1,5 @@
 'use client';
 
-import SideProjects from '@/app/(home)/side-projects/side-projects';
 import Timeline from '@/app/(home)/experience/timeline';
 import Image from 'next/image';
 
@@ -50,7 +49,7 @@ const Home = () => {
           </span>
         </p>
       </div>
-      <SideProjects />
+      {/* <SideProjects /> */}
       <Timeline />
     </>
   );
