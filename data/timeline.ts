@@ -45,7 +45,7 @@ export type TimelineItem = {
   location?: string;
   icon?: ForwardRefExoticComponent<
     Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
-  >;
+  > | string;
   stack?: { id: StackItem; name: string }[];
   recommendationLink?: string;
 };
@@ -53,17 +53,17 @@ export type TimelineItem = {
 const timelineItems: TimelineItem[] = [
   {
     id: '5',
-    icon: Spline,
+    icon: 'lottiefiles',
     title: 'LottieFiles',
     url: 'https://lottiefiles.com',
     date: 'Jan 2025 - Present',
     location: 'Remote (San Francisco, California)',
-    description: 'Web/Workflow team',
+    description: 'Workflow team. Platform that provides professional users and organizations the ability to manage their workflow, projects, and assets in an efficient manner.',
     stack: [
       { id: 'react', name: 'React' },
       { id: 'typescript', name: 'Typescript' },
       { id: 'graphql', name: 'GraphQL' },
-      { id: 'trpc', name: 'tRPC' },
+      { id: 'nextjs', name: 'Next.js' },
     ],
   },
   {

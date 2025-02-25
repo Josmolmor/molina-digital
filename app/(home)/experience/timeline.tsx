@@ -32,6 +32,7 @@ import {
 import SectionHeading from '../section-heading';
 import VitestIcon from '@/components/icons/Vitest';
 import TrpcIcon from '@/components/icons/TrpcIcon';
+import { DotLottieWorkerReact } from '@lottiefiles/dotlottie-react';
 
 export function renderIcon(stackName: StackItem) {
   switch (stackName) {
@@ -108,11 +109,20 @@ const ExperiencePage = () => {
           <div key={item.id} className="flex gap-3 sm:gap-4 md:gap-6">
             <div className="relative flex items-start justify-center rounded-full">
               {item.icon ? (
-                <div className="bg-primary/10 text-primary dark:bg-primary dark:text-foreground rounded-full p-2">
-                  <item.icon className="w-4 h-4" />
-                </div>
-              ) : (
-                <div className="w-8 h-8 bg-primary rounded-full"></div>
+                item.icon === 'lottiefiles' ? (
+                    <div className="w-8 h-8 bg-[#00DDB3] rounded-lg flex items-center justify-center">
+                      <DotLottieWorkerReact 
+                        className="w-6 h-6" 
+                        src="https://lottie.host/16b69e12-0efb-4061-b33d-12dc2b93fd84/Ax2k12jKRd.lottie"
+                        autoplay />
+                    </div>
+                  ) : (
+                    <div className="bg-primary/10 text-primary dark:bg-primary dark:text-foreground rounded-lg p-2">
+                      <item.icon className="w-4 h-4" />
+                    </div>
+                  )
+                ) : (
+                  <div className="w-8 h-8 bg-primary rounded-lg"></div>
               )}
               {index < timelineItems.length - 1 && (
                 <div className="absolute top-12 w-px h-full border-l border-dashed border-muted dark:border-border"></div>
