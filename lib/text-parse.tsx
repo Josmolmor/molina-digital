@@ -25,7 +25,7 @@ export function parseTextWithLinks(
 ): (React.ReactElement | string)[] {
   const {
     parseHtml = false,
-    linkClassName = 'text-primary font-semibold hover:underline',
+    linkClassName = 'text-primary font-semibold hover:underline break-words',
   } = options;
 
   if (parseHtml) {
