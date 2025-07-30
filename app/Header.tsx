@@ -11,7 +11,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { FlaskRound, Home } from 'lucide-react';
+import { FlaskRound, Home, Moon, Sun } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 
@@ -20,6 +20,9 @@ const Header = () => {
     start: '100%',
     end: '100%',
   });
+  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>(
+    document.documentElement.classList.contains('dark') ? 'dark' : 'light',
+  );
   const [hasAppeared, setHasAppeared] = useState(false);
   const pathname = usePathname();
   const isTheLab = pathname === '/lab';
@@ -30,13 +33,52 @@ const Header = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const toggleTheme = () => {
-    const isDark = document.documentElement.classList.toggle('dark');
-    isDark
-      ? document.documentElement.style.setProperty('color-scheme', 'dark')
-      : document.documentElement.style.removeProperty('color-scheme');
-    // setting SameSite property to satisfy relevant console warning. Use SameSite=None if site relies on cross-site requests
-    document.cookie = `molina-digital-theme=${isDark ? 'dark' : 'light'}; SameSite=Lax; Path=/;`;
+  const toggleTheme = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    // Check if View Transitions API is supported
+    if (!document.startViewTransition) {
+      // Fallback for unsupported browsers
+      const isDark = document.documentElement.classList.toggle('dark');
+      isDark
+        ? document.documentElement.style.setProperty('color-scheme', 'dark')
+        : document.documentElement.style.removeProperty('color-scheme');
+      document.cookie = `molina-digital-theme=${isDark ? 'dark' : 'light'}; SameSite=Lax; Path=/;`;
+      return;
+    }
+
+    // Get click coordinates for the clip-path animation
+    const { clientX: x, clientY: y } = event;
+    const endRadius = Math.hypot(
+      Math.max(x, innerWidth - x),
+      Math.max(y, innerHeight - y),
+    );
+
+    // Start the view transition
+    const transition = document.startViewTransition(async () => {
+      const isDark = document.documentElement.classList.toggle('dark');
+      isDark
+        ? document.documentElement.style.setProperty('color-scheme', 'dark')
+        : document.documentElement.style.removeProperty('color-scheme');
+      document.cookie = `molina-digital-theme=${isDark ? 'dark' : 'light'}; SameSite=Lax; Path=/;`;
+      setCurrentTheme(isDark ? 'dark' : 'light');
+    });
+
+    // Wait for the pseudo-elements to be created
+    await transition.ready;
+
+    // Animate the new theme coming in with a clip-path
+    document.documentElement.animate(
+      {
+        clipPath: [
+          `circle(0px at ${x}px ${y}px)`,
+          `circle(${endRadius}px at ${x}px ${y}px)`,
+        ],
+      },
+      {
+        duration: 500,
+        easing: 'ease-in-out',
+        pseudoElement: '::view-transition-new(root)',
+      },
+    );
   };
 
   const handleMouseMove = (section: string | null) => {
@@ -200,11 +242,15 @@ const Header = () => {
             >
               <button
                 aria-label="Switch theme"
-                className={`p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[1.25s]'}`}
+                className={`cursor-pointer p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[1.25s]'}`}
                 style={hasAppeared ? {} : ({ '--delay': '1.25s' } as any)}
                 onClick={toggleTheme}
               >
-                <SwatchIcon className="h-6 w-6 transition-colors duration-75" />
+                {currentTheme === 'dark' ? (
+                  <Sun className="h-6 w-6 transition-colors duration-75" />
+                ) : (
+                  <Moon className="h-6 w-6 transition-colors duration-75" />
+                )}
               </button>
             </div>
           </TooltipTrigger>
