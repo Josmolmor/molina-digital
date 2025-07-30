@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ReactNode } from 'react';
 import { parseTextWithLinks } from '@/lib/text-parse';
+import { GeistMono } from 'geist/font/mono';
 
 interface Experiment {
   id: number;
@@ -23,17 +24,21 @@ export function ExperimentCard({
     <Card className="overflow-hidden">
       <CardHeader className="space-y-2">
         <div className="flex justify-between items-start flex-wrap">
-          <CardTitle className="text-xl font-semibold">
+          <CardTitle className={`text-xl font-semibold ${GeistMono.className}`}>
             {experiment.title}
           </CardTitle>
-          <time className="text-sm text-muted-foreground">
+          <time
+            className={`text-sm text-muted-foreground ${GeistMono.className}`}
+          >
             {experiment.date}
           </time>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <p
+          className={`text-sm text-muted-foreground ${GeistMono.className} tracking-tight`}
+        >
           {parseTextWithLinks(experiment.description)}
         </p>
-        <div className="flex flex-wrap gap-2 pt-2">
+        <div className={`flex flex-wrap gap-2 pt-2 ${GeistMono.className}`}>
           {experiment.tags.map((tag) => (
             <Badge
               key={tag}

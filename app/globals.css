@@ -48,6 +48,8 @@
   --shadow-xl: 0px 1px 4px 0px hsl(0 0% 0% / 0.05), 0px 8px 10px -1px hsl(0 0% 0% / 0.05);
   --shadow-2xl: 0px 1px 4px 0px hsl(0 0% 0% / 0.13);
   --tracking-normal: 0rem;
+  --tracking-tight: -0.02rem;
+  --tracking-tighter: -0.04rem;
   --spacing: 0.25rem;
   --selection: 196 100% 50%;
   --filter: invert(1);
@@ -164,6 +166,7 @@
   --animate-blur: blur 1s ease-in forwards;
   --animate-shrink-grow: shrinkGrow 0.5s cubic-bezier(0.65, -0.25, 0.25, 1.75) forwards;
   --animate-float: float 4s ease-in-out infinite;
+  --animate-swirl: swirl 1.3s ease-in-out infinite;
 
   @keyframes blur {
     0% {
@@ -206,12 +209,60 @@
       transform: translateY(0);
     }
   }
+
+  @keyframes swirl {
+    0% {
+      transform: rotate(0deg);
+      color: var(--color-primary);
+    }
+    10% {
+      color: var(--color-primary);
+    }
+    20% {
+      transform: rotate(20deg);
+      color: var(--color-indigo-500);
+    }
+    25% {
+      transform: rotate(15deg) translateX(2px);
+      color: var(--color-indigo-500);
+    }
+    30% {
+      color: var(--color-violet-500);
+    }
+    40% {
+      color: var(--color-violet-500);
+    }
+    50% {
+      transform: rotate(27deg) translateX(-1px);
+      color: var(--color-purple-500);
+    }
+    60% {
+      color: var(--color-purple-500);
+    }
+    70% {
+      color: var(--color-violet-500);
+    }
+    75% {
+      transform: rotate(16deg) translateX(1px);
+      color: var(--color-violet-500);
+    }
+    80% {
+            transform: rotate(20deg);
+      color: var(--color-indigo-500);
+    }
+    90% {
+      color: var(--color-indigo-500);
+    }
+    100% {
+      transform: rotate(0deg);
+      color: var(--color-primary);
+    }
+  }
 }
 
 body {
   background-color: var(--background);
   letter-spacing: var(--tracking-normal);
-  font-family: Manrope, Archia, Arial, Helvetica, sans-serif;
   background-image: 
     linear-gradient(to bottom, transparent 0%, var(--background) 100%),
     linear-gradient(color-mix(in srgb, var(--primary) 5%, transparent) 0.5px, transparent 0.5px),

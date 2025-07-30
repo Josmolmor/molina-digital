@@ -35,6 +35,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      geist:
+        specifier: ^1.4.2
+        version: 1.4.2(next@15.0.0-canary.202(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013))
       lucide-react:
         specifier: ^0.446.0
         version: 0.446.0(react@19.0.0-rc-cd22717c-20241013)
@@ -752,6 +755,11 @@ packages:
 
   fflate@0.8.2:
     resolution: {integrity: sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==}
+
+  geist@1.4.2:
+    resolution: {integrity: sha512-OQUga/KUc8ueijck6EbtT07L4tZ5+TZgjw8PyWfxo16sL5FWk7gNViPNU8hgCFjy6bJi9yuTP+CRpywzaGN8zw==}
+    peerDependencies:
+      next: '>=13.2.0'
 
   get-nonce@1.0.1:
     resolution: {integrity: sha512-FJhYRoDaiatfEkUK8HKlicmu/3SGFD51q3itKDGoSTysQJBnfOcxU5GxnhE1E6soB76MbT0MBtnKJuXyAx+96Q==}
@@ -1587,6 +1595,10 @@ snapshots:
       tapable: 2.2.2
 
   fflate@0.8.2: {}
+
+  geist@1.4.2(next@15.0.0-canary.202(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)):
+    dependencies:
+      next: 15.0.0-canary.202(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
 
   get-nonce@1.0.1: {}
 

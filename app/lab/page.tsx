@@ -1,3 +1,4 @@
+import { FlaskRound } from 'lucide-react';
 import Carousel from './Carousel';
 import { ExperimentCard } from './ExperimentCard';
 import Magnify from './Magnify';
@@ -40,20 +41,27 @@ const experiments = [
 
 export default function LabPage() {
   return (
-    <div className="mx-auto">
-      <h1 className="text-4xl font-bold mb-6">The Lab</h1>
+    <div className="mx-auto tracking-normal">
+      <div className="relative group flex justify-center items-center mb-6 w-fit mx-auto gap-2">
+        <h1 className="text-4xl font-bold text-center flex items-center justify-center gap-2">
+          The Lab
+        </h1>
+        <FlaskRound className="group-hover:animate-swirl transition-all size-8 text-primary rotate-20" />
+      </div>
       <p className="mb-8">
         Welcome to my digital laboratory. Here, you'll find a collection of
         UI/UX experiments and component designs I've worked on. Each entry
         represents a journey into new ideas and technologies.
       </p>
       <div className="grid grid-cols-1 gap-8">
-        {experiments.sort((a, b) => b.id - a.id).map((experiment) => (
-          <ExperimentCard
-            key={experiment.id}
-            experiment={experiment}
-          ></ExperimentCard>
-        ))}
+        {experiments
+          .sort((a, b) => b.id - a.id)
+          .map((experiment) => (
+            <ExperimentCard
+              key={experiment.id}
+              experiment={experiment}
+            ></ExperimentCard>
+          ))}
       </div>
     </div>
   );
