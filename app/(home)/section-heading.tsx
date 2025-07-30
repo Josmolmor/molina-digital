@@ -31,7 +31,7 @@ const SectionHeading = ({ title }: { title: string }) => {
         aria-label={`Scroll to ${title}`}
         variant="link"
         onClick={scrollToHash}
-        className="p-1 text-foreground w-auto hover:animate-shrinkGrow focus:animate-shrinkGrow"
+        className="p-1 text-foreground w-auto hover:animate-shrink-grow focus:animate-shrink-grow"
       >
         <Hash className="w-5 h-5" />
       </Button>

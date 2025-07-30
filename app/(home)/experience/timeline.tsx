@@ -131,7 +131,7 @@ const ExperiencePage = () => {
                 <div className="w-8 h-8 bg-primary rounded-lg"></div>
               )}
               {index < timelineItems.length - 1 && (
-                <div className="absolute top-12 w-px h-full border-l border-dashed border-muted dark:border-border"></div>
+                <div className="absolute top-12 w-px h-full border-l border-dashed border-border"></div>
               )}
             </div>
 
@@ -151,12 +151,12 @@ const ExperiencePage = () => {
                 )}
                 <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
                   <span className="flex items-center text-muted-foreground text-sm">
-                    <CalendarDays className="w-4 h-4 mr-2 flex-shrink-0" />
+                    <CalendarDays className="w-4 h-4 mr-2 shrink-0" />
                     {item.date}
                   </span>
                   {item.location && (
                     <span className="flex items-start sm:items-center text-muted-foreground text-sm">
-                      <MapPin className="w-4 h-4 mr-2 flex-shrink-0 mt-0.5 sm:mt-0" />
+                      <MapPin className="w-4 h-4 mr-2 shrink-0 mt-0.5 sm:mt-0" />
                       {item.location}
                     </span>
                   )}

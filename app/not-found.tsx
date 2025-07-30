@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="flex items-center justify-center min-h-[100dvh]">
+    <div className="flex items-center justify-center min-h-dvh">
       <div className="max-w-md space-y-6 p-4 text-center">
         <div className="flex justify-center">
           <SearchX className="size-14 text-destructive" />

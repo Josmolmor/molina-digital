@@ -11,7 +11,6 @@ import {
   PointLight,
   SphereGeometry,
   MeshBasicMaterial,
-  Clock,
   Vector2,
 } from 'three';
 
@@ -33,10 +32,11 @@ export default function Component() {
 
     const scene = new Scene();
     const camera = new PerspectiveCamera(75, width / height, 1, 1000);
-    camera.position.z = 50;
+    camera.position.z = 30;
 
-    const renderer = new WebGLRenderer({ antialias: true });
+    const renderer = new WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
+    renderer.setClearColor(0x000000, 0); // Transparent background
     mountRef.current.appendChild(renderer.domElement);
 
     const cube = new Mesh(
@@ -61,8 +61,6 @@ export default function Component() {
     const light2 = createLight(0x0040ff);
     const light3 = createLight(0x80ff80);
     const light4 = createLight(0xffaa00);
-
-    const clock = new Clock();
 
     const mouse = new Vector2();
     let isDragging = false;
@@ -219,5 +217,5 @@ export default function Component() {
     };
   }, []);
 
-  return <div ref={mountRef} className="w-full h-auto aspect-square" />;
+  return <div ref={mountRef} className="h-75 w-full" />;
 }

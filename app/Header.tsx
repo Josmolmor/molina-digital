@@ -13,15 +13,22 @@ import {
 } from '@/components/ui/tooltip';
 import { FlaskRound, Home } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Header = () => {
   const [clipMaskValue, setClipMaskValue] = useState({
     start: '100%',
     end: '100%',
   });
+  const [hasAppeared, setHasAppeared] = useState(false);
   const pathname = usePathname();
   const isTheLab = pathname === '/lab';
+
+  useEffect(() => {
+    // Remove animation delays after initial appearance
+    const timer = setTimeout(() => setHasAppeared(true), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const toggleTheme = () => {
     const isDark = document.documentElement.classList.toggle('dark');
@@ -34,19 +41,19 @@ const Header = () => {
 
   const handleMouseMove = (section: string | null) => {
     switch (section) {
-      case 'email':
+      case 'lab':
         setClipMaskValue({ start: '83%', end: '2%' });
         break;
-      case 'github':
-        setClipMaskValue({ start: '66%', end: '17%' });
+      case 'email':
+        setClipMaskValue({ start: '67%', end: '18%' });
         break;
-      case 'linkedin':
+      case 'github':
         setClipMaskValue({ start: '50%', end: '34%' });
         break;
-      case 'codepen':
+      case 'linkedin':
         setClipMaskValue({ start: '34%', end: '50%' });
         break;
-      case 'lab':
+      case 'codepen':
         setClipMaskValue({ start: '18%', end: '66.5%' });
         break;
       case 'theme':
@@ -58,14 +65,40 @@ const Header = () => {
   };
 
   return (
-    <nav className="fixed bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20 bg-background shadow-lg rounded-xl p-1 gap-2 flex items-center border overflow-hidden">
+    <nav className="fixed bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20 bg-background shadow-lg rounded-xl p-1 gap-2 flex items-center border border-border overflow-hidden">
       <div
-        className="flex items-center gap-2 bg-border/60 absolute inset-0 motion-safe:transition-[clip-path,background-color] motion-safe:[transition-duration:250ms] pointer-events-none"
+        className="flex items-center gap-2 bg-primary mix-blend-lighten absolute inset-0 motion-safe:transition-[clip-path,background-color] motion-safe:[transition-duration:250ms] pointer-events-none"
         style={{
-          clipPath: `inset(10% ${clipMaskValue.start} 10% ${clipMaskValue.end} round 0.75rem)`,
+          clipPath: `inset(10% ${clipMaskValue.start} 10% ${clipMaskValue.end} round 0.5rem)`,
         }}
       ></div>
       <div className="flex items-center">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div
+              className="flex items-center gap-2"
+              onMouseEnter={() => handleMouseMove('lab')}
+              onMouseLeave={() => handleMouseMove(null)}
+            >
+              <Link
+                aria-label="Navigate to the 'lab' section of my website"
+                href={isTheLab ? '/' : '/lab'}
+                className={`p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0.75s]'}`}
+                style={hasAppeared ? {} : ({ '--delay': '0s' } as any)}
+              >
+                {isTheLab ? (
+                  <Home className="h-6 w-6 transition-colors duration-75" />
+                ) : (
+                  <FlaskRound className="h-6 w-6 transition-colors duration-75" />
+                )}
+              </Link>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{isTheLab ? 'Home' : 'The Lab'}</p>
+          </TooltipContent>
+        </Tooltip>
+
         <Tooltip>
           <TooltipTrigger asChild>
             <div
@@ -77,10 +110,10 @@ const Header = () => {
                 aria-label="Open your email client to contact me"
                 href="mailto:molinamw+digital@gmail.com"
                 target="_blank"
-                className="opacity-0 animate-appear delay-[0s] p-3 rounded-lg"
-                style={{ '--delay': '0s' } as any}
+                className={`p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0s]'}`}
+                style={hasAppeared ? {} : ({ '--delay': '0.25s' } as any)}
               >
-                <GmailIcon className="h-6 w-6" />
+                <GmailIcon className="h-6 w-6 transition-colors duration-75" />
               </Link>
             </div>
           </TooltipTrigger>
@@ -100,10 +133,10 @@ const Header = () => {
                 aria-label="Open my Github profile page in a new tab"
                 href="https://github.com/Josmolmor"
                 target="_blank"
-                className="opacity-0 animate-appear delay-[0.25s] p-3 rounded-lg"
-                style={{ '--delay': '0.25s' } as any}
+                className={`p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0.25s]'}`}
+                style={hasAppeared ? {} : ({ '--delay': '0.5s' } as any)}
               >
-                <GithubIcon className="h-6 w-6" />
+                <GithubIcon className="h-6 w-6 transition-colors duration-75" />
               </Link>
             </div>
           </TooltipTrigger>
@@ -123,10 +156,10 @@ const Header = () => {
                 aria-label="Open my Linkedin profile page in a new tab"
                 href="https://www.linkedin.com/in/josmolmor/"
                 target="_blank"
-                className="opacity-0 animate-appear delay-[0.5s] p-3 rounded-lg"
-                style={{ '--delay': '0.5s' } as any}
+                className={`p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0.5s]'}`}
+                style={hasAppeared ? {} : ({ '--delay': '0.75s' } as any)}
               >
-                <LinkedinIcon className="h-6 w-6" />
+                <LinkedinIcon className="h-6 w-6 transition-colors duration-75" />
               </Link>
             </div>
           </TooltipTrigger>
@@ -146,10 +179,10 @@ const Header = () => {
                 aria-label="Open my Codepen profile page in a new tab"
                 href="https://codepen.io/jmmolina"
                 target="_blank"
-                className="opacity-0 animate-appear delay-[0.75s] p-3 rounded-lg"
-                style={{ '--delay': '0.75s' } as any}
+                className={`p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0.75s]'}`}
+                style={hasAppeared ? {} : ({ '--delay': '1s' } as any)}
               >
-                <CodepenIcon className="h-6 w-6" />
+                <CodepenIcon className="h-6 w-6 transition-colors duration-75" />
               </Link>
             </div>
           </TooltipTrigger>
@@ -162,42 +195,16 @@ const Header = () => {
           <TooltipTrigger asChild>
             <div
               className="flex items-center gap-2"
-              onMouseEnter={() => handleMouseMove('lab')}
-              onMouseLeave={() => handleMouseMove(null)}
-            >
-              <Link
-                aria-label="Navigate to the 'lab' section of my website"
-                href={isTheLab ? '/' : '/lab'}
-                className="opacity-0 animate-appear delay-[0.75s] p-3 rounded-lg"
-                style={{ '--delay': '1s' } as any}
-              >
-                {isTheLab ? (
-                  <Home className="h-6 w-6" />
-                ) : (
-                  <FlaskRound className="h-6 w-6" />
-                )}
-              </Link>
-            </div>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{isTheLab ? 'Home' : 'The Lab'}</p>
-          </TooltipContent>
-        </Tooltip>
-
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <div
-              className="flex items-center gap-2"
               onMouseEnter={() => handleMouseMove('theme')}
               onMouseLeave={() => handleMouseMove(null)}
             >
               <button
                 aria-label="Switch theme"
-                className="opacity-0 animate-appear delay-[1.25s] p-3 rounded-lg"
-                style={{ '--delay': '1.25s' } as any}
+                className={`p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[1.25s]'}`}
+                style={hasAppeared ? {} : ({ '--delay': '1.25s' } as any)}
                 onClick={toggleTheme}
               >
-                <SwatchIcon className="h-6 w-6" />
+                <SwatchIcon className="h-6 w-6 transition-colors duration-75" />
               </button>
             </div>
           </TooltipTrigger>

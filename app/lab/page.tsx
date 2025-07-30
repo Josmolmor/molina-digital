@@ -30,8 +30,8 @@ const experiments = [
   },
   {
     id: 3,
-    title: 'Carousel',
-    description: `A fancy while accessible carousel component using champions' splash art from League of Legends. Inspired by https://x.com/madewithgsap/status/1940757486514102726 All rights reserved to Riot Games.`,
+    title: 'Horizontal scroll showcase',
+    description: `A fancy (and accessible) component using champions' splash art from League of Legends. Inspired by https://x.com/madewithgsap/status/1940757486514102726 All rights reserved to Riot Games.`,
     date: '2025-07-30',
     tags: ['react', 'tailwindcss'],
     component: <Carousel />,
@@ -48,7 +48,7 @@ export default function LabPage() {
         represents a journey into new ideas and technologies.
       </p>
       <div className="grid grid-cols-1 gap-8">
-        {experiments.reverse().map((experiment) => (
+        {experiments.sort((a, b) => b.id - a.id).map((experiment) => (
           <ExperimentCard
             key={experiment.id}
             experiment={experiment}

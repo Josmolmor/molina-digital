@@ -1,7 +1,6 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
 import type { Metadata, Viewport } from 'next';
 import { ReactNode } from 'react';
-import localFont from 'next/font/local';
 import './globals.css';
 import { Manrope } from 'next/font/google';
 import Header from './Header';
@@ -49,31 +48,6 @@ export const metadata: Metadata = {
   },
 };
 
-const archiaFont = localFont({
-  src: [
-    {
-      path: './fonts/archia-light.woff2',
-      weight: '300',
-    },
-    {
-      path: './fonts/archia-regular.woff2',
-      weight: '400',
-    },
-    {
-      path: './fonts/archia-medium.woff2',
-      weight: '500',
-    },
-    {
-      path: './fonts/archia-semibold.woff2',
-      weight: '600',
-    },
-    {
-      path: './fonts/archia-bold.woff2',
-      weight: '700',
-    },
-  ],
-});
-
 export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: true,
@@ -105,7 +79,7 @@ export default async function RootLayout({
         />
       </head>
       <body
-        className={`${manrope.className} ${archiaFont.className} antialiased min-h-[100dvh] pt-8 sm:pt-12 pb-24`}
+        className={`${manrope.className} antialiased min-h-dvh pt-8 sm:pt-12 pb-24`}
       >
         <main className="max-w-4xl flex flex-col gap-16 mx-auto px-8 sm:px-12">
           <TooltipProvider delayDuration={200}>
