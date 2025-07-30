@@ -33,6 +33,8 @@ import SectionHeading from '../section-heading';
 import VitestIcon from '@/components/icons/Vitest';
 import TrpcIcon from '@/components/icons/TrpcIcon';
 import { DotLottieWorkerReact } from '@lottiefiles/dotlottie-react';
+import XstateIcon from '@/components/icons/Xstate';
+import { parseTextWithLinks } from '@/lib/text-parse';
 
 export function renderIcon(stackName: StackItem) {
   switch (stackName) {
@@ -88,6 +90,8 @@ export function renderIcon(stackName: StackItem) {
       return <VitestIcon />;
     case 'trpc':
       return <TrpcIcon />;
+    case 'xstate':
+      return <XstateIcon />;
   }
 }
 
@@ -110,19 +114,21 @@ const ExperiencePage = () => {
             <div className="relative flex items-start justify-center rounded-full">
               {item.icon ? (
                 item.icon === 'lottiefiles' ? (
-                    <div className="w-8 h-8 bg-[#00DDB3] rounded-lg flex items-center justify-center">
-                      <DotLottieWorkerReact 
-                        className="w-6 h-6" 
-                        src="https://lottie.host/16b69e12-0efb-4061-b33d-12dc2b93fd84/Ax2k12jKRd.lottie"
-                        autoplay />
-                    </div>
-                  ) : (
-                    <div className="bg-primary/10 text-primary dark:bg-primary dark:text-foreground rounded-lg p-2">
-                      <item.icon className="w-4 h-4" />
-                    </div>
-                  )
+                  <div className="w-8 h-8 bg-[#00DDB3] rounded-lg flex items-center justify-center">
+                    <DotLottieWorkerReact
+                      className="w-6 h-6"
+                      src="https://lottie.host/16b69e12-0efb-4061-b33d-12dc2b93fd84/Ax2k12jKRd.lottie"
+                      autoplay
+                      loop
+                    />
+                  </div>
                 ) : (
-                  <div className="w-8 h-8 bg-primary rounded-lg"></div>
+                  <div className="bg-primary/10 text-primary dark:bg-primary dark:text-foreground rounded-lg p-2">
+                    <item.icon className="w-4 h-4" />
+                  </div>
+                )
+              ) : (
+                <div className="w-8 h-8 bg-primary rounded-lg"></div>
               )}
               {index < timelineItems.length - 1 && (
                 <div className="absolute top-12 w-px h-full border-l border-dashed border-muted dark:border-border"></div>
@@ -157,10 +163,12 @@ const ExperiencePage = () => {
                 </div>
               </div>
 
-              <p
-                className="mt-4 "
-                dangerouslySetInnerHTML={{ __html: item.description }}
-              />
+              <div className="mt-4 [&>p]:mb-4 [&>p:last-child]:mb-0">
+                {parseTextWithLinks(item.description, {
+                  parseHtml: true,
+                  linkClassName: 'text-blue-600 hover:text-blue-800 underline',
+                })}
+              </div>
 
               {item.stack && (
                 <div className="flex items-center gap-4 mt-4 flex-wrap">

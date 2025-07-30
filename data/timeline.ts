@@ -3,7 +3,6 @@ import {
   Code,
   Earth,
   Paintbrush,
-  Spline,
   LucideProps,
 } from 'lucide-react';
 import { ForwardRefExoticComponent, RefAttributes } from 'react';
@@ -34,7 +33,8 @@ export type StackItem =
   | 'sql'
   | 'language'
   | 'vitest'
-  | 'trpc';
+  | 'trpc'
+  | 'xstate';
 
 export type TimelineItem = {
   id: string;
@@ -58,12 +58,13 @@ const timelineItems: TimelineItem[] = [
     url: 'https://lottiefiles.com',
     date: 'Jan 2025 - Present',
     location: 'Remote (San Francisco, California)',
-    description: 'Workflow team. Platform that provides professional users and organizations the ability to manage their workflow, projects, and assets in an efficient manner.',
+    description: 'Workflow team: main platform that provides professional users and organizations the ability to manage their workflow, projects, and assets in an efficient manner.<br/><br/>Temporarily moved to the Creator team to support v2 release, helping with the refactor of the codebase to move from three.js to the internal toolkit plus xstate usage and more.<br/>Designed to create ultra-lightweight, highly customizable and interactive animations for web, apps and social. Supercharged with AI-based Motion Copilot.',
     stack: [
       { id: 'react', name: 'React' },
       { id: 'typescript', name: 'Typescript' },
       { id: 'graphql', name: 'GraphQL' },
       { id: 'nextjs', name: 'Next.js' },
+      { id: 'xstate', name: 'XState' },
     ],
   },
   {

@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ReactNode } from 'react';
+import { parseTextWithLinks } from '@/lib/text-parse';
 
 interface Experiment {
   id: number;
@@ -30,7 +31,7 @@ export function ExperimentCard({
           </time>
         </div>
         <p className="text-sm text-muted-foreground">
-          {experiment.description}
+          {parseTextWithLinks(experiment.description)}
         </p>
         <div className="flex flex-wrap gap-2 pt-2">
           {experiment.tags.map((tag) => (

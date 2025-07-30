@@ -1,3 +1,4 @@
+import Carousel from './Carousel';
 import { ExperimentCard } from './ExperimentCard';
 import Magnify from './Magnify';
 import ThreeDCube from './RotatingCube';
@@ -13,7 +14,7 @@ const experiments = [
     tags: ['react', 'shadcn', 'tailwindcss'],
     component: (
       <Magnify
-        src={`/assets/images/${Math.floor(Math.random() * (22 - 1 + 1) + 1)}.png`}
+        src={`/assets/images/magnify/${Math.floor(Math.random() * (22 - 1 + 1) + 1)}.png`}
         alt=""
       />
     ),
@@ -27,6 +28,14 @@ const experiments = [
     tags: ['react', 'threeJS', 'tailwindcss'],
     component: <ThreeDCube />,
   },
+  {
+    id: 3,
+    title: 'Carousel',
+    description: `A fancy while accessible carousel component using champions' splash art from League of Legends. Inspired by https://x.com/madewithgsap/status/1940757486514102726 All rights reserved to Riot Games.`,
+    date: '2025-07-30',
+    tags: ['react', 'tailwindcss'],
+    component: <Carousel />,
+  },
 ];
 
 export default function LabPage() {
@@ -39,7 +48,7 @@ export default function LabPage() {
         represents a journey into new ideas and technologies.
       </p>
       <div className="grid grid-cols-1 gap-8">
-        {experiments.map((experiment) => (
+        {experiments.reverse().map((experiment) => (
           <ExperimentCard
             key={experiment.id}
             experiment={experiment}
