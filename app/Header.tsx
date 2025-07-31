@@ -20,14 +20,17 @@ const Header = () => {
     start: '100%',
     end: '100%',
   });
-  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>(
-    document.documentElement.classList.contains('dark') ? 'dark' : 'light',
-  );
+  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>('light');
   const [hasAppeared, setHasAppeared] = useState(false);
   const pathname = usePathname();
   const isTheLab = pathname === '/lab';
 
   useEffect(() => {
+    // Set initial theme based on document class
+    setCurrentTheme(
+      document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+    );
+
     // Remove animation delays after initial appearance
     const timer = setTimeout(() => setHasAppeared(true), 2000);
     return () => clearTimeout(timer);

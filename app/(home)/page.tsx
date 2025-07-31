@@ -2,6 +2,7 @@
 
 import Timeline from '@/app/(home)/experience/timeline';
 import Image from 'next/image';
+import { GeistMono } from 'geist/font/mono';
 
 const Home = () => {
   return (
@@ -19,10 +20,10 @@ const Home = () => {
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-medium">JM Molina</span>
-            <span className="text-muted-foreground">
-              Senior Software Engineer
+            <span className={`${GeistMono.className} font-medium text-lg`}>
+              JM Molina
             </span>
+            <span className="text-muted-foreground">Software Engineer</span>
           </div>
         </div>
         <p className="flex flex-col gap-4">
