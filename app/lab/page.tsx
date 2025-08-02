@@ -3,6 +3,7 @@ import Carousel from './Carousel';
 import { ExperimentCard } from './ExperimentCard';
 import Magnify from './Magnify';
 import ThreeDCube from './RotatingCube';
+import ExpandableCard from './ExpandableCard';
 
 // This would typically come from a database or API
 const experiments = [
@@ -36,6 +37,15 @@ const experiments = [
     date: '2025-07-30',
     tags: ['react', 'tailwindcss'],
     component: <Carousel />,
+  },
+  {
+    id: 4,
+    title: 'Expandable UI card element',
+    description:
+      'A simple actionable card element that can be expanded and collapsed. Try pressing the button multiple times to see both the success and failure states.',
+    date: '2025-08-02',
+    tags: ['react', 'tailwindcss'],
+    component: <ExpandableCard />,
   },
 ];
 
