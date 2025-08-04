@@ -33,12 +33,10 @@ export function ExperimentCard({
             {experiment.date}
           </time>
         </div>
-        <p
-          className={`text-sm text-muted-foreground ${GeistMono.className} tracking-tight`}
-        >
+        <p className={`text-sm text-muted-foreground`}>
           {parseTextWithLinks(experiment.description)}
         </p>
-        <div className={`flex flex-wrap gap-2 pt-2 ${GeistMono.className}`}>
+        <div className={`flex flex-wrap gap-2 pt-2`}>
           {experiment.tags.map((tag) => (
             <Badge
               key={tag}

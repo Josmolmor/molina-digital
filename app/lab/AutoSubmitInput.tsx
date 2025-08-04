@@ -118,10 +118,7 @@ export const AutoSubmitInput = () => {
     <div className="flex flex-col gap-4">
       {!correctValue.every((value) => value === '0') && (
         <div className="flex flex-col items-center gap-2 text-xs">
-          <Badge
-            variant="outline"
-            className="text-sm w-fit bg-primary/20 border border-primary"
-          >
+          <Badge variant="outline" className="text-sm w-fit">
             <span className="tabular-nums">{correctValue.join('')}</span>
           </Badge>
 
@@ -172,7 +169,7 @@ export const AutoSubmitInput = () => {
               value={inputValues[index]}
               onChange={(e) => handleInputChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(index, e)}
-              className="text-transparent bg-muted/30 text-center w-10 h-16 text-xl py-1 border border-border hover:border-primary focus:border-primary rounded-lg transition-all duration-200"
+              className="text-transparent bg-muted/30 text-center w-10 h-16 text-xl py-1 border border-border hover:border-primary/50 focus:border-primary rounded-lg transition-all duration-200"
             />
           </div>
         ))}

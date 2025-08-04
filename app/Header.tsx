@@ -28,7 +28,7 @@ const Header = () => {
   useEffect(() => {
     // Set initial theme based on document class
     setCurrentTheme(
-      document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+      document.documentElement.classList.contains('dark') ? 'dark' : 'light',
     );
 
     // Remove animation delays after initial appearance
@@ -112,7 +112,7 @@ const Header = () => {
   return (
     <nav className="fixed bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20 bg-background shadow-lg rounded-xl p-1 gap-2 flex items-center border border-border overflow-hidden">
       <div
-        className="flex items-center gap-2 bg-primary mix-blend-color-burn dark:mix-blend-lighten absolute inset-0 motion-safe:transition-[clip-path,background-color] motion-safe:[transition-duration:250ms] pointer-events-none"
+        className="flex items-center gap-2 bg-primary mix-blend-color-burn dark:mix-blend-lighten absolute inset-0 motion-safe:transition-[clip-path,background-color] motion-safe:[transition-duration:150ms] ease-in-out-quad pointer-events-none"
         style={{
           clipPath: `inset(10% ${clipMaskValue.start} 10% ${clipMaskValue.end} round 0.5rem)`,
         }}
