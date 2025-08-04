@@ -118,7 +118,7 @@ const ExpandableCard = () => {
           }`}
         >
           <div className="w-full h-[4rem] gap-2 bg-card rounded-2xl border border-border flex p-4 justify-between flex-shrink-0">
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 sm:gap-4 items-center">
               {emailState.initialLoad ? (
                 <MailWarning className="size-6 flex-shrink-0 text-foreground" />
               ) : emailState.syncFailed ? (

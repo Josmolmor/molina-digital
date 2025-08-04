@@ -1,9 +1,24 @@
+'use client';
+
 import { FlaskRound } from 'lucide-react';
 import Carousel from './Carousel';
 import { ExperimentCard } from './ExperimentCard';
 import Magnify from './Magnify';
 import ThreeDCube from './RotatingCube';
 import ExpandableCard from './ExpandableCard';
+import { AutoSubmitInput } from './AutoSubmitInput';
+import { useState, useEffect } from 'react';
+
+const MagnifyWrapper = () => {
+  const [imageSrc, setImageSrc] = useState('/assets/images/magnify/1.png');
+
+  useEffect(() => {
+    const randomNum = Math.floor(Math.random() * (22 - 1 + 1) + 1);
+    setImageSrc(`/assets/images/magnify/${randomNum}.png`);
+  }, []);
+
+  return <Magnify src={imageSrc} alt="" />;
+};
 
 // This would typically come from a database or API
 const experiments = [
@@ -14,12 +29,7 @@ const experiments = [
       'A simple image magnifier. Slide values are x2, x4, x6, and x8.',
     date: '2024-10-20',
     tags: ['react', 'shadcn', 'tailwindcss'],
-    component: (
-      <Magnify
-        src={`/assets/images/magnify/${Math.floor(Math.random() * (22 - 1 + 1) + 1)}.png`}
-        alt=""
-      />
-    ),
+    component: <MagnifyWrapper />,
   },
   {
     id: 2,
@@ -44,8 +54,17 @@ const experiments = [
     description:
       'A simple actionable card element that can be expanded and collapsed. Try pressing the button multiple times to see both the success and failure states.',
     date: '2025-08-02',
-    tags: ['react', 'tailwindcss'],
+    tags: ['react', 'typescript', 'tailwindcss'],
     component: <ExpandableCard />,
+  },
+  {
+    id: 5,
+    title: 'Auto submit input',
+    description:
+      'A simple input handler with individual input fields that auto submits when the user finishes typing. Small UX allows the user to type the code in a more natural way by moving the cursor to the next or previous input field by just typing a value or pressing the backspace/delete key.',
+    date: '2025-08-04',
+    tags: ['react', 'typescript', 'tailwindcss', 'motion'],
+    component: <AutoSubmitInput />,
   },
 ];
 
