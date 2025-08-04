@@ -38,8 +38,23 @@ export const AutoSubmitInput = () => {
   };
 
   const handleInputChange = (index: number, value: string) => {
-    // Only allow single digits (0-9)
     const trimmedValue = value.trim();
+
+    // Handle pasting entire code if it matches the required length
+    if (trimmedValue.length === digitsAmount && /^\d+$/.test(trimmedValue)) {
+      const digits = trimmedValue.split('');
+      setInputValues(digits);
+      // Focus the last input after pasting
+      setTimeout(() => {
+        const lastInput = inputRefs.current[digitsAmount - 1];
+        if (lastInput) {
+          lastInput.focus();
+        }
+      }, 0);
+      return;
+    }
+
+    // Only allow single digits (0-9)
     if (
       trimmedValue !== '' &&
       (!/^\d$/.test(trimmedValue) || parseInt(trimmedValue) > 9)
