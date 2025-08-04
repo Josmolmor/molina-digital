@@ -22,8 +22,8 @@ export function ExperimentCard({
 }) {
   return (
     <Card className="overflow-hidden">
-      <CardHeader className="space-y-2">
-        <div className="flex justify-between items-start flex-wrap">
+      <CardHeader className="space-y-4">
+        <div className="flex justify-between items-center flex-wrap">
           <CardTitle className={`text-xl font-semibold ${GeistMono.className}`}>
             {experiment.title}
           </CardTitle>
@@ -36,7 +36,7 @@ export function ExperimentCard({
         <p className={`text-sm text-muted-foreground`}>
           {parseTextWithLinks(experiment.description)}
         </p>
-        <div className={`flex flex-wrap gap-2 pt-2`}>
+        <div className={`flex flex-wrap gap-2`}>
           {experiment.tags.map((tag) => (
             <Badge
               key={tag}

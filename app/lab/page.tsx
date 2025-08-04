@@ -77,7 +77,7 @@ export default function LabPage() {
         </h1>
         <FlaskRound className="group-hover:animate-swirl transition-all size-8 text-primary rotate-20" />
       </div>
-      <p className="mb-8">
+      <p className="mb-8 text-pretty text-center sm:text-left">
         Welcome to my digital laboratory. Here, you'll find a collection of
         UI/UX experiments and component designs I've worked on. Each entry
         represents a journey into new ideas and technologies.
