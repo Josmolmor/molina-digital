@@ -2,7 +2,13 @@
 
 import { useState, useRef, FC, MouseEvent, TouchEvent } from 'react';
 import Image from 'next/image'; // Optional: for optimized images in Next.js
-import { Slider } from '@/components/ui/slider';
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select';
 
 interface MagnifyProps {
   src: string;
@@ -63,13 +69,21 @@ const Magnify: FC<MagnifyProps> = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <Slider
-        defaultValue={[magnifyFactor]}
-        step={2}
-        min={2}
-        max={10}
-        onValueChange={(val) => setMagnifyFactor(val[0])}
-      ></Slider>
+      {/* Replace slider with a select input. Slide values are x2, x4, x6, and x8. */}
+      <Select
+        value={magnifyFactor.toString()}
+        onValueChange={(value) => setMagnifyFactor(parseInt(value))}
+      >
+        <SelectTrigger className="w-[100px]">
+          <SelectValue placeholder="Select a magnification factor" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="2">x2</SelectItem>
+          <SelectItem value="4">x4</SelectItem>
+          <SelectItem value="6">x6</SelectItem>
+          <SelectItem value="8">x8</SelectItem>
+        </SelectContent>
+      </Select>
 
       <div
         className={`relative overflow-hidden ${className || ''} h-[400px] w-full m-auto animate-blur`}
