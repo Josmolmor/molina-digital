@@ -58,7 +58,8 @@
   --tracking-tight: -0.02rem;
   --tracking-tighter: -0.04rem;
   --spacing: 0.25rem;
-  --selection: 196 100% 50%;
+  --selection-bg: color-mix(in srgb, #008cff 20%, transparent);
+  --selection-fg: #008cff;
   --filter: invert(1);
 
   --ease-in-quad: cubic-bezier(0.55, 0.085, 0.68, 0.53);
@@ -133,8 +134,8 @@
   --shadow-xl:
     0px 1px 4px 0px hsl(0 0% 0% / 0.1), 0px 8px 10px -1px hsl(0 0% 0% / 0.1);
   --shadow-2xl: 0px 1px 4px 0px hsl(0 0% 0% / 0.25);
-
-  --selection: 342 100% 50%;
+  --selection-bg: #008cff;
+  --selection-fg: rgb(222, 240, 255);
   --filter: invert(0);
 }
 
@@ -326,11 +327,13 @@ canvas {
 }
 
 ::-moz-selection {
-  background-color: hsl(var(--selection));
+  background-color: var(--selection-bg);
+  color: var(--selection-fg);
 }
 
 ::selection {
-  background-color: hsl(var(--selection));
+  background-color: var(--selection-bg);
+  color: var(--selection-fg);
 }
 
 @utility text-balance {
