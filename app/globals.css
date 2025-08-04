@@ -381,4 +381,9 @@ canvas {
   input:focus-visible {
     outline: none;
   }
+
+  .button-transition {
+    transition-property: background-color, color, transform;
+    transition-duration: 300ms, 300ms, 300ms;
+  }
 }

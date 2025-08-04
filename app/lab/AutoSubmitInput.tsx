@@ -5,6 +5,7 @@ import { GeistMono } from 'geist/font/mono';
 import { useState, useRef, useEffect } from 'react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'motion/react';
+import { Button } from '@/components/ui/button';
 
 const digitsAmount = 5;
 
