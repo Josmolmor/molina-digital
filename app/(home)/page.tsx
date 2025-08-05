@@ -3,6 +3,7 @@
 import Timeline from '@/app/(home)/experience/timeline';
 import Image from 'next/image';
 import { GeistMono } from 'geist/font/mono';
+import { GlitchText } from 'glitch-text-effect/react';
 
 const Home = () => {
   return (
@@ -23,7 +24,13 @@ const Home = () => {
             <span className={`${GeistMono.className} font-medium text-lg`}>
               JM Molina
             </span>
-            <span className="text-muted-foreground">Software Engineer</span>
+            <GlitchText
+              from="Software Engineer"
+              to="Design Engineer"
+              className="text-muted-foreground"
+              duration={3000}
+              intensity="high"
+            />
           </div>
         </div>
         <p className="flex flex-col gap-4">

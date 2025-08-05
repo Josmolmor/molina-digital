@@ -3,7 +3,16 @@
     "allow": [
       "Bash(find:*)",
       "Bash(mkdir:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(pnpm type-check:*)",
+      "Bash(cp:*)",
+      "Bash(pnpm add:*)",
+      "Bash(npm install:*)",
+      "Bash(ls:*)",
+      "Bash(pnpm install:*)",
+      "WebFetch(domain:www.npmjs.com)",
+      "Bash(node:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

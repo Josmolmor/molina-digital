@@ -7,6 +7,7 @@ import Magnify from './Magnify';
 import ThreeDCube from './RotatingCube';
 import ExpandableCard from './ExpandableCard';
 import { AutoSubmitInput } from './AutoSubmitInput';
+import GlitchTextDemo from './GlitchTextDemo';
 import { useState, useEffect } from 'react';
 
 const MagnifyWrapper = () => {
@@ -65,6 +66,15 @@ const experiments = [
     date: '2025-08-04',
     tags: ['react', 'typescript', 'tailwindcss', 'motion'],
     component: <AutoSubmitInput />,
+  },
+  {
+    id: 6,
+    title: 'Glitch Text Effect Library',
+    description:
+      'A lightweight, customizable glitch text effect library with zero dependencies. Features multiple trigger types (hover, click, intersection, manual), configurable intensity levels, character sets, visual effects, and full TypeScript support.',
+    date: '2025-08-06',
+    tags: ['react', 'typescript', 'vanilla-js', 'library', 'npm'],
+    component: <GlitchTextDemo />,
   },
 ];
 

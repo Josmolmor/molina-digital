@@ -39,7 +39,7 @@
   --default-font-family: Satoshi, sans-serif;
   --font-sans: Satoshi, sans-serif;
   --font-serif: Georgia;
-  --font-mono: JetBrains Mono;
+  --font-mono: monospace;
   --radius: 0.5rem;
   --shadow-2xs: 0px 1px 4px 0px hsl(0 0% 0% / 0.03);
   --shadow-xs: 0px 1px 4px 0px hsl(0 0% 0% / 0.03);
@@ -122,7 +122,7 @@
   --default-font-family: Satoshi, sans-serif;
   --font-sans: Satoshi, sans-serif;
   --font-serif: Georgia;
-  --font-mono: JetBrains Mono;
+  --font-mono: monospace;
   --radius: 0.5rem;
   --shadow-2xs: 0px 1px 4px 0px hsl(0 0% 0% / 0.05);
   --shadow-xs: 0px 1px 4px 0px hsl(0 0% 0% / 0.05);
@@ -300,6 +300,73 @@
       color: var(--color-primary);
     }
   }
+
+  @keyframes glitch-shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    10% {
+      transform: translateX(-1px) translateY(1px);
+    }
+    20% {
+      transform: translateX(1px) translateY(-1px);
+    }
+    30% {
+      transform: translateX(-1px) translateY(-1px);
+    }
+    40% {
+      transform: translateX(1px) translateY(1px);
+    }
+    50% {
+      transform: translateX(-1px) translateY(1px);
+    }
+    60% {
+      transform: translateX(1px) translateY(-1px);
+    }
+    70% {
+      transform: translateX(-1px) translateY(-1px);
+    }
+    80% {
+      transform: translateX(1px) translateY(1px);
+    }
+    90% {
+      transform: translateX(-1px) translateY(-1px);
+    }
+  }
+
+  @keyframes glitch-flicker {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes glitch-color-shift {
+    0%,
+    100% {
+      filter: hue-rotate(0deg);
+    }
+    33% {
+      filter: hue-rotate(120deg);
+    }
+    66% {
+      filter: hue-rotate(240deg);
+    }
+  }
+
+  @keyframes glitch-scale-pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+  }
 }
 
 body {
@@ -395,5 +462,9 @@ canvas {
   .button-transition {
     transition-property: background-color, color, transform;
     transition-duration: 300ms, 300ms, 300ms;
+  }
+
+  code {
+    font-family: var(--font-mono);
   }
 }
