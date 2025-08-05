@@ -2,7 +2,6 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import type { Metadata, Viewport } from 'next';
 import { ReactNode } from 'react';
 import './globals.css';
-import { Manrope } from 'next/font/google';
 import Header from './Header';
 import { cookies } from 'next/headers';
 import { Toaster } from '@/components/ui/sonner';
@@ -54,8 +53,6 @@ export const viewport: Viewport = {
   userScalable: true,
 };
 
-const manrope = Manrope({ subsets: ['latin'] });
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -79,9 +76,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body
-        className={`${manrope.className} antialiased min-h-dvh pt-8 sm:pt-12 pb-24`}
-      >
+      <body className={`antialiased min-h-dvh pt-8 sm:pt-12 pb-24`}>
         <main className="max-w-4xl flex flex-col gap-16 mx-auto px-8 sm:px-12">
           <Toaster position="top-center" />
           <TooltipProvider delayDuration={200}>

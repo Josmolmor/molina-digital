@@ -59,9 +59,9 @@ const experiments = [
   },
   {
     id: 5,
-    title: 'Auto submit input',
+    title: 'OTP input',
     description:
-      'A simple input handler with individual input fields that auto submits when the user finishes typing. Small UX allows the user to type the code in a more natural way by moving the cursor to the next or previous input field by just typing a value or pressing the backspace/delete key. User is also able to paste the whole code at once as long as the code has the amount of characters equal to the amount of input fields.',
+      'A simple input handler that submits when the user finishes typing. Small UX allows the user to type the code in a more natural way by moving the cursor to the next or previous input field by just typing a value or pressing the backspace/delete key. User is also able to paste the whole code at once as long as the code has the amount of characters equal to the amount of input fields.',
     date: '2025-08-04',
     tags: ['react', 'typescript', 'tailwindcss', 'motion'],
     component: <AutoSubmitInput />,

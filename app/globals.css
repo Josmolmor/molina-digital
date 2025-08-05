@@ -1,3 +1,4 @@
+@import './satoshi.css';
 @import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
@@ -35,7 +36,8 @@
   --sidebar-accent-foreground: hsl(250 26.4706% 13.3333%);
   --sidebar-border: hsl(232.2581 100% 93.9216%);
   --sidebar-ring: hsl(216.5665 98.3122% 46.4706%);
-  --font-sans: Inter;
+  --default-font-family: Satoshi, sans-serif;
+  --font-sans: Satoshi, sans-serif;
   --font-serif: Georgia;
   --font-mono: JetBrains Mono;
   --radius: 0.5rem;
@@ -117,7 +119,8 @@
   --sidebar-accent-foreground: hsl(210 40% 98.0392%);
   --sidebar-border: hsl(240 23.913% 18.0392%);
   --sidebar-ring: hsl(216.5665 98.3122% 46.4706%);
-  --font-sans: Inter;
+  --default-font-family: Satoshi, sans-serif;
+  --font-sans: Satoshi, sans-serif;
   --font-serif: Georgia;
   --font-mono: JetBrains Mono;
   --radius: 0.5rem;
@@ -173,6 +176,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
+  --default-font-family: var(--default-font-family);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-serif: var(--font-serif);
