@@ -76,7 +76,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className={`antialiased min-h-dvh pt-8 sm:pt-12 pb-24`}>
+      <body className={`antialiased min-h-dvh pt-12 sm:pt-20 pb-24`}>
         <svg className="grid-background w-full h-full inset-0 fixed z-[-1] mix-blend-color">
           <defs>
             <pattern
