@@ -129,6 +129,8 @@ export default function GlitchTextDemo() {
             <a
               href="https://github.com/josmolmor/glitch-text-effect"
               className="text-primary hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               josmolmor/glitch-text-effect
             </a>
@@ -136,6 +138,8 @@ export default function GlitchTextDemo() {
             <a
               href="https://www.npmjs.com/package/glitch-text-effect"
               className="text-primary hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               glitch-text-effect
             </a>

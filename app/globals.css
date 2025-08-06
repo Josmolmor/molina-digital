@@ -208,6 +208,17 @@
   --animate-float: float 4s ease-in-out infinite;
   --animate-swirl: swirl 1.3s ease-in-out infinite;
 
+  --grid-background-lines-opacity: 0.35;
+  --grid-background-lines-stroke-width: 1;
+  --grid-background-lines-stroke-color: var(--border);
+  --grid-background-cross-opacity: 0.8;
+  --grid-background-cross-stroke-width: 1;
+  --grid-background-cross-stroke-color: color-mix(
+    in srgb,
+    var(--primary) 30%,
+    transparent
+  );
+
   @keyframes blur {
     0% {
       opacity: 0;
@@ -370,27 +381,13 @@
 }
 
 body {
-  background-color: var(--background);
   letter-spacing: var(--tracking-normal);
-  background-image:
-    linear-gradient(to bottom, transparent 0%, var(--background) 100%),
-    linear-gradient(
-      color-mix(in srgb, var(--border) 30%, transparent) 0.5px,
-      transparent 0.5px
-    ),
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--border) 30%, transparent) 0.5px,
-      transparent 0.5px
-    );
-  background-size:
-    100% 100%,
-    40px 40px,
-    40px 40px;
-  background-position:
-    0 0,
-    0 0,
-    0 0;
+  background: var(--background);
+  background: radial-gradient(
+    circle,
+    var(--background) 30%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
 
 canvas {
@@ -475,45 +472,41 @@ canvas {
     font-family: var(--font-mono);
   }
 
-  .highlight-text {
-    position: relative;
-    z-index: 1; /* Ensure text is above the background */
-  }
-
-  .highlight-text::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0; /* Start with zero width */
-    height: 100%;
-    background-color: var(--foreground);
-    z-index: -1; /* Place behind text */
-    transition: width 250ms var(--ease-in-out-quad); /* Smooth width transition */
-  }
-
-  .group:hover .highlight-text::before {
-    width: 100%; /* Expand to full width on hover */
-  }
-
+  /* Base highlight text styles */
+  .highlight-text,
   .highlight-text-reversed {
     position: relative;
-    z-index: 1; /* Ensure text is above the background */
+    z-index: 1;
   }
 
+  .highlight-text::before,
   .highlight-text-reversed::before {
     content: '';
     position: absolute;
     top: 0;
-    right: 0;
-    width: 0; /* Start with zero width */
+    width: 0;
     height: 100%;
     background-color: var(--foreground);
-    z-index: -1; /* Place behind text */
-    transition: width 250ms var(--ease-in-out-quad); /* Smooth width transition */
+    z-index: -1;
+    transition: width 250ms var(--ease-in-out-quad);
   }
 
+  /* Direction-specific positioning */
+  .highlight-text::before {
+    left: 0;
+  }
+
+  .highlight-text-reversed::before {
+    right: 0;
+  }
+
+  /* Hover effect */
+  .group:hover .highlight-text::before,
   .group:hover .highlight-text-reversed::before {
-    width: 100%; /* Expand to full width on hover */
+    width: 100%;
+  }
+
+  .cross-primary {
+    stroke: color-mix(in srgb, var(--primary) 20%, transparent);
   }
 }

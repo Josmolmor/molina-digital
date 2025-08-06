@@ -176,10 +176,10 @@ export default function LabPage() {
           {/* Individual Experiment View */}
           {selectedExperiment && (
             <>
-              <div className="flex items-center gap-4 mb-6 group">
+              <div className="flex items-center gap-4 mb-6">
                 <button
                   onClick={handleBackClick}
-                  className="flex items-center gap-2 text-sm font-medium"
+                  className="flex items-center gap-2 text-sm font-medium group"
                 >
                   <ArrowLeft className="size-4 group-hover:translate-x-[-10%] transition-all" />
                   <span className="highlight-text-reversed py-[2px] px-[6px] group-hover:text-background transition-all">
