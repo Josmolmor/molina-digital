@@ -146,8 +146,8 @@ export default async function RootLayout({
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
+        <Toaster position="top-center" />
         <main className="max-w-4xl w-full flex flex-col gap-16 mx-auto px-8 sm:px-12">
-          <Toaster position="top-center" />
           <TooltipProvider delayDuration={200}>
             <Header />
             {children}
