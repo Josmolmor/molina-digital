@@ -43,9 +43,11 @@ export type TimelineItem = {
   date: string;
   url?: string;
   location?: string;
-  icon?: ForwardRefExoticComponent<
-    Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
-  > | string;
+  icon?:
+    | ForwardRefExoticComponent<
+        Omit<LucideProps, 'ref'> & RefAttributes<SVGSVGElement>
+      >
+    | string;
   stack?: { id: StackItem; name: string }[];
   recommendationLink?: string;
 };
@@ -58,7 +60,8 @@ const timelineItems: TimelineItem[] = [
     url: 'https://lottiefiles.com',
     date: 'Jan 2025 - Present',
     location: 'Remote (San Francisco, California)',
-    description: 'Workflow: develop and maintenance of the main platform that provides professional users and organizations the ability to manage their workflow, projects, and assets in an efficient manner.<br/><br/>Web: helped with the migration to next version of web app. Mainly UI, UX and micro-interactions.<br/><br/>Creator: temporarily moved to the team to support v2 release, helping with the refactor of the codebase to move from three.js to the internal toolkit plus xstate usage and more.<br/>Designed to create ultra-lightweight, highly customizable and interactive animations for web, apps and social. Supercharged with AI-based Motion Copilot.',
+    description:
+      'Workflow: develop and maintenance of the main platform that provides professional users and organizations the ability to manage their workflow, projects, and assets in an efficient manner.<br/><br/>Web: helped with the migration to next version of web app. Mainly UI, UX and micro-interactions.<br/><br/>Creator: temporarily moved to the team to support v2 release, helping with the refactor of the codebase to move from three.js to the internal toolkit plus xstate usage and more.',
     stack: [
       { id: 'react', name: 'React' },
       { id: 'typescript', name: 'Typescript' },

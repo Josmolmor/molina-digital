@@ -163,7 +163,7 @@ const ExperiencePage = () => {
                 </div>
               </div>
 
-              <div className="mt-4 [&>p]:mb-4 [&>p:last-child]:mb-0">
+              <div className="mt-4 [&>p]:mb-2 [&>p:last-child]:mb-0">
                 {parseTextWithLinks(item.description, {
                   parseHtml: true,
                   linkClassName: 'text-blue-600 hover:text-blue-800 underline',

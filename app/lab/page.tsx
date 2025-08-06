@@ -168,7 +168,7 @@ export default function LabPage() {
                       <span className="highlight-text py-[2px] px-[6px] group-hover:text-background group-active:text-background transition-all">
                         {title}
                       </span>
-                      <span className="break-all text-xs text-muted-foreground pl-1.5">
+                      <span className="break-all text-xs text-muted-foreground pl-1.5 leading-normal">
                         {description}
                       </span>
                     </p>

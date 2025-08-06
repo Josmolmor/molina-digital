@@ -8,8 +8,8 @@ import { GlitchText } from 'glitch-text-effect/react';
 const Home = () => {
   return (
     <>
-      <div className="flex flex-col gap-4">
-        <div className="flex items-center gap-4 mb-4">
+      <div className="flex flex-col gap-6">
+        <div className="flex items-center gap-4">
           <div className="relative avatar-container">
             <div className="h-16 w-16 rounded-full bg-linear-to-r from-yellow-500 from-10% via-orange-500 via-50% to-rose-500 to-90% dark:from-indigo-500 dark:via-sky-500 dark:to-emerald-500 transition-transform duration-500 ease-in-out avatar-bg hover:rotate-720"></div>
             <Image
@@ -32,7 +32,7 @@ const Home = () => {
             />
           </div>
         </div>
-        <p className="flex flex-col gap-4">
+        <p className="flex flex-col gap-2">
           <span>Squinting at a screen to count pixels for a living.</span>
           <span>
             As a software engineer specializing in front-end web development, I
