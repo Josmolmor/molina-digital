@@ -29,7 +29,6 @@ const Home = () => {
               to="Design Engineer"
               className="text-muted-foreground"
               duration={3000}
-              intensity="high"
             />
           </div>
         </div>

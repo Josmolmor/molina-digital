@@ -42,8 +42,8 @@ importers:
         specifier: ^1.4.2
         version: 1.4.2(next@15.4.5(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013))
       glitch-text-effect:
-        specifier: ^1.0.1
-        version: 1.0.1(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
+        specifier: ^1.0.2
+        version: 1.0.2(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013)
       lucide-react:
         specifier: ^0.446.0
         version: 0.446.0(react@19.0.0-rc-cd22717c-20241013)
@@ -1717,8 +1717,8 @@ packages:
   get-tsconfig@4.10.1:
     resolution: {integrity: sha512-auHyJ4AgMz7vgS8Hp3N6HXSmlMdUyhSUrfBF16w153rxtLIEOE+HGqaBppczZvnHLqQJfiHotCYpNhl0lUROFQ==}
 
-  glitch-text-effect@1.0.1:
-    resolution: {integrity: sha512-o7eWI5AtYWSAueyGUz6cqkCLTHK7zIO/YxablBk4QnZd46g1ucb27Vv+BkEs52D5qmdbEs4cxIQ1U2aMuGVs3w==}
+  glitch-text-effect@1.0.2:
+    resolution: {integrity: sha512-8KQrgXmD8waNNRrWdthOVFp4Rf0FE0ULywUAhSyhyrd0LTv5xG7BGAhZVGfzSzxzbAORF9U3yhlWK5MYs4Vvqw==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       react: '>=16.8.0'
@@ -4233,7 +4233,7 @@ snapshots:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
-  glitch-text-effect@1.0.1(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013):
+  glitch-text-effect@1.0.2(react-dom@19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013))(react@19.0.0-rc-cd22717c-20241013):
     optionalDependencies:
       react: 19.0.0-rc-cd22717c-20241013
       react-dom: 19.0.0-rc-cd22717c-20241013(react@19.0.0-rc-cd22717c-20241013)

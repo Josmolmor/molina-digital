@@ -149,23 +149,29 @@ export default function LabPage() {
             <FlaskRound className="group-hover:animate-swirl transition-all size-8 text-primary rotate-20" />
           </div>
           <p className="mb-8 text-pretty text-center sm:text-left">
-            Welcome to my digital laboratory. Here, you&apos;ll find a collection of
-            UI/UX experiments and component designs I&apos;ve worked on. Each entry
-            represents a journey into new ideas and technologies.
+            Dive into my sandbox of UI/UX experiments, where I tinker with CSS,
+            micro-interactions, and components. From clever designs to quirky,
+            just-for-fun trials, each project is a playful exploration of
+            what&apos;s possible, built to learn, practice, and inspire.
           </p>
-          <ul className="flex flex-col gap-2 mb-8 text-sm">
+          <ul className="flex flex-col gap-4 mb-8 text-sm">
             {experiments
               .sort((a, b) => b.id - a.id)
-              .map(({ id, title }) => (
+              .map(({ id, title, description }) => (
                 <li key={id} className="flex items-center gap-2">
                   <button
                     onClick={(e) => handleExperimentClick(e, id)}
-                    className="flex items-center gap-2 group font-medium"
+                    className="flex gap-2 group font-medium items-start"
                   >
-                    <ArrowRight className="size-4 group-hover:translate-x-[10%] transition-all" />
-                    <span className="highlight-text py-[2px] px-[6px] group-hover:text-background transition-all">
-                      {title}
-                    </span>
+                    <ArrowRight className="size-4 group-hover:translate-x-[10%] transition-all shrink-0 mt-1" />
+                    <p className="flex flex-col gap-1 items-start text-left">
+                      <span className="highlight-text py-[2px] px-[6px] group-hover:text-background group-active:text-background transition-all">
+                        {title}
+                      </span>
+                      <span className="break-all text-xs text-muted-foreground pl-1.5">
+                        {description}
+                      </span>
+                    </p>
                   </button>
                 </li>
               ))}
@@ -182,7 +188,7 @@ export default function LabPage() {
                   className="flex items-center gap-2 text-sm font-medium group"
                 >
                   <ArrowLeft className="size-4 group-hover:translate-x-[-10%] transition-all" />
-                  <span className="highlight-text-reversed py-[2px] px-[6px] group-hover:text-background transition-all">
+                  <span className="highlight-text-reversed py-[2px] px-[6px] group-hover:text-background group-active:text-background transition-all">
                     Back to experiments
                   </span>
                 </button>
