@@ -437,6 +437,13 @@ canvas {
   z-index: 999;
 }
 
+/* Lab page content transitions */
+::view-transition-old(lab-content),
+::view-transition-new(lab-content) {
+  animation-duration: 0.3s;
+  animation-timing-function: var(--ease-in-out-circ);
+}
+
 @layer utilities {
   .easy-click {
     position: relative;
@@ -466,5 +473,47 @@ canvas {
 
   code {
     font-family: var(--font-mono);
+  }
+
+  .highlight-text {
+    position: relative;
+    z-index: 1; /* Ensure text is above the background */
+  }
+
+  .highlight-text::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0; /* Start with zero width */
+    height: 100%;
+    background-color: var(--foreground);
+    z-index: -1; /* Place behind text */
+    transition: width 250ms var(--ease-in-out-quad); /* Smooth width transition */
+  }
+
+  .group:hover .highlight-text::before {
+    width: 100%; /* Expand to full width on hover */
+  }
+
+  .highlight-text-reversed {
+    position: relative;
+    z-index: 1; /* Ensure text is above the background */
+  }
+
+  .highlight-text-reversed::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0; /* Start with zero width */
+    height: 100%;
+    background-color: var(--foreground);
+    z-index: -1; /* Place behind text */
+    transition: width 250ms var(--ease-in-out-quad); /* Smooth width transition */
+  }
+
+  .group:hover .highlight-text-reversed::before {
+    width: 100%; /* Expand to full width on hover */
   }
 }

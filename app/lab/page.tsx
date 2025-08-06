@@ -1,6 +1,6 @@
 'use client';
 
-import { FlaskRound } from 'lucide-react';
+import { ArrowRight, FlaskRound } from 'lucide-react';
 import Carousel from './Carousel';
 import { ExperimentCard } from './ExperimentCard';
 import Magnify from './Magnify';
@@ -9,6 +9,7 @@ import ExpandableCard from './ExpandableCard';
 import { AutoSubmitInput } from './AutoSubmitInput';
 import GlitchTextDemo from './GlitchTextDemo';
 import { useState, useEffect } from 'react';
+import { ArrowLeft } from 'lucide-react';
 
 const MagnifyWrapper = () => {
   const [imageSrc, setImageSrc] = useState('/assets/images/magnify/1.png');
@@ -34,7 +35,7 @@ const experiments = [
   },
   {
     id: 2,
-    title: 'All of the lights',
+    title: 'ThreeJS cube test',
     description:
       'A rotating cube with colored lights orbiting around it, continuously changing positions and illuminating the scene dynamically using threeJS. Try moving the cube around',
     date: '2024-10-22',
@@ -78,30 +79,121 @@ const experiments = [
   },
 ];
 
+type ViewState = 'list' | 'experiment';
+
+interface Experiment {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  tags: string[];
+  component: React.ReactNode;
+}
+
 export default function LabPage() {
+  const [viewState, setViewState] = useState<ViewState>('list');
+  const [selectedExperiment, setSelectedExperiment] =
+    useState<Experiment | null>(null);
+
+  const handleExperimentClick = (e: React.MouseEvent, experimentId: number) => {
+    e.preventDefault();
+    const experiment = experiments.find((exp) => exp.id === experimentId);
+
+    if (!experiment) return;
+
+    // Check if View Transitions API is supported
+    if (!document.startViewTransition) {
+      console.log('View Transitions API not supported, falling back');
+      // Fallback for unsupported browsers
+      setSelectedExperiment(experiment);
+      setViewState('experiment');
+      return;
+    }
+
+    // Start the view transition
+    document.startViewTransition(() => {
+      setSelectedExperiment(experiment);
+      setViewState('experiment');
+    });
+  };
+
+  const handleBackClick = () => {
+    // Check if View Transitions API is supported
+    if (!document.startViewTransition) {
+      console.log('View Transitions API not supported for back navigation');
+      // Fallback for unsupported browsers
+      setViewState('list');
+      setSelectedExperiment(null);
+      return;
+    }
+
+    // Start the view transition
+    document.startViewTransition(() => {
+      setViewState('list');
+      setSelectedExperiment(null);
+    });
+  };
+
   return (
-    <div className="mx-auto tracking-normal">
-      <div className="relative group flex justify-center items-center mb-6 w-fit mx-auto gap-2">
-        <h1 className="text-4xl font-bold text-center flex items-center justify-center gap-2">
-          The Lab
-        </h1>
-        <FlaskRound className="group-hover:animate-swirl transition-all size-8 text-primary rotate-20" />
-      </div>
-      <p className="mb-8 text-pretty text-center sm:text-left">
-        Welcome to my digital laboratory. Here, you'll find a collection of
-        UI/UX experiments and component designs I've worked on. Each entry
-        represents a journey into new ideas and technologies.
-      </p>
-      <div className="grid grid-cols-1 gap-8">
-        {experiments
-          .sort((a, b) => b.id - a.id)
-          .map((experiment) => (
-            <ExperimentCard
-              key={experiment.id}
-              experiment={experiment}
-            ></ExperimentCard>
-          ))}
-      </div>
+    <div
+      className="mx-auto tracking-normal max-w-4xl w-full"
+      style={{ viewTransitionName: 'lab-content' }}
+    >
+      {viewState === 'list' ? (
+        <>
+          {/* List View */}
+          <div className="relative group flex justify-center items-center mb-6 w-fit mx-auto gap-2">
+            <h1 className="text-4xl font-bold text-center flex items-center justify-center gap-2">
+              The Lab
+            </h1>
+            <FlaskRound className="group-hover:animate-swirl transition-all size-8 text-primary rotate-20" />
+          </div>
+          <p className="mb-8 text-pretty text-center sm:text-left">
+            Welcome to my digital laboratory. Here, you'll find a collection of
+            UI/UX experiments and component designs I've worked on. Each entry
+            represents a journey into new ideas and technologies.
+          </p>
+          <ul className="flex flex-col gap-2 mb-8 text-sm">
+            {experiments
+              .sort((a, b) => b.id - a.id)
+              .map(({ id, title }) => (
+                <li key={id} className="flex items-center gap-2">
+                  <button
+                    onClick={(e) => handleExperimentClick(e, id)}
+                    className="flex items-center gap-2 group font-medium"
+                  >
+                    <ArrowRight className="size-4 group-hover:translate-x-[10%] transition-all" />
+                    <span className="highlight-text py-[2px] px-[6px] group-hover:text-background transition-all">
+                      {title}
+                    </span>
+                  </button>
+                </li>
+              ))}
+          </ul>
+        </>
+      ) : (
+        <>
+          {/* Individual Experiment View */}
+          {selectedExperiment && (
+            <>
+              <div className="flex items-center gap-4 mb-6 group">
+                <button
+                  onClick={handleBackClick}
+                  className="flex items-center gap-2 text-sm font-medium"
+                >
+                  <ArrowLeft className="size-4 group-hover:translate-x-[-10%] transition-all" />
+                  <span className="highlight-text-reversed py-[2px] px-[6px] group-hover:text-background transition-all">
+                    Back to experiments
+                  </span>
+                </button>
+              </div>
+              <div>
+                <ExperimentCard experiment={selectedExperiment} />
+              </div>
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }

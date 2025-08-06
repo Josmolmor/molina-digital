@@ -77,7 +77,7 @@ export default async function RootLayout({
         />
       </head>
       <body className={`antialiased min-h-dvh pt-8 sm:pt-12 pb-24`}>
-        <main className="max-w-4xl flex flex-col gap-16 mx-auto px-8 sm:px-12">
+        <main className="max-w-4xl w-full flex flex-col gap-16 mx-auto px-8 sm:px-12">
           <Toaster position="top-center" />
           <TooltipProvider delayDuration={200}>
             <Header />

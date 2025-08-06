@@ -77,7 +77,7 @@ const Header = () => {
         ],
       },
       {
-        duration: 500,
+        duration: 350,
         easing: 'ease-in-out',
         pseudoElement: '::view-transition-new(root)',
       },

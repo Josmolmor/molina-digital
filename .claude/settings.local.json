@@ -12,7 +12,8 @@
       "Bash(pnpm install:*)",
       "WebFetch(domain:www.npmjs.com)",
       "Bash(node:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "WebFetch(domain:developer.chrome.com)"
     ],
     "deny": []
   }
