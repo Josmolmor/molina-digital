@@ -32,7 +32,7 @@ export default function SideProjects() {
       <p className="mb-2">
         Often built using release candidate or canary versions of major
         frameworks and new trendy libraries as part of my exploration of new
-        technologies. Sometimes, it's simply coding for the fun of it. These
+        technologies. Sometimes, it&apos;s simply coding for the fun of it. These
         projects showcase my passion for experimenting with new ideas, refining
         product designs, and enhancing UX.
       </p>

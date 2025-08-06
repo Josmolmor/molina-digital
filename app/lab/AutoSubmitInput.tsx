@@ -107,7 +107,7 @@ export const AutoSubmitInput = () => {
   useEffect(() => {
     setInputValues(Array.from({ length: digitsAmount }, () => ''));
     setCorrectValue(generateCorrectValue(digitsAmount));
-  }, [digitsAmount]);
+  }, []);
 
   // Check if values are correct and show appropriate toast
   useEffect(() => {
@@ -127,7 +127,7 @@ export const AutoSubmitInput = () => {
         toast.error(`Incorrect! Try again`);
       }
     }
-  }, [inputValues, digitsAmount, correctValue]);
+  }, [inputValues, correctValue]);
 
   return (
     <div className="flex flex-col gap-4">

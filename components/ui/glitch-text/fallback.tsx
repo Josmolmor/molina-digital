@@ -22,6 +22,12 @@ export default function GlitchText({
   to, 
   trigger = 'hover',
   className = '',
+  intensity,
+  duration,
+  effects,
+  onProgress,
+  onStart,
+  onComplete,
   ...props 
 }: GlitchTextProps) {
   const [text, setText] = useState(from);
@@ -31,6 +37,7 @@ export default function GlitchText({
     if (trigger === 'hover') {
       setIsHovered(true);
       setText(to);
+      onStart?.();
     }
   };
 
@@ -38,12 +45,16 @@ export default function GlitchText({
     if (trigger === 'hover') {
       setIsHovered(false);
       setText(from);
+      onComplete?.();
     }
   };
 
   const handleClick = () => {
     if (trigger === 'click') {
       setText(text === from ? to : from);
+      onStart?.();
+      // Simulate progress and completion for click trigger
+      setTimeout(() => onComplete?.(), 100);
     }
   };
 

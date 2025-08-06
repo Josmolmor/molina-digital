@@ -2,25 +2,25 @@
 
 import { Button } from '@/components/ui/button';
 import { Hash } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 
 const SectionHeading = ({ title }: { title: string }) => {
   const id = title.replace(' ', '-').toLowerCase();
 
-  const scrollToHash = () => {
+  const scrollToHash = useCallback(() => {
     window.history.replaceState(null, '', `#${id}`);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     const hash = window?.location?.hash?.replace('#', '');
     if (hash === id) {
       scrollToHash();
     }
-  }, [id]);
+  }, [id, scrollToHash]);
 
   return (
     <h1

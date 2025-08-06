@@ -13,7 +13,8 @@
       "WebFetch(domain:www.npmjs.com)",
       "Bash(node:*)",
       "Bash(rm:*)",
-      "WebFetch(domain:developer.chrome.com)"
+      "WebFetch(domain:developer.chrome.com)",
+      "Bash(pnpm run:*)"
     ],
     "deny": []
   }

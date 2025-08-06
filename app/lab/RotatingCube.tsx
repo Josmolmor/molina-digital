@@ -27,8 +27,10 @@ export default function Component() {
   useEffect(() => {
     if (!mountRef.current) return;
 
-    const width = mountRef.current.clientWidth;
-    const height = mountRef.current.clientHeight;
+    // Capture the mount element at the beginning of the effect
+    const mountElement = mountRef.current;
+    const width = mountElement.clientWidth;
+    const height = mountElement.clientHeight;
 
     const scene = new Scene();
     const camera = new PerspectiveCamera(75, width / height, 1, 1000);
@@ -37,7 +39,7 @@ export default function Component() {
     const renderer = new WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setClearColor(0x000000, 0); // Transparent background
-    mountRef.current.appendChild(renderer.domElement);
+    mountElement.appendChild(renderer.domElement);
 
     const cube = new Mesh(
       new BoxGeometry(10, 10, 10),
@@ -191,29 +193,50 @@ export default function Component() {
 
     return () => {
       const currentScene = sceneRef.current;
+
       if (currentScene) {
         // Cancel the animation frame if it exists.
         if (currentScene.animationFrameId !== null) {
           cancelAnimationFrame(currentScene.animationFrameId);
         }
+
+        // Remove event listeners using the captured renderer
+        currentScene.renderer.domElement.removeEventListener(
+          'mousedown',
+          onMouseDown,
+        );
+        currentScene.renderer.domElement.removeEventListener(
+          'mousemove',
+          onMouseMove,
+        );
+        currentScene.renderer.domElement.removeEventListener(
+          'mouseup',
+          onMouseUp,
+        );
+        currentScene.renderer.domElement.removeEventListener(
+          'touchstart',
+          onTouchStart,
+        );
+        currentScene.renderer.domElement.removeEventListener(
+          'touchmove',
+          onTouchMove,
+        );
+        currentScene.renderer.domElement.removeEventListener(
+          'touchend',
+          onTouchEnd,
+        );
+
         currentScene.renderer.dispose();
         currentScene.renderer.forceContextLoss();
         currentScene.renderer.domElement.remove();
         sceneRef.current = null;
       }
 
-      if (mountRef.current) {
-        while (mountRef.current.firstChild) {
-          mountRef.current.removeChild(mountRef.current.firstChild);
+      if (mountElement) {
+        while (mountElement.firstChild) {
+          mountElement.removeChild(mountElement.firstChild);
         }
       }
-
-      renderer.domElement.removeEventListener('mousedown', onMouseDown);
-      renderer.domElement.removeEventListener('mousemove', onMouseMove);
-      renderer.domElement.removeEventListener('mouseup', onMouseUp);
-      renderer.domElement.removeEventListener('touchstart', onTouchStart);
-      renderer.domElement.removeEventListener('touchmove', onTouchMove);
-      renderer.domElement.removeEventListener('touchend', onTouchEnd);
     };
   }, []);
 
