@@ -164,17 +164,17 @@ export default function LabPage() {
             just-for-fun trials, each project is a playful exploration of
             what&apos;s possible, built to learn, practice, and inspire.
           </p>
-          <ul className="flex flex-col gap-4 mb-8 text-sm">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8 text-sm">
             {experiments
               .sort((a, b) => b.id - a.id)
               .map(({ id, title, description }) => (
-                <li key={id} className="flex items-center gap-2">
+                <li key={id} className="flex items-center gap-2 w-full">
                   <button
                     onClick={(e) => handleExperimentClick(e, id)}
-                    className="flex gap-2 group font-medium items-start"
+                    className="flex gap-2 group font-medium items-start w-full"
                   >
                     <ArrowRight className="size-4 group-hover:translate-x-[10%] transition-all shrink-0 mt-1" />
-                    <p className="flex flex-col gap-1 items-start text-left">
+                    <p className="flex flex-col gap-1 items-start text-left w-full">
                       <span className="highlight-text py-[2px] px-[6px] group-hover:text-background group-active:text-background transition-all">
                         {title}
                       </span>
