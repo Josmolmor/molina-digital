@@ -10,6 +10,7 @@ import { AutoSubmitInput } from './AutoSubmitInput';
 import GlitchTextDemo from './GlitchTextDemo';
 import { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { Gradients } from './Gradients';
 
 const MagnifyWrapper = () => {
   const [imageSrc, setImageSrc] = useState('/assets/images/magnify/1.png');
@@ -76,6 +77,15 @@ const experiments = [
     date: '2025-08-06',
     tags: ['react', 'typescript', 'vanilla-js', 'library', 'npm'],
     component: <GlitchTextDemo />,
+  },
+  {
+    id: 7,
+    title: 'Gradients',
+    description:
+      'Gradient sizes does not matter. Make sure to resize them before using it to save some bytes. Toggle between themes to see it working on two different images.',
+    date: '2025-09-05',
+    tags: ['react', 'typescript', 'tailwindcss', 'optimization'],
+    component: <Gradients />,
   },
 ];
 
@@ -168,7 +178,7 @@ export default function LabPage() {
                       <span className="highlight-text py-[2px] px-[6px] group-hover:text-background group-active:text-background transition-all">
                         {title}
                       </span>
-                      <span className="break-all text-xs text-muted-foreground pl-1.5 leading-normal">
+                      <span className="text-pretty text-xs text-muted-foreground pl-1.5 leading-normal">
                         {description}
                       </span>
                     </p>

@@ -112,7 +112,7 @@ const Header = () => {
   return (
     <nav className="fixed bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20 bg-background shadow-lg rounded-xl p-1 gap-2 flex items-center border border-border overflow-hidden">
       <div
-        className="flex items-center gap-2 bg-primary mix-blend-color-burn dark:mix-blend-lighten absolute inset-0 motion-safe:transition-[clip-path,background-color] motion-safe:[transition-duration:150ms] ease-in-out-quad pointer-events-none"
+        className="flex items-center gap-2 bg-primary mix-blend-plus-lighter dark:mix-blend-lighten absolute inset-0 motion-safe:transition-[clip-path,background-color] motion-safe:[transition-duration:150ms] ease-in-out-quad pointer-events-none"
         style={{
           clipPath: `inset(10% ${clipMaskValue.start} 10% ${clipMaskValue.end} round 0.5rem)`,
         }}
@@ -128,13 +128,13 @@ const Header = () => {
               <Link
                 aria-label="Navigate to the 'lab' section of my website"
                 href={isTheLab ? '/' : '/lab'}
-                className={`p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0.75s]'}`}
+                className={`active:scale-98 p-3 rounded-lg transition-[colors,transform] duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0.75s]'}`}
                 style={hasAppeared ? {} : ({ '--delay': '0s' } as any)}
               >
                 {isTheLab ? (
-                  <Home className="h-6 w-6 transition-colors duration-75" />
+                  <Home className="h-6 w-6 transition-[colors,transform] duration-75" />
                 ) : (
-                  <FlaskRound className="h-6 w-6 transition-colors duration-75" />
+                  <FlaskRound className="h-6 w-6 transition-[colors,transform] duration-75" />
                 )}
               </Link>
             </div>
@@ -155,10 +155,10 @@ const Header = () => {
                 aria-label="Open your email client to contact me"
                 href="mailto:molinamw+digital@gmail.com"
                 target="_blank"
-                className={`p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0s]'}`}
+                className={`active:scale-98 p-3 rounded-lg transition-[colors,transform] duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0s]'}`}
                 style={hasAppeared ? {} : ({ '--delay': '0.25s' } as any)}
               >
-                <GmailIcon className="h-6 w-6 transition-colors duration-75" />
+                <GmailIcon className="h-6 w-6 transition-[colors,transform] duration-75" />
               </Link>
             </div>
           </TooltipTrigger>
@@ -178,10 +178,10 @@ const Header = () => {
                 aria-label="Open my Github profile page in a new tab"
                 href="https://github.com/Josmolmor"
                 target="_blank"
-                className={`p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0.25s]'}`}
+                className={`active:scale-98 p-3 rounded-lg transition-[colors,transform] duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0.25s]'}`}
                 style={hasAppeared ? {} : ({ '--delay': '0.5s' } as any)}
               >
-                <GithubIcon className="h-6 w-6 transition-colors duration-75" />
+                <GithubIcon className="h-6 w-6 transition-[colors,transform] duration-75" />
               </Link>
             </div>
           </TooltipTrigger>
@@ -201,10 +201,10 @@ const Header = () => {
                 aria-label="Open my Linkedin profile page in a new tab"
                 href="https://www.linkedin.com/in/josmolmor/"
                 target="_blank"
-                className={`p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0.5s]'}`}
+                className={`active:scale-98 p-3 rounded-lg transition-[colors,transform] duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0.5s]'}`}
                 style={hasAppeared ? {} : ({ '--delay': '0.75s' } as any)}
               >
-                <LinkedinIcon className="h-6 w-6 transition-colors duration-75" />
+                <LinkedinIcon className="h-6 w-6 transition-[colors,transform] duration-75" />
               </Link>
             </div>
           </TooltipTrigger>
@@ -224,10 +224,10 @@ const Header = () => {
                 aria-label="Open my Codepen profile page in a new tab"
                 href="https://codepen.io/jmmolina"
                 target="_blank"
-                className={`p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0.75s]'}`}
+                className={`active:scale-98 p-3 rounded-lg transition-[colors,transform] duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[0.75s]'}`}
                 style={hasAppeared ? {} : ({ '--delay': '1s' } as any)}
               >
-                <CodepenIcon className="h-6 w-6 transition-colors duration-75" />
+                <CodepenIcon className="h-6 w-6 transition-[colors,transform] duration-75" />
               </Link>
             </div>
           </TooltipTrigger>
@@ -245,14 +245,14 @@ const Header = () => {
             >
               <button
                 aria-label="Switch theme"
-                className={`cursor-pointer p-3 rounded-lg transition-colors duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[1.25s]'}`}
+                className={`cursor-pointer active:scale-98 p-3 rounded-lg transition-[colors,transform] duration-75 ${hasAppeared ? 'opacity-100' : 'opacity-0 animate-appear delay-[1.25s]'}`}
                 style={hasAppeared ? {} : ({ '--delay': '1.25s' } as any)}
                 onClick={toggleTheme}
               >
                 {currentTheme === 'dark' ? (
-                  <Sun className="h-6 w-6 transition-colors duration-75" />
+                  <Sun className="h-6 w-6 transition-[colors,transform] duration-75" />
                 ) : (
-                  <Moon className="h-6 w-6 transition-colors duration-75" />
+                  <Moon className="h-6 w-6 transition-[colors,transform] duration-75" />
                 )}
               </button>
             </div>
