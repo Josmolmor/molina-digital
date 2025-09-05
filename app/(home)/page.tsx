@@ -28,7 +28,7 @@ const Home = () => {
               from="Software Engineer"
               to="Design Engineer"
               className="text-muted-foreground"
-              duration={3000}
+              duration={2000}
             />
           </div>
         </div>
@@ -56,7 +56,6 @@ const Home = () => {
           </span>
         </p>
       </div>
-      {/* <SideProjects /> */}
       <Timeline />
     </>
   );

@@ -128,7 +128,7 @@ const ExperiencePage = () => {
                   </div>
                 )
               ) : (
-                <div className="w-8 h-8 bg-primary rounded-lg"></div>
+                <div className="size-8 bg-primary rounded-lg"></div>
               )}
               {index < timelineItems.length - 1 && (
                 <div className="absolute top-12 w-px h-full border-l border-dashed border-border"></div>
@@ -137,7 +137,7 @@ const ExperiencePage = () => {
 
             {/* Timeline content */}
             <div className="flex-1">
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 sm:gap-1">
                 {item.url && (
                   <a
                     href={item.url}
@@ -146,17 +146,17 @@ const ExperiencePage = () => {
                     className="group flex items-center gap-1 w-fit"
                   >
                     <h2 className="text-lg font-bold">{item.title}</h2>
-                    <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                    <ArrowUpRight className="size-3 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
                   </a>
                 )}
                 <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
                   <span className="flex items-center text-muted-foreground text-sm">
-                    <CalendarDays className="w-4 h-4 mr-2 shrink-0" />
+                    <CalendarDays className="size-4 mr-2 shrink-0" />
                     {item.date}
                   </span>
                   {item.location && (
                     <span className="flex items-start sm:items-center text-muted-foreground text-sm">
-                      <MapPin className="w-4 h-4 mr-2 shrink-0 mt-0.5 sm:mt-0" />
+                      <MapPin className="size-4 mr-2 shrink-0 mt-0.5 sm:mt-0" />
                       {item.location}
                     </span>
                   )}

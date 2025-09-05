@@ -5,9 +5,10 @@ import './globals.css';
 import Header from './Header';
 import { cookies } from 'next/headers';
 import { Toaster } from '@/components/ui/sonner';
+import CrossPattern from '@/components/ui/cross-pattern';
 
 export const metadata: Metadata = {
-  title: 'Frontend Senior Software engineer',
+  title: 'Frontend engineer | Molina.digital',
   description:
     "Hey, I'm Molina, get to know me and my work a bit more by checking out my site.",
   keywords:
@@ -18,27 +19,27 @@ export const metadata: Metadata = {
     },
   ],
   openGraph: {
-    title: 'Jose M Molina - Frontend Senior Software engineer',
+    title: 'Jose M Molina - Frontend software engineer',
     description:
       "Hey there I'm Molina, get to know me and my work a bit more by checking out my site.",
     url: 'https://molina.digital/',
     siteName: 'JM Molina',
     images: [
       {
-        url: 'images/cooba-meta-img.jpg',
-        width: 800,
-        height: 600,
-        alt: 'JM Molina - Senior Software engineer',
+        url: 'images/meta-img.jpg',
+        width: 750,
+        height: 250,
+        alt: 'JM Molina - Frontend software engineer',
       },
     ],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image', // or 'summary' for a smaller card
-    title: 'JM Molina - Frontend Senior Software engineer',
+    title: 'JM Molina - Frontend software engineer',
     description:
       "Hey there I'm Molina, get to know me and my work a bit more by checking out my site.",
-    images: ['images/cooba-meta-img.jpg'],
+    images: ['images/meta.jpg'],
     site: '@molina.digital',
     creator: '@josmolmor',
   },
@@ -77,75 +78,7 @@ export default async function RootLayout({
         />
       </head>
       <body className={`antialiased min-h-dvh pt-12 sm:pt-20 pb-24`}>
-        <svg className="grid-background w-full h-full inset-0 fixed z-[-1] mix-blend-color">
-          <defs>
-            <pattern
-              id="grid"
-              width="160"
-              height="160"
-              patternUnits="userSpaceOnUse"
-            >
-              {/* Grid lines */}
-              <line
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="160"
-                stroke="var(--grid-background-lines-stroke-color)"
-                strokeWidth="var(--grid-background-lines-stroke-width)"
-                opacity="var(--grid-background-lines-opacity)"
-              />
-              <line
-                x1="0"
-                y1="0"
-                x2="160"
-                y2="0"
-                stroke="var(--grid-background-lines-stroke-color)"
-                strokeWidth="var(--grid-background-lines-stroke-width)"
-                opacity="var(--grid-background-lines-opacity)"
-              />
-
-              {/* Top-left cross (0,0) - exactly on the intersection */}
-              <line
-                x1="0"
-                y1="0"
-                x2="4"
-                y2="0"
-                stroke="var(--grid-background-cross-stroke-color)"
-                strokeWidth="var(--grid-background-cross-stroke-width)"
-                opacity="var(--grid-background-cross-opacity)"
-              />
-              <line
-                x1="0"
-                y1="0"
-                x2="0"
-                y2="4"
-                stroke="var(--grid-background-cross-stroke-color)"
-                strokeWidth="var(--grid-background-cross-stroke-width)"
-                opacity="var(--grid-background-cross-opacity)"
-              />
-              <line
-                x1="156"
-                y1="0"
-                x2="160"
-                y2="0"
-                stroke="var(--grid-background-cross-stroke-color)"
-                strokeWidth="var(--grid-background-cross-stroke-width)"
-                opacity="var(--grid-background-cross-opacity)"
-              />
-              <line
-                x1="0"
-                y1="156"
-                x2="0"
-                y2="160"
-                stroke="var(--grid-background-cross-stroke-color)"
-                strokeWidth="var(--grid-background-cross-stroke-width)"
-                opacity="var(--grid-background-cross-opacity)"
-              />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#grid)" />
-        </svg>
+        <CrossPattern />
         <Toaster position="top-center" />
         <main className="max-w-4xl w-full flex flex-col gap-16 mx-auto px-8 sm:px-12">
           <TooltipProvider delayDuration={200}>
