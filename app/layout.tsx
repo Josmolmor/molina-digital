@@ -6,6 +6,7 @@ import Header from './Header';
 import { cookies } from 'next/headers';
 import { Toaster } from '@/components/ui/sonner';
 import CrossPattern from '@/components/ui/cross-pattern';
+import EsTime from '@/components/es-time';
 
 export const metadata: Metadata = {
   title: 'Frontend engineer | Molina.digital',
@@ -80,7 +81,8 @@ export default async function RootLayout({
       <body className={`antialiased min-h-dvh pt-12 sm:pt-20 pb-24`}>
         <CrossPattern />
         <Toaster position="top-center" />
-        <main className="max-w-4xl w-full flex flex-col gap-16 mx-auto px-8 sm:px-12">
+        <EsTime />
+        <main className="max-w-4xl w-full flex flex-col gap-12 mx-auto px-8 sm:px-12">
           <TooltipProvider delayDuration={200}>
             <Header />
             {children}

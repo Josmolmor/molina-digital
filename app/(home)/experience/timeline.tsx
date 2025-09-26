@@ -35,6 +35,7 @@ import TrpcIcon from '@/components/icons/TrpcIcon';
 import { DotLottieWorkerReact } from '@lottiefiles/dotlottie-react';
 import XstateIcon from '@/components/icons/Xstate';
 import { parseTextWithLinks } from '@/lib/text-parse';
+import { motion } from 'motion/react';
 
 export function renderIcon(stackName: StackItem) {
   switch (stackName) {
@@ -97,116 +98,135 @@ export function renderIcon(stackName: StackItem) {
 
 const ExperiencePage = () => {
   return (
-    <div className="">
-      <SectionHeading title="Experience" />
-      <p className="mb-8 blur-appear">
-        Over 8 years of experience as a software engineer, specializing in
-        front-end development with technologies like React, Next.js, Vue, and
-        TypeScript. Led and contributed to global, asynchronous teams,
-        delivering high-quality UIs and scalable solutions for companies such as
-        iCIMS and Z1. Adept at Agile practices, managing teams, and mentoring
-        junior developers.
-      </p>
-
-      <div className="flex flex-col gap-16">
-        {timelineItems.map((item, index) => (
-          <div key={item.id} className="flex gap-3 sm:gap-4 md:gap-6">
-            <div className="relative flex items-start justify-center rounded-full">
-              {item.icon ? (
-                item.icon === 'lottiefiles' ? (
-                  <div className="w-8 h-8 bg-[#00DDB3] rounded-lg flex items-center justify-center">
-                    <DotLottieWorkerReact
-                      className="w-6 h-6"
-                      src="https://lottie.host/16b69e12-0efb-4061-b33d-12dc2b93fd84/Ax2k12jKRd.lottie"
-                      autoplay
-                      loop
-                    />
-                  </div>
-                ) : (
-                  <div className="bg-primary/10 text-primary dark:bg-primary dark:text-foreground rounded-lg p-2">
-                    <item.icon className="w-4 h-4" />
-                  </div>
-                )
+    <div className="flex flex-col gap-16">
+      {timelineItems.map((item, index) => (
+        <div key={item.id} className="flex gap-3 sm:gap-4 md:gap-6">
+          <div className="relative flex items-start justify-center rounded-full">
+            {item.icon ? (
+              item.icon === 'lottiefiles' ? (
+                <motion.div
+                  className="size-7 bg-[#00DDB3] rounded-lg flex items-center justify-center"
+                  initial={{ opacity: 0, filter: 'blur(2px)', scale: 0.8 }}
+                  animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
+                  transition={{
+                    duration: 0.5,
+                    ease: 'easeOut',
+                  }}
+                >
+                  <DotLottieWorkerReact
+                    className="size-5"
+                    src="https://lottie.host/16b69e12-0efb-4061-b33d-12dc2b93fd84/Ax2k12jKRd.lottie"
+                    autoplay
+                    loop
+                  />
+                </motion.div>
               ) : (
-                <div className="size-8 bg-primary rounded-lg"></div>
-              )}
-              {index < timelineItems.length - 1 && (
-                <div className="absolute top-12 w-px h-full border-l border-dashed border-border"></div>
-              )}
-            </div>
+                <motion.div
+                  className="bg-primary/10 text-primary dark:bg-primary dark:text-foreground rounded-lg p-2"
+                  initial={{ opacity: 0, filter: 'blur(2px)', scale: 0.8 }}
+                  animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }}
+                  transition={{
+                    duration: 0.25,
+                    ease: 'easeOut',
+                    delay: index / 2,
+                  }}
+                >
+                  <item.icon className="size-4" />
+                </motion.div>
+              )
+            ) : (
+              <div className="size-8 bg-primary rounded-lg"></div>
+            )}
+            {index < timelineItems.length - 1 && (
+              <motion.div
+                className="absolute top-12 w-px h-0 border-l border-dashed border-border"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: '100%' }}
+                transition={{
+                  duration: 0.5,
+                  ease: 'easeOut',
+                  delay: index / 2,
+                }}
+              ></motion.div>
+            )}
+          </div>
 
-            {/* Timeline content */}
-            <div className="flex-1">
-              <div className="flex flex-col gap-2 sm:gap-1">
-                {item.url && (
-                  <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-1 w-fit"
-                  >
-                    <h2 className="text-lg font-bold">{item.title}</h2>
-                    <ArrowUpRight className="size-3 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  </a>
-                )}
-                <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
-                  <span className="flex items-center text-muted-foreground text-sm">
-                    <CalendarDays className="size-4 mr-2 shrink-0" />
-                    {item.date}
-                  </span>
-                  {item.location && (
-                    <span className="flex items-start sm:items-center text-muted-foreground text-sm">
-                      <MapPin className="size-4 mr-2 shrink-0 mt-0.5 sm:mt-0" />
-                      {item.location}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="mt-4 [&>p]:mb-2 [&>p:last-child]:mb-0">
-                {parseTextWithLinks(item.description, {
-                  parseHtml: true,
-                  linkClassName: 'text-blue-600 hover:text-blue-800 underline',
-                })}
-              </div>
-
-              {item.stack && (
-                <div className="flex items-center gap-4 mt-4 flex-wrap">
-                  {item.stack.map((tech, techIndex) => (
-                    <Tooltip key={techIndex}>
-                      <TooltipTrigger asChild>
-                        <div className="flex items-center gap-2">
-                          <span className="text-foreground/80">
-                            {renderIcon(tech.id)}
-                            <span className="sr-only hidden">{tech.name}</span>
-                          </span>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{tech.name}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  ))}
-                </div>
-              )}
-
-              {item.recommendationLink && (
+          {/* Timeline content */}
+          <motion.div
+            className="flex-1"
+            initial={{ opacity: 0.5, filter: 'blur(2px)' }}
+            animate={{ opacity: 1, filter: 'blur(0px)' }}
+            transition={{ duration: 0.5, ease: 'easeOut', delay: index / 2 }}
+          >
+            <div className="flex flex-col gap-2 sm:gap-1">
+              {item.url && (
                 <a
-                  href={item.recommendationLink}
+                  href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-4 flex items-center gap-1 text-primary w-fit font-semibold hover:underline group"
+                  className="group flex items-center gap-1 w-fit"
                 >
-                  <span className="flex items-center gap-2 flex-wrap">
-                    Recommendation Letters{' '}
-                    <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  </span>
+                  <h2 className="text-lg font-bold">{item.title}</h2>
+                  <ArrowUpRight className="size-3 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </a>
               )}
+              <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
+                <span className="flex items-center text-muted-foreground text-sm">
+                  <CalendarDays className="size-4 mr-2 shrink-0" />
+                  {item.date}
+                </span>
+                {item.location && (
+                  <span className="flex items-start sm:items-center text-muted-foreground text-sm">
+                    <MapPin className="size-4 mr-2 shrink-0 mt-0.5 sm:mt-0" />
+                    {item.location}
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+
+            <div className="mt-4 [&>p]:mb-2 [&>p:last-child]:mb-0">
+              {parseTextWithLinks(item.description, {
+                parseHtml: true,
+                linkClassName: 'text-blue-600 hover:text-blue-800 underline',
+              })}
+            </div>
+
+            {item.stack && (
+              <div className="flex items-center gap-4 mt-4 flex-wrap">
+                {item.stack.map((tech, techIndex) => (
+                  <Tooltip key={techIndex}>
+                    <TooltipTrigger asChild>
+                      <div className="flex items-center gap-2">
+                        <span className="text-foreground/80">
+                          {renderIcon(tech.id)}
+                          <span className="sr-only hidden">{tech.name}</span>
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{tech.name}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                ))}
+              </div>
+            )}
+
+            {item.recommendationLink && (
+              <a
+                href={item.recommendationLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 flex items-center gap-1 text-primary w-fit font-semibold hover:underline group"
+              >
+                <span className="flex items-center gap-2 flex-wrap">
+                  Recommendation Letters{' '}
+                  <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </span>
+              </a>
+            )}
+          </motion.div>
+        </div>
+      ))}
     </div>
   );
 };

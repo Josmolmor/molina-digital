@@ -110,7 +110,7 @@ const Header = () => {
   };
 
   return (
-    <nav className="fixed bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20 bg-background shadow-lg rounded-xl p-1 gap-2 flex items-center border border-border overflow-hidden">
+    <nav className="fixed sm:bottom-4 left-1/2 transform -translate-x-1/2 z-20 bg-background shadow-lg rounded-xl p-1 gap-2 flex items-center border border-border overflow-hidden">
       <div
         className="flex items-center gap-2 bg-primary mix-blend-plus-lighter dark:mix-blend-lighten absolute inset-0 motion-safe:transition-[clip-path,background-color] motion-safe:[transition-duration:150ms] ease-in-out-quad pointer-events-none"
         style={{

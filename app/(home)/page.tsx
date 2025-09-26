@@ -4,11 +4,17 @@ import Timeline from '@/app/(home)/experience/timeline';
 import Image from 'next/image';
 import { GeistMono } from 'geist/font/mono';
 import { GlitchText } from 'glitch-text-effect/react';
+import { motion } from 'motion/react';
 
 const Home = () => {
   return (
     <>
-      <div className="flex flex-col gap-6">
+      <motion.div
+        className="flex flex-col gap-6"
+        initial={{ opacity: 0.5, filter: 'blur(2px)' }}
+        animate={{ opacity: 1, filter: 'blur(0px)' }}
+        transition={{ duration: 0.125, ease: 'easeOut' }}
+      >
         <div className="flex items-center gap-4">
           <div className="relative avatar-container">
             <div className="h-16 w-16 rounded-full bg-linear-to-r from-yellow-500 from-10% via-orange-500 via-50% to-rose-500 to-90% dark:from-indigo-500 dark:via-sky-500 dark:to-emerald-500 transition-transform duration-500 ease-in-out avatar-bg hover:rotate-720"></div>
@@ -21,7 +27,7 @@ const Home = () => {
             />
           </div>
           <div className="flex flex-col">
-            <span className={`${GeistMono.className} font-medium text-lg`}>
+            <span className={`${GeistMono.className} font-semibold text-lg`}>
               JM Molina
             </span>
             <GlitchText
@@ -33,29 +39,20 @@ const Home = () => {
           </div>
         </div>
         <p className="flex flex-col gap-2">
-          <span>Squinting at a screen to count pixels for a living.</span>
+          <span>Squinting at a screen counting pixels for a living.</span>
           <span>
-            As a software engineer specializing in front-end web development, I
-            create accessible, intuitive, and responsive user interfaces that
-            blend clean, modern design with cutting-edge technologies.
-          </span>
-          <span>
-            My keen interest in working with global platforms allows me to apply
-            my skills to projects that reach a diverse, worldwide audience.
-          </span>
-          <span>
-            While my experience spans the full stack, my passion for design
-            drives me to excel in front-end performance optimization, enhancing
-            user experience through fast load times and seamless interactions.
-            With a meticulous eye for detail, I strive to deliver projects that
-            are not only highly functional but beautifully crafted.
-          </span>
-          <span>
-            Outside of work, I enjoy spending time with my girlfriend and our
-            playful Pomeranian, Balú.
+            I'm a front-end developer with full-stack experience, passionate
+            about building digital experiences that feel effortless and look
+            beautiful. Every day, since more than&nbsp;
+            {new Date().getFullYear() - (2016 + 1)}&nbsp;years ago, I strive to
+            shape global platforms and products that don't just work, they
+            delight. My focus is on details that make a difference: interfaces
+            that guide instead of confuse, experiences that simplify life, and
+            products that leave a mark. I want the work I do to be recognized
+            not just for its function, but for the craft and care behind it.
           </span>
         </p>
-      </div>
+      </motion.div>
       <Timeline />
     </>
   );
