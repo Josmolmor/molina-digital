@@ -41,11 +41,11 @@ const Home = () => {
         <p className="flex flex-col gap-2">
           <span>Squinting at a screen counting pixels for a living.</span>
           <span>
-            I'm a front-end developer with full-stack experience, passionate
-            about building digital experiences that feel effortless and look
-            beautiful. Every day, since more than&nbsp;
+            I&apos;m a front-end developer with full-stack experience,
+            passionate about building digital experiences that feel effortless
+            and look beautiful. Every day, since more than&nbsp;
             {new Date().getFullYear() - (2016 + 1)}&nbsp;years ago, I strive to
-            shape global platforms and products that don't just work, they
+            shape global platforms and products that don&apos;t just work, they
             delight. My focus is on details that make a difference: interfaces
             that guide instead of confuse, experiences that simplify life, and
             products that leave a mark. I want the work I do to be recognized
