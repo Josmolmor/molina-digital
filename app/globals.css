@@ -380,6 +380,10 @@
   }
 }
 
+* {
+  cursor: none;
+}
+
 body {
   letter-spacing: var(--tracking-normal);
   background: var(--background);
