@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 
 export default function EsTime() {
   const [time, setTime] = useState(new Date());
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     const interval = setInterval(() => {
       setTime(new Date());
     }, 1000);
@@ -13,10 +15,23 @@ export default function EsTime() {
     return () => clearInterval(interval);
   }, []);
 
+  // Don't render anything during SSR to avoid hydration mismatch
+  if (!isClient) {
+    return (
+      <span
+        id="current-time"
+        className="tabular-nums fixed bottom-2 right-2 font-mono text-[10px] opacity-20 hover:opacity-100 transition-opacity duration-300 p-2"
+      >
+        {/* Placeholder for SSR */}
+      </span>
+    );
+  }
+
   return (
     <span
       id="current-time"
       className="tabular-nums fixed bottom-2 right-2 font-mono text-[10px] opacity-20 hover:opacity-100 transition-opacity duration-300 p-2"
+      suppressHydrationWarning
     >
       {time.toLocaleString('en-US', {
         timeZone: 'Europe/Madrid',

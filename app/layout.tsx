@@ -62,17 +62,22 @@ export default async function RootLayout({
   children: ReactNode;
 }>) {
   const storedTheme = (await cookies()).get('molina-digital-theme')?.value;
+  const isDark = storedTheme === 'dark' || (!storedTheme && false); // Default to light during SSR
 
   return (
-    <html lang="en">
+    <html lang="en" className={isDark ? 'dark' : ''} style={isDark ? { colorScheme: 'dark' } : {}}>
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                if (${storedTheme === 'dark'} || (${!storedTheme} && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  document.documentElement.classList.add('dark')
-                  document.documentElement.style.setProperty('color-scheme', 'dark')
+                const storedTheme = document.cookie.split('; ').find(row => row.startsWith('molina-digital-theme='))?.split('=')[1];
+                if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark');
+                  document.documentElement.style.setProperty('color-scheme', 'dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                  document.documentElement.style.removeProperty('color-scheme');
                 }
               })();
             `,
