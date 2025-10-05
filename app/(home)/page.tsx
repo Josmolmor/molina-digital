@@ -2,15 +2,21 @@
 
 import Timeline from '@/app/(home)/experience/timeline';
 import Image from 'next/image';
-import { GeistMono } from 'geist/font/mono';
 import { GlitchText } from 'glitch-text-effect/react';
 import { motion } from 'motion/react';
+import { Inclusive_Sans } from 'next/font/google';
+
+const inclusiveSans = Inclusive_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-inclusive-sans',
+});
 
 const Home = () => {
   return (
     <>
       <motion.div
-        className="flex flex-col gap-6"
+        className="flex flex-col gap-8"
         initial={{ opacity: 0.5, filter: 'blur(2px)' }}
         animate={{ opacity: 1, filter: 'blur(0px)' }}
         transition={{ duration: 0.125, ease: 'easeOut' }}
@@ -27,9 +33,7 @@ const Home = () => {
             />
           </div>
           <div className="flex flex-col">
-            <span className={`${GeistMono.className} font-semibold text-lg`}>
-              JM Molina
-            </span>
+            <span className="font-semibold text-lg">JM Molina</span>
             <GlitchText
               from="Software Engineer"
               to="Design Engineer"

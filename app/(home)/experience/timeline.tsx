@@ -218,8 +218,8 @@ const ExperiencePage = () => {
                 rel="noopener noreferrer"
                 className="mt-4 flex items-center gap-1 text-primary w-fit font-semibold hover:underline group"
               >
-                <span className="flex items-center gap-2 flex-wrap">
-                  Recommendation Letters{' '}
+                <span className="flex items-center gap-1 flex-wrap">
+                  Recommendation Letters
                   <ArrowUpRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </span>
               </a>

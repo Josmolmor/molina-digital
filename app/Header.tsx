@@ -277,7 +277,7 @@ const Header = () => {
   };
 
   return (
-    <nav className="fixed sm:bottom-4 left-1/2 transform -translate-x-1/2 z-20 bg-background shadow-lg rounded-xl px-1 gap-2 flex items-center border border-border overflow-hidden">
+    <nav className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-20 bg-background shadow-lg rounded-xl px-1 gap-2 flex items-center border border-border overflow-hidden">
       <MenuItems
         handleMouseMove={handleMouseMove}
         isTheLab={isTheLab}

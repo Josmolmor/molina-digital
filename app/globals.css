@@ -36,8 +36,8 @@
   --sidebar-accent-foreground: hsl(250 26.4706% 13.3333%);
   --sidebar-border: hsl(232.2581 100% 93.9216%);
   --sidebar-ring: hsl(216.5665 98.3122% 46.4706%);
-  --default-font-family: Satoshi, sans-serif;
-  --font-sans: Satoshi, sans-serif;
+  --default-font-family: 'Inclusive Sans', Satoshi, sans-serif;
+  --font-sans: 'Inclusive Sans', Satoshi, sans-serif;
   --font-serif: Georgia;
   --font-mono: monospace;
   --radius: 0.5rem;
@@ -119,8 +119,8 @@
   --sidebar-accent-foreground: hsl(210 40% 98.0392%);
   --sidebar-border: hsl(240 23.913% 18.0392%);
   --sidebar-ring: hsl(216.5665 98.3122% 46.4706%);
-  --default-font-family: Satoshi, sans-serif;
-  --font-sans: Satoshi, sans-serif;
+  --default-font-family: 'Inclusive Sans', Satoshi, sans-serif;
+  --font-sans: 'Inclusive Sans', Satoshi, sans-serif;
   --font-serif: Georgia;
   --font-mono: monospace;
   --radius: 0.5rem;

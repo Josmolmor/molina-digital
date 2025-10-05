@@ -148,7 +148,7 @@ const timelineItems: TimelineItem[] = [
     date: 'Mar 2016 - Aug 2019',
     location: 'Seville',
     description:
-      "Got the opportunity to start working as an intern on 2016 when I wasn't even done with my college degree and been happily coding since then.  - In charge of development, support and maintenance of the “Commercial Tracking” application, used by the company's administrative staff.  - Support and development of the company's specific Intranet.  - Support and development of the company's specific Intranet",
+      "Got the opportunity to start working as an intern on 2016 when I wasn't even done with my college degree and been happily coding since then. <br/><br/> - In charge of development, support and maintenance of the “Commercial Tracking” application, used by the company's administrative staff. <br/> - Support and development of the company's specific Intranet. <br/> - Support and development of the company's specific Intranet",
     stack: [
       { id: 'sharepoint', name: 'Sharepoint' },
       { id: 'sharp', name: 'C#' },
