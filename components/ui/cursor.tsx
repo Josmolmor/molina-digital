@@ -1,23 +1,49 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, useMotionValue, useSpring } from 'motion/react';
 
 const Cursor: React.FC = () => {
-  const [mousePosition, setMousePosition] = useState<{ x: number; y: number }>({
-    x: 0,
-    y: 0,
-  });
-
   const cursorX = useMotionValue(0);
   const cursorY = useMotionValue(0);
+  const targetX = useRef(0);
+  const targetY = useRef(0);
+  const animationFrameRef = useRef<number | null>(null);
 
-  // Track mouse movement
+  // Immediate response with smooth 120fps animation
+  const springX = useSpring(cursorX, {
+    stiffness: 2000,
+    damping: 50,
+    mass: 0.1,
+  });
+  const springY = useSpring(cursorY, {
+    stiffness: 2000,
+    damping: 50,
+    mass: 0.1,
+  });
+
+  // 120fps animation loop
+  useEffect(() => {
+    const animate = () => {
+      cursorX.set(targetX.current);
+      cursorY.set(targetY.current);
+      animationFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animationFrameRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, []);
+
+  // Track mouse movement with throttling
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-      cursorX.set(e.clientX - 4);
-      cursorY.set(e.clientY - 4);
+      targetX.current = e.clientX - 4;
+      targetY.current = e.clientY - 4;
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -25,18 +51,14 @@ const Cursor: React.FC = () => {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [mousePosition, cursorX, cursorY]);
+  }, []);
 
   return (
     <motion.div
       className="cursor fixed pointer-events-none z-50 top-0 left-0"
       style={{
-        x: cursorX,
-        y: cursorY,
-      }}
-      transition={{
-        type: 'tween',
-        duration: 0,
+        x: springX,
+        y: springY,
       }}
     >
       <svg

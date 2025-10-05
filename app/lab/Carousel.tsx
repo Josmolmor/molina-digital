@@ -208,7 +208,7 @@ export default function Carousel() {
             <div className="flex flex-col justify-between min-w-0 my-4">
               <span
                 className={clsx(
-                  'transition-opacity uppercase text-xs font-semibold',
+                  'transition-opacity uppercase text-xs font-semibold select-none',
                   isActive ? 'opacity-100' : 'opacity-0',
                 )}
                 style={{
@@ -219,7 +219,7 @@ export default function Carousel() {
               </span>
               <span
                 className={clsx(
-                  'transition-colors uppercase text-xs',
+                  'transition-colors uppercase text-xs select-none',
                   isActive
                     ? 'text-foreground font-semibold'
                     : 'text-muted-foreground',
@@ -240,7 +240,7 @@ export default function Carousel() {
               <img
                 src={src}
                 alt={title}
-                className="w-full h-full object-cover rounded-sm"
+                className="w-full h-full object-cover rounded-sm select-none"
               />
             </div>
           </div>
