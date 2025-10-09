@@ -530,4 +530,23 @@ canvas {
   .cross-primary {
     stroke: color-mix(in srgb, var(--primary) 20%, transparent);
   }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .marquee {
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 40%,
+      black 60%,
+      transparent
+    );
+  }
 }

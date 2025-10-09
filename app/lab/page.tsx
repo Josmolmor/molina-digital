@@ -11,6 +11,7 @@ import GlitchTextDemo from './GlitchTextDemo';
 import { useState, useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Gradients } from './Gradients';
+import ValidationBadge from '@/components/validation-badge';
 
 const MagnifyWrapper = () => {
   const [imageSrc, setImageSrc] = useState('/assets/images/magnify/1.png');
@@ -25,24 +26,24 @@ const MagnifyWrapper = () => {
 
 // This would typically come from a database or API
 const experiments = [
-  {
-    id: 1,
-    title: 'Image magnifier',
-    description:
-      'A simple image magnifier. Slide values are x2, x4, x6, and x8.',
-    date: '2024-10-20',
-    tags: ['react', 'shadcn', 'tailwindcss'],
-    component: <MagnifyWrapper />,
-  },
-  {
-    id: 2,
-    title: 'ThreeJS cube test',
-    description:
-      'A rotating cube with colored lights orbiting around it, continuously changing positions and illuminating the scene dynamically using threeJS. Try moving the cube around',
-    date: '2024-10-22',
-    tags: ['react', 'threeJS', 'tailwindcss'],
-    component: <ThreeDCube />,
-  },
+  // {
+  //   id: 1,
+  //   title: 'Image magnifier',
+  //   description:
+  //     'A simple image magnifier. Slide values are x2, x4, x6, and x8.',
+  //   date: '2024-10-20',
+  //   tags: ['react', 'shadcn', 'tailwindcss'],
+  //   component: <MagnifyWrapper />,
+  // },
+  // {
+  //   id: 2,
+  //   title: 'ThreeJS cube test',
+  //   description:
+  //     'A rotating cube with colored lights orbiting around it, continuously changing positions and illuminating the scene dynamically using threeJS. Try moving the cube around',
+  //   date: '2024-10-22',
+  //   tags: ['react', 'threeJS', 'tailwindcss'],
+  //   component: <ThreeDCube />,
+  // },
   {
     id: 3,
     title: 'Horizontal scroll showcase',
@@ -75,7 +76,7 @@ const experiments = [
     description:
       'A lightweight, customizable glitch text effect library with zero dependencies. Features multiple trigger types (hover, click, intersection, manual), configurable intensity levels, character sets, visual effects, and full TypeScript support.',
     date: '2025-08-06',
-    tags: ['react', 'typescript', 'vanilla-js', 'library', 'npm'],
+    tags: ['react', 'typescript', 'library', 'npm'],
     component: <GlitchTextDemo />,
   },
   {
@@ -86,6 +87,15 @@ const experiments = [
     date: '2025-09-05',
     tags: ['react', 'typescript', 'tailwindcss', 'optimization'],
     component: <Gradients />,
+  },
+  {
+    id: 8,
+    title: 'Validation Badge',
+    description:
+      'Infinite iteration on badges validation. Animating SVGs for the validation effect. Inspired by https://x.com/JohnPhamous/status/1975973281594483088',
+    date: '2025-10-09',
+    tags: ['svg', 'react', 'typescript', 'tailwindcss'],
+    component: <ValidationBadge />,
   },
 ];
 
@@ -156,7 +166,6 @@ export default function LabPage() {
             <h1 className="text-4xl font-bold text-center flex items-center justify-center gap-2">
               The Lab
             </h1>
-            <FlaskRound className="group-hover:animate-swirl transition-all size-8 text-primary rotate-20" />
           </div>
           <p className="mb-8 text-pretty text-center sm:text-left">
             Dive into my sandbox of UI/UX experiments, where I tinker with CSS,
