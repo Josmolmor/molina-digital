@@ -39,15 +39,15 @@ export default function Quote() {
       </div>
       <p className="relative z-10 font-serif italic">
         Writing computer software is one of the purest creative activities in
-        the history of the human race. Programmers aren't bound by practical
-        limitations such as the laws of physics; we can create exciting virtual
-        worlds with behaviors that could never exist in the real world.
-        Programming doesn't require great physical skill or coordination like
-        ballet or basketball. All programming requires is a creative mind and
-        the ability to organize your thoughts. If you can visualize a system,
-        you can probably implement it in a computer program.
+        the history of the human race. Programmers aren&apos;t bound by
+        practical limitations such as the laws of physics; we can create
+        exciting virtual worlds with behaviors that could never exist in the
+        real world. Programming doesn&apos;t require great physical skill or
+        coordination like ballet or basketball. All programming requires is a
+        creative mind and the ability to organize your thoughts. If you can
+        visualize a system, you can probably implement it in a computer program.
         <span className="text-xs text-muted-foreground block mt-5">
-          From "A Philosophy of Software Design" by John Ousterhout
+          From &ldquo;A Philosophy of Software Design&rdquo; by John Ousterhout
         </span>
       </p>
     </div>

@@ -10,6 +10,7 @@ import {
   useTransform,
   type Transition,
 } from 'motion/react';
+import Link from 'next/link';
 import { HandPointing } from '@/components/ui/icons/hand-pointing';
 import {
   useEffect,
@@ -342,7 +343,7 @@ export function CardStack({ strategies, cover }: CardStackProps) {
         transition={{ duration: 0.3, ease: 'easeInOut' }}
         className="flex items-center gap-2 absolute top-4 left-4 text-sm"
       >
-        <a
+        <Link
           href="/"
           className="group text-muted-foreground flex items-center gap-2 p-2 transition-colors hover:text-foreground hover:underline underline-offset-2 font-medium"
         >
@@ -351,7 +352,7 @@ export function CardStack({ strategies, cover }: CardStackProps) {
             className="size-4 shrink-0 group-hover:-translate-x-0.5 transition-transform"
           />
           Home
-        </a>
+        </Link>
       </motion.div>
       <p className="sr-only" aria-live="polite">
         {`${cardLabel(deck[activeIndex])} Card ${activeIndex + 1} of ${deck.length}. Press Enter for the next card.`}
