@@ -97,6 +97,9 @@ function dealTransition(delay: number): Transition {
   return { ...DEAL, delay, opacity: { ...OPACITY_IN, delay } };
 }
 
+/* The last card lands a full spring after the longest stagger. */
+const DEAL_TOTAL = 1 + BOTTOM_DEPTH * DEAL_STAGGER;
+
 /* Out and back. The throw shortens with a harder flick; the return is fixed. */
 const RETURN_DURATION = 0.5;
 
@@ -137,6 +140,12 @@ type Motion = {
   reduce: boolean;
   /* Keyboard navigation: swap without motion. */
   instant: boolean;
+  /*
+   * The card underneath was already uncovered by the drag, so its face is
+   * on screen before it is promoted: replaying the enter animation on the
+   * text would flicker something the eye is already reading.
+   */
+  dragged: boolean;
 };
 
 function stillness(motion: Motion) {
@@ -223,18 +232,30 @@ export function CardStack({ strategies, cover }: CardStackProps) {
     velocity: 0,
     reduce,
     instant: false,
+    dragged: false,
   });
 
   /*
    * There is no going back: whichever way the top card is thrown, it goes to
    * the bottom of the deck and the one underneath comes up.
    */
-  function next(exitDirection: 1 | -1 = -1, velocity = 0, instant = false) {
+  function next(
+    exitDirection: 1 | -1 = -1,
+    velocity = 0,
+    instant = false,
+    dragged = false,
+  ) {
     /*
      * No animation lock: springs retarget from their current state, so a
      * second swipe should land on the deck, not on a dead card.
      */
-    setMotionContext({ exitDirection, velocity, reduce, instant });
+    setMotionContext({ exitDirection, velocity, reduce, instant, dragged });
+
+    /*
+     * A card thrown before the hand has finished landing ends the deal early:
+     * whatever comes up next must arrive with its face already on.
+     */
+    setDealt(true);
 
     setActiveIndex((current) => (current + 1) % deck.length);
   }
@@ -253,9 +274,24 @@ export function CardStack({ strategies, cover }: CardStackProps) {
   const dealtRef = useRef(false);
   const dealing = !dealtRef.current;
 
+  /*
+   * The faces stay blank for the length of the deal: the cards are still
+   * translucent on the way in, so text under them would read through as a
+   * rendering fault. Once the hand has landed the faces come up — including
+   * the one under the cover, which a drag can uncover before it is promoted.
+   */
+  const [dealt, setDealt] = useState(false);
+
   useEffect(() => {
     dealtRef.current = true;
-  }, []);
+
+    const landed = window.setTimeout(
+      () => setDealt(true),
+      reduce ? 0 : DEAL_TOTAL * 1000,
+    );
+
+    return () => window.clearTimeout(landed);
+  }, [reduce]);
 
   /*
    * AnimatePresence freezes an exiting card's props at its last render, so the
@@ -357,7 +393,7 @@ export function CardStack({ strategies, cover }: CardStackProps) {
       <p className="sr-only" aria-live="polite">
         {`${cardLabel(deck[activeIndex])} Card ${activeIndex + 1} of ${deck.length}. Press Enter for the next card.`}
       </p>
-      <div className="absolute inset-0 top-16 bottom-30 mx-auto w-full p-2 pb-4 sm:max-w-lg sm:p-5 lg:p-6">
+      <div className="absolute inset-0 top-16 bottom-30 m-auto w-full p-2 pb-4 sm:max-w-lg sm:p-5 lg:p-6 max-h-192">
         {/* `isolate` keeps the returning card's negative z-index inside this
             stack instead of dropping it behind the page background. */}
         <div className="relative isolate size-full">
@@ -403,7 +439,7 @@ export function CardStack({ strategies, cover }: CardStackProps) {
                       : PROMOTE
               }
             >
-              <CardContent card={card} dealing={dealing} />
+              <CardContent card={card} dealing={!dealt} />
             </motion.div>
           ))}
 
@@ -414,6 +450,7 @@ export function CardStack({ strategies, cover }: CardStackProps) {
               key={activeIndex}
               card={deck[activeIndex]}
               deal={dealing}
+              dealt={dealt}
               motionContext={motionContext}
               motionRef={motionRef}
               reduce={reduce}
@@ -455,15 +492,23 @@ export function CardStack({ strategies, cover }: CardStackProps) {
 type ActiveCardProps = {
   card: DeckCard;
   deal: boolean;
+  /* The hand has landed, so faces may come up. */
+  dealt: boolean;
   motionContext: Motion;
   motionRef: RefObject<Motion>;
   reduce: boolean;
-  onNext: (exitDirection?: 1 | -1, velocity?: number) => void;
+  onNext: (
+    exitDirection?: 1 | -1,
+    velocity?: number,
+    instant?: boolean,
+    dragged?: boolean,
+  ) => void;
 };
 
 function ActiveCard({
   card,
   deal,
+  dealt,
   motionContext,
   motionRef,
   reduce,
@@ -568,6 +613,9 @@ function ActiveCard({
         thrownRight ? 1 : -1,
         /* px/s → % of card width per second, the unit the exit animates in. */
         width > 0 ? (velocityX / width) * 100 : 0,
+        false,
+        /* The next card is already uncovered: it must not fade its face in. */
+        true,
       );
     }
   }
@@ -644,7 +692,11 @@ function ActiveCard({
         onDragEnd={handleDragEnd}
         onClick={handleClick}
       >
-        <CardContent card={card} dealing={deal} />
+        <CardContent
+          card={card}
+          dealing={!dealt}
+          revealed={motionContext.dragged}
+        />
       </motion.div>
     </motion.div>
   );
@@ -699,8 +751,20 @@ async function copyToClipboard(
  * `dealing` covers the opening hand, while the cover card still sits on top:
  * the strategy underneath reads as backdrop, so its text and actions sit back
  * at a lower opacity until the first card is thrown.
+ *
+ * `revealed` means the drag already showed this face before the card was
+ * promoted. Its text is on screen and being read, so it starts where it
+ * already is instead of blurring back in.
  */
-function CardContent({ card, dealing }: { card: DeckCard; dealing?: boolean }) {
+function CardContent({
+  card,
+  dealing,
+  revealed,
+}: {
+  card: DeckCard;
+  dealing?: boolean;
+  revealed?: boolean;
+}) {
   if (card.kind === 'cover') {
     return (
       <div className="relative size-full">
@@ -730,7 +794,9 @@ function CardContent({ card, dealing }: { card: DeckCard; dealing?: boolean }) {
     <div className="flex h-full flex-col justify-center p-[9cqw] @2xl:p-[8cqw] ring ring-inset ring-neutral-300">
       <div>
         <motion.span
-          initial={{ opacity: 0, filter: 'blur(4px)', y: 8 }}
+          initial={
+            revealed ? false : { opacity: 0, filter: 'blur(4px)', y: 8 }
+          }
           animate={{
             opacity: dealing ? 0 : 1,
             filter: 'blur(0px)',
@@ -745,7 +811,9 @@ function CardContent({ card, dealing }: { card: DeckCard; dealing?: boolean }) {
         </motion.span>
 
         <motion.p
-          initial={{ opacity: 0, filter: 'blur(2px)', y: 8 }}
+          initial={
+            revealed ? false : { opacity: 0, filter: 'blur(2px)', y: 8 }
+          }
           animate={{
             opacity: dealing ? 0 : 1,
             filter: 'blur(0px)',
@@ -759,7 +827,9 @@ function CardContent({ card, dealing }: { card: DeckCard; dealing?: boolean }) {
           {card.strategy.prompt}
         </motion.p>
         <motion.div
-          initial={{ opacity: 0, filter: 'blur(4px)', scale: 0.85 }}
+          initial={
+            revealed ? false : { opacity: 0, filter: 'blur(4px)', scale: 0.85 }
+          }
           animate={{
             opacity: dealing ? 0 : 1,
             filter: 'blur(0px)',
