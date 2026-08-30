@@ -111,7 +111,7 @@ export default function ValidationBadge() {
       </motion.div>
 
       <h1 className="text-2xl font-bold mb-2">Your Pull Request Looks Good</h1>
-      <span className="text-sm text-muted-foreground max-w-xs text-center text-pretty">
+      <span className="text-sm text-muted-foreground max-w-xs text-center">
         No issues have been found and it will be manually reviewed and merged by
         the team.
       </span>

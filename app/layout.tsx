@@ -2,43 +2,39 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import type { Metadata, Viewport } from 'next';
 import { ReactNode } from 'react';
 import './globals.css';
-import Header from './Header';
 import { cookies } from 'next/headers';
 import { Toaster } from '@/components/ui/sonner';
-import CrossPattern from '@/components/ui/cross-pattern';
-import EsTime from '@/components/es-time';
-import Cursor from '@/components/ui/cursor';
 
 export const metadata: Metadata = {
-  title: 'Frontend engineer | Molina.digital',
+  title: 'Jose Molina | Frontend Software Engineer',
   description:
     "Hey, I'm Molina, get to know me and my work a bit more by checking out my site.",
   keywords:
     'frontend, engineering, software, development, react, next, tailwindcss',
   authors: [
     {
-      name: 'Jose M Molina - https://molina.digital',
+      name: 'Jose Molina - https://molina.digital',
     },
   ],
   openGraph: {
-    title: 'Jose M Molina - Frontend software engineer',
+    title: 'Jose Molina - Frontend Software Engineer',
     description:
       "Hey there I'm Molina, get to know me and my work a bit more by checking out my site.",
     url: 'https://molina.digital/',
-    siteName: 'JM Molina',
+    siteName: 'Jose Molina',
     images: [
       {
         url: 'images/meta-img.jpg',
         width: 750,
         height: 250,
-        alt: 'JM Molina - Frontend software engineer',
+        alt: 'Jose Molina - Frontend Software Engineer',
       },
     ],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image', // or 'summary' for a smaller card
-    title: 'JM Molina - Frontend software engineer',
+    title: 'Jose Molina - Frontend Software Engineer',
     description:
       "Hey there I'm Molina, get to know me and my work a bit more by checking out my site.",
     images: ['images/meta.jpg'],
@@ -65,36 +61,33 @@ export default async function RootLayout({
   const isDark = storedTheme === 'dark' || (!storedTheme && false); // Default to light during SSR
 
   return (
-    <html lang="en" className={isDark ? 'dark' : ''} style={isDark ? { colorScheme: 'dark' } : {}}>
+    <html
+      lang="en"
+      className={isDark ? 'dark' : ''}
+      style={isDark ? { colorScheme: 'dark' } : {}}
+      suppressHydrationWarning
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                const storedTheme = document.cookie.split('; ').find(row => row.startsWith('molina-digital-theme='))?.split('=')[1];
-                if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                  document.documentElement.classList.add('dark');
-                  document.documentElement.style.setProperty('color-scheme', 'dark');
-                } else {
-                  document.documentElement.classList.remove('dark');
-                  document.documentElement.style.removeProperty('color-scheme');
-                }
+                var cookiePrefix = 'molina-digital-theme=';
+                var row = document.cookie.split('; ').find(function(part) {
+                  return part.startsWith(cookiePrefix);
+                });
+                var storedTheme = row ? row.slice(cookiePrefix.length) : undefined;
+                var isDark = storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                document.documentElement.classList.toggle('dark', isDark);
+                document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
               })();
             `,
           }}
         />
       </head>
-      <body className={`antialiased min-h-dvh pt-12 sm:pt-20 pb-24`}>
-        <CrossPattern />
+      <body className="antialiased">
         <Toaster position="top-center" />
-        <EsTime />
-        <Cursor />
-        <main className="max-w-4xl w-full flex flex-col gap-12 mx-auto px-8 sm:px-12">
-          <TooltipProvider delayDuration={200}>
-            <Header />
-            {children}
-          </TooltipProvider>
-        </main>
+        <TooltipProvider delayDuration={200}>{children}</TooltipProvider>
       </body>
     </html>
   );

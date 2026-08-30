@@ -4,10 +4,10 @@ import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="flex items-center justify-center min-h-dvh">
+    <div className="flex items-center justify-center h-dvh w-dvw">
       <div className="max-w-md space-y-6 p-4 text-center">
         <div className="flex justify-center">
-          <SearchX className="size-14 text-destructive" />
+          <SearchX className="size-10 text-destructive" />
         </div>
         <h1 className="text-4xl font-bold text-foreground tracking-tight">
           Page Not Found
@@ -17,8 +17,8 @@ export default function NotFound() {
           changed, or is temporarily unavailable.
         </p>
         <Button asChild className="px-4 py-2 rounded-full" size="lg">
-          <Link href="/events" className="px-8">
-            Back to Home
+          <Link href="/" className="px-8">
+            Back home
           </Link>
         </Button>
       </div>
