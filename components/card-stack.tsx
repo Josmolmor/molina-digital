@@ -794,9 +794,7 @@ function CardContent({
     <div className="flex h-full flex-col justify-center p-[9cqw] @2xl:p-[8cqw] ring ring-inset ring-neutral-300">
       <div>
         <motion.span
-          initial={
-            revealed ? false : { opacity: 0, filter: 'blur(4px)', y: 8 }
-          }
+          initial={revealed ? false : { opacity: 0, filter: 'blur(4px)', y: 8 }}
           animate={{
             opacity: dealing ? 0 : 1,
             filter: 'blur(0px)',
@@ -811,9 +809,7 @@ function CardContent({
         </motion.span>
 
         <motion.p
-          initial={
-            revealed ? false : { opacity: 0, filter: 'blur(2px)', y: 8 }
-          }
+          initial={revealed ? false : { opacity: 0, filter: 'blur(2px)', y: 8 }}
           animate={{
             opacity: dealing ? 0 : 1,
             filter: 'blur(0px)',
@@ -838,7 +834,7 @@ function CardContent({
           }}
           exit={{ opacity: 0, filter: 'blur(4px)', scale: 0.85 }}
           transition={{ duration: 0.25, ease: 'easeInOut' }}
-          className="absolute bottom-8 right-8 flex items-center gap-1 text-muted-foreground"
+          className="absolute bottom-8 right-8 flex items-center gap-1 text-neutral-400"
         >
           <Tooltip>
             <TooltipTrigger asChild>
@@ -847,7 +843,7 @@ function CardContent({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Share on X"
-                className="p-1 transition-colors hover:text-foreground underline underline-offset-2"
+                className="p-1 transition-colors hover:text-neutral-600 underline underline-offset-2"
                 onClick={(e) => {
                   e.stopPropagation();
                 }}
@@ -864,7 +860,7 @@ function CardContent({
               <button
                 type="button"
                 aria-label="Copy to clipboard"
-                className="p-1 cursor-pointer transition-colors hover:text-foreground underline underline-offset-2"
+                className="p-1 cursor-pointer transition-colors hover:text-neutral-600 underline underline-offset-2"
                 onClick={(e) =>
                   copyToClipboard(e, strategyQuote(card.strategy))
                 }
