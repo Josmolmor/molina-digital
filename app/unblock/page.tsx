@@ -1,6 +1,40 @@
 import { CardStack } from '@/components/card-stack';
 import Iridescence from '@/components/iridiscence';
 import { creativeStrategies } from '@/data/oblique';
+import type { Metadata } from 'next';
+
+const OG_IMAGE = {
+  url: '/opengraph-image',
+  width: 1200,
+  height: 1200,
+  alt: 'Jose Molina',
+};
+
+export const metadata: Metadata = {
+  title: 'Design strategies',
+  description: 'A deck of strategies to help you get unblocked.',
+  keywords:
+    'design strategies, creative unblock, oblique strategies, design prompts',
+  openGraph: {
+    title: 'Design strategies',
+    description: 'A deck of strategies to help you get unblocked.',
+    url: '/unblock',
+    siteName: 'Jose Molina',
+    type: 'website',
+    images: [OG_IMAGE],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Design strategies',
+    description: 'A deck of strategies to help you get unblocked.',
+    site: '@molina.digital',
+    creator: '@josmolmor',
+    images: [OG_IMAGE],
+  },
+  alternates: {
+    canonical: '/unblock',
+  },
+};
 
 /*
  * Shuffled per request on the server, so the client hydrates the order it was

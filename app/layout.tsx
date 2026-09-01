@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import { Toaster } from '@/components/ui/sonner';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://molina.digital'),
   title: 'Jose Molina | Frontend Software Engineer',
   description:
     "Hey, I'm Molina, get to know me and my work a bit more by checking out my site.",
@@ -22,22 +23,13 @@ export const metadata: Metadata = {
       "Hey there I'm Molina, get to know me and my work a bit more by checking out my site.",
     url: 'https://molina.digital/',
     siteName: 'Jose Molina',
-    images: [
-      {
-        url: 'images/meta-img.jpg',
-        width: 750,
-        height: 250,
-        alt: 'Jose Molina - Frontend Software Engineer',
-      },
-    ],
     type: 'website',
   },
   twitter: {
-    card: 'summary_large_image', // or 'summary' for a smaller card
+    card: 'summary',
     title: 'Jose Molina - Frontend Software Engineer',
     description:
       "Hey there I'm Molina, get to know me and my work a bit more by checking out my site.",
-    images: ['images/meta.jpg'],
     site: '@molina.digital',
     creator: '@josmolmor',
   },

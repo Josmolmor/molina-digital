@@ -12,7 +12,7 @@ export default function ProjectsPage() {
         href="/unblock"
         className="-mx-5 flex-1 flex flex-col gap-1.5 hover:bg-card active:bg-card pt-4 pb-5 px-5 rounded-2xl transition-[background-color] motion-reduce:transition-none"
       >
-        <span>Design Strategies</span>
+        <span>Design strategies</span>
         <span className="text-muted-foreground flex flex-col gap-1">
           A deck of strategies to help you get unblocked.
         </span>
