@@ -417,7 +417,7 @@ canvas {
     font-family: var(--font-mono);
   }
 
-  button:active {
+  button:active:not([data-tile-index]) {
     transform: scale(0.98);
   }
 
