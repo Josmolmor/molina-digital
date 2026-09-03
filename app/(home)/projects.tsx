@@ -24,8 +24,8 @@ export default function ProjectsPage() {
         >
           <span>Shapes</span>
           <span className="text-muted-foreground flex flex-col gap-1">
-            A generative grid of shapes and colors inspired by Sony's State of
-            Play show.
+            A generative grid of shapes and colors inspired by Sony&apos;s State
+            of Play show.
           </span>
         </Link>
       </div>
