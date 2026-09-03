@@ -97,6 +97,12 @@ function getRandomShape() {
 }
 
 function getRandomOrientation(name: PolygonName) {
+  if (name === 'triangle') {
+    return {
+      rotate: Math.random() < 0.5 ? (0 as const) : (180 as const),
+    };
+  }
+
   if (!FLIPPABLE_SHAPES.has(name)) return {};
 
   return {
