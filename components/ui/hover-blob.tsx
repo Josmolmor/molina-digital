@@ -25,6 +25,28 @@ interface HoverBlobProps {
 const FINE_HOVER_QUERY = '(hover: hover) and (pointer: fine)';
 const VIEWPORT_GUTTER = 12;
 const BLOB_GAP = 12;
+const CLOSE_GRACE_MS = 150;
+const WOBBLE_RANGE = 8;
+
+function wobbleFromPointer(
+  clientX: number,
+  clientY: number,
+  rect: { left: number; top: number; width: number; height: number },
+) {
+  if (!rect.width || !rect.height) return null;
+
+  return {
+    x: ((clientX - rect.left) / rect.width - 0.5) * WOBBLE_RANGE,
+    y: ((clientY - rect.top) / rect.height - 0.5) * WOBBLE_RANGE,
+  };
+}
+
+const gapFillerClassName = {
+  top: 'absolute inset-x-0 top-full h-3',
+  bottom: 'absolute inset-x-0 bottom-full h-3',
+  left: 'absolute inset-y-0 left-full w-3',
+  right: 'absolute inset-y-0 right-full w-3',
+} as const;
 
 type Coordinates = {
   left: number;
@@ -56,22 +78,49 @@ export function HoverBlob({
   const [isExiting, setIsExiting] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const blobRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const isOpenRef = useRef(false);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
   const contentX = useSpring(pointerX, { stiffness: 300, damping: 25 });
   const contentY = useSpring(pointerY, { stiffness: 300, damping: 25 });
 
-  const closeBlob = useCallback(() => {
-    setIsExiting(true);
-    setIsOpen(false);
+  isOpenRef.current = isOpen;
+
+  const cancelScheduledClose = useCallback(() => {
+    if (closeTimeoutRef.current === null) return;
+    clearTimeout(closeTimeoutRef.current);
+    closeTimeoutRef.current = null;
   }, []);
 
-  const openBlob = () => {
+  const closeBlob = useCallback(() => {
+    cancelScheduledClose();
+    setIsExiting(true);
+    setIsOpen(false);
+  }, [cancelScheduledClose]);
+
+  const openBlob = useCallback(() => {
+    cancelScheduledClose();
+    setIsExiting(false);
+    if (isOpenRef.current) {
+      setIsOpen(true);
+      return;
+    }
     setCoordinates(null);
     setIsPositioned(false);
     setIsReady(false);
     setIsOpen(true);
-  };
+  }, [cancelScheduledClose]);
+
+  const scheduleClose = useCallback(() => {
+    if (!hasFineHover()) return;
+    cancelScheduledClose();
+    closeTimeoutRef.current = setTimeout(() => {
+      closeTimeoutRef.current = null;
+      closeBlob();
+    }, CLOSE_GRACE_MS);
+  }, [cancelScheduledClose, closeBlob]);
 
   const adjustToViewport = useCallback(() => {
     const blob = blobRef.current;
@@ -178,26 +227,46 @@ export function HoverBlob({
     return () => window.removeEventListener('resize', reposition);
   }, [isOpen]);
 
+  useEffect(() => () => cancelScheduledClose(), [cancelScheduledClose]);
+
   return (
     <div
       ref={rootRef}
       className={`touch-hitbox relative inline font-medium ${className ?? ''}`}
       onPointerEnter={() => {
-        const fineHover = hasFineHover();
-        if (fineHover) openBlob();
+        if (hasFineHover()) openBlob();
       }}
       onPointerLeave={() => {
-        const fineHover = hasFineHover();
         pointerX.set(0);
         pointerY.set(0);
-        if (fineHover) closeBlob();
+        scheduleClose();
       }}
       onPointerMove={(event) => {
         if (!hasFineHover()) return;
 
-        const rect = event.currentTarget.getBoundingClientRect();
-        pointerX.set(((event.clientX - rect.left) / rect.width - 0.5) * 8);
-        pointerY.set(((event.clientY - rect.top) / rect.height - 0.5) * 8);
+        const blob = blobRef.current;
+        const content = contentRef.current;
+        const overBlob = Boolean(blob?.contains(event.target as Node));
+        const image =
+          overBlob && event.target instanceof Element
+            ? event.target.closest('img')
+            : null;
+        const trackingRect = overBlob
+          ? (image?.getBoundingClientRect() ?? content?.getBoundingClientRect())
+          : event.currentTarget.getBoundingClientRect();
+
+        if (!trackingRect) return;
+
+        const wobble = wobbleFromPointer(event.clientX, event.clientY, {
+          left: trackingRect.left - (overBlob ? contentX.get() : 0),
+          top: trackingRect.top - (overBlob ? contentY.get() : 0),
+          width: trackingRect.width,
+          height: trackingRect.height,
+        });
+        if (!wobble) return;
+
+        pointerX.set(wobble.x);
+        pointerY.set(wobble.y);
       }}
       onClick={() => {
         const fineHover = hasFineHover();
@@ -219,11 +288,7 @@ export function HoverBlob({
         {isOpen && (
           <motion.div
             ref={blobRef}
-            className={`
-              pointer-events-none
-              fixed
-              z-50
-            `}
+            className="fixed z-50"
             style={{
               left: coordinates?.left ?? 0,
               top: coordinates?.top ?? 0,
@@ -240,7 +305,9 @@ export function HoverBlob({
               },
             }}
           >
+            <div aria-hidden className={gapFillerClassName[position]} />
             <motion.div
+              ref={contentRef}
               key={isReady ? 'animated' : 'measuring'}
               className="
                 flex

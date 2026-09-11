@@ -55,7 +55,7 @@ const WorkPage = () => {
                           className="size-5 mr-1 shrink-0"
                         >
                           <path
-                            className="origin-center group-hover:animate-[cursor-swoop_750ms_cubic-bezier(0.65,0.05,0.36,1)_1] motion-reduce:animate-none"
+                            className="origin-center group-hover:animate-[cursor-swoop_750ms_cubic-bezier(0.65,0.05,0.36,1)_1] motion-reduce:animate-none fill-primary/25"
                             d="M12.034 12.681a.498.498 0 0 1 .647-.647l9 3.5a.5.5 0 0 1-.033.943l-3.444 1.068a1 1 0 0 0-.66.66l-1.067 3.443a.5.5 0 0 1-.943.033z"
                           />
                           <path d="M5 17A12 12 0 0 1 17 5" />
