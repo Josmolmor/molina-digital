@@ -39,7 +39,7 @@ const WorkPage = () => {
                         href="https://creator.lottiefiles.com?utm_source=molina.digital&utm_medium=referral"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group inline-flex items-center gap-0.5 relative z-10 text-primary font-medium hover:underline shrink-0 ml-1 mr-px"
+                        className="group inline-flex items-center gap-0.5 relative z-10 text-primary font-medium hover:underline underline-offset-4 shrink-0 ml-1 mr-px"
                       >
                         Creator
                         <svg
