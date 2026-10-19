@@ -11,6 +11,7 @@
     "build": "next build",
     "start": "next start",
     "type-check": "tsc --pretty --noEmit",
+    "lint": "eslint .",
     "format": "prettier --write .",
     "shadcn": "npx shadcn@latest add"
   },
@@ -36,6 +37,7 @@
     "three": "^0.169.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.6",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^14.18.63",
     "@types/react": "npm:types-react@19.0.0-rc.1",

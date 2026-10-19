@@ -15,11 +15,13 @@ type PathPair = {
 
 const SIZE = 256;
 const CENTER = SIZE / 2;
-const RADIUS = 104;
+const RADIUS = 116;
 
-const MERIDIANS = 12;
-const LATITUDES = 7;
-const SEGMENTS = 96;
+const MERIDIANS = 10;
+const LATITUDES = 6;
+const SEGMENTS = 94;
+
+const STROKE_WIDTH = 10;
 
 function project(
   latitude: number,
@@ -221,13 +223,13 @@ export function RotatingGlobe({
         cy={CENTER}
         r={RADIUS}
         stroke="currentColor"
-        strokeWidth="8"
+        strokeWidth={STROKE_WIDTH}
       />
 
       {/* Back hemisphere */}
       <g
         stroke="currentColor"
-        strokeWidth="8"
+        strokeWidth={STROKE_WIDTH}
         strokeLinecap="round"
         strokeLinejoin="round"
         opacity="0.22"
@@ -244,7 +246,7 @@ export function RotatingGlobe({
       {/* Front hemisphere */}
       <g
         stroke="currentColor"
-        strokeWidth="8"
+        strokeWidth={STROKE_WIDTH}
         strokeLinecap="round"
         strokeLinejoin="round"
       >

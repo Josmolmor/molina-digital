@@ -11,9 +11,8 @@ const PersonalPage = () => {
       </h2>
       <Separator />
       <div className="text-pretty">
-        <span>On the side, I like to cook, take care of </span>
+        <span>On the side, I like to cook, take care of my </span>
         <HoverBlob
-          className="text-emerald-600 dark:text-emerald-500"
           imageContent={
             <img
               loading="lazy"
@@ -23,14 +22,18 @@ const PersonalPage = () => {
             />
           }
           message="Just a few of them in the balcony"
+          className="font-normal"
         >
-          my plants{' '}
-          <PlantIcon className="inline-block size-5 shrink-0 -rotate-12 mb-0.5 -mt-0.5" />{' '}
-        </HoverBlob>
+          plants{' '}
+          <PlantIcon
+            outlineColor="var(--sticker)"
+            outlineWidth={12}
+            className="text-leaf inline-block size-9 shrink-0 rotate-16 -mt-1"
+          />
+        </HoverBlob>{' '}
         <span>
           make sure{' '}
           <HoverBlob
-            className="text-indigo-600 dark:text-indigo-500"
             imageContent={
               <img
                 loading="lazy"
@@ -40,13 +43,17 @@ const PersonalPage = () => {
               />
             }
             message="Meet the owner of the house"
+            className="font-normal"
           >
             Balu{' '}
-            <PawPrintIcon className="inline-block size-5 shrink-0 rotate-12 mb-0.5 -mt-0.5" />{' '}
-            is spoiled
+            <PawPrintIcon
+              outlineColor="var(--sticker)"
+              outlineWidth={14}
+              className="text-dog inline-block size-8 shrink-0 -rotate-12 -mt-1"
+            />
           </HoverBlob>
-        </span>
-        <span>, play games, and do logo design.</span>
+        </span>{' '}
+        <span>is spoiled, play video games, and do logo design.</span>
       </div>
     </section>
   );

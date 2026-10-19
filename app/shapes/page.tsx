@@ -333,7 +333,7 @@ export default function Shapes() {
       >
         <button
           type="button"
-          className="pointer-events-auto text-muted-foreground flex items-center justify-center border-0 bg-transparent p-2 transition-colors hover:text-foreground focus-visible:text-foreground focus-visible:outline-none"
+          className="pointer-events-auto text-muted-foreground flex items-center justify-center border-0 bg-transparent p-2 transition-colors hover:text-foreground focus-visible:text-foreground"
           aria-label={muted ? 'Unmute tile sounds' : 'Mute tile sounds'}
           aria-pressed={muted}
           onClick={() => setMuted((current) => !current)}
@@ -387,7 +387,7 @@ export default function Shapes() {
             <button
               key={i}
               type="button"
-              className="grid min-h-0 min-w-0 cursor-crosshair touch-none place-items-center border-0 bg-transparent p-0 text-inherit outline-none hover:brightness-95 focus:outline-none focus-visible:brightness-95"
+              className="grid min-h-0 min-w-0 cursor-crosshair touch-none place-items-center border-0 bg-transparent p-0 text-inherit hover:brightness-95 focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-white focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-black"
               data-tile-index={i}
               aria-label="Regenerate tile"
               onKeyDown={(event) => {

@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description:
       "A generative grid of shapes and colors inspired by Sony's State of Play show.",
     site: '@molina.digital',
-    creator: '@josmolmor',
+    creator: '@mlndev',
     images: [OG_IMAGE],
   },
   alternates: {

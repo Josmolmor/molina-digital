@@ -8,7 +8,7 @@ import { HoverBlob } from '@/components/ui/hover-blob';
 export const Intro = () => {
   return (
     <section className="flex flex-col gap-8">
-      <div className="flex flex-wrap items-end justify-between gap-1">
+      <div className="flex flex-wrap items-center justify-between gap-1">
         <SectionHeading />
         <div className="flex items-center gap-4 -mb-1 md:-mb-0.5">
           <a
@@ -29,12 +29,7 @@ export const Intro = () => {
             <span>Linkedin</span>
             <span className="rounded absolute bottom-0 left-0 h-0.5 w-full origin-bottom-right scale-x-0 bg-primary transition-transform ease-out-quad group-hover:origin-bottom-left group-hover:scale-x-100" />
           </a>
-          <a
-            href="mailto:molinamw@gmail.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative"
-          >
+          <a href="mailto:molinamw@gmail.com" className="group relative">
             <span>Contact</span>
             <span className="rounded absolute bottom-0 left-0 h-0.5 w-full origin-bottom-right scale-x-0 bg-primary transition-transform ease-out-quad group-hover:origin-bottom-left group-hover:scale-x-100" />
           </a>
@@ -53,14 +48,14 @@ export const Intro = () => {
           global{' '}
           <RotatingGlobe
             speed={50}
-            className="inline-block size-5 shrink-0 mb-0.5 -mt-0.5 rotate-6 hover:scale-120 transition-transform duration-300"
+            className="text-primary inline-block size-5 shrink-0 mb-0.5 -mt-0.5 rotate-6 hover:scale-120 transition-transform duration-300"
           />{' '}
           platforms and products that don&apos;t just work but delight.
         </p>
         <div>
           <span>My focus is on </span>
           <HoverBlob
-            className="text-wrap"
+            className="text-wrap font-normal"
             imageContent={
               <img
                 loading="lazy"
@@ -71,15 +66,18 @@ export const Intro = () => {
             }
             message="You know, I'm something of a design engineer myself"
           >
-            <span className="text-primary text-wrap">
+            <span className="text-wrap">
               details{' '}
-              <SparklesIcon className="inline-block size-5 shrink-0 mb-1 -mt-1 -rotate-6" />{' '}
-              that make a difference
+              <SparklesIcon
+                outlineColor="var(--sticker)"
+                outlineWidth={14}
+                className="text-primary inline-block size-8 shrink-0 rotate-6 -mt-1.5"
+              />
             </span>
-          </HoverBlob>
+          </HoverBlob>{' '}
           <span className="text-wrap">
-            : interfaces that guide instead of confuse, experiences that
-            simplify life, and products that leave a mark.
+            that make a difference: interfaces that guide instead of confuse,
+            experiences that simplify life, and products that leave a mark.
           </span>
         </div>
         <p>

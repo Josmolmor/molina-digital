@@ -1,27 +1,29 @@
-import { SearchX } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import type { Metadata } from 'next';
 import Link from 'next/link';
+import { ArrowLeft } from '@/components/ui/icons/arrow-left';
+
+export const metadata: Metadata = {
+  title: 'Page not found',
+};
 
 export default function NotFound() {
   return (
-    <div className="flex items-center justify-center h-dvh w-dvw">
-      <div className="max-w-md space-y-6 p-4 text-center">
-        <div className="flex justify-center">
-          <SearchX className="size-10 text-destructive" />
-        </div>
-        <h1 className="text-4xl font-bold text-foreground tracking-tight">
-          Page Not Found
-        </h1>
-        <p className="text-base text-muted-foreground">
-          The page you are looking for might have been removed, had its name
-          changed, or is temporarily unavailable.
-        </p>
-        <Button asChild className="px-4 py-2 rounded-full" size="lg">
-          <Link href="/" className="px-8">
-            Back home
-          </Link>
-        </Button>
-      </div>
-    </div>
+    <main className="flex min-h-dvh flex-col items-center justify-center gap-4 p-12 text-center">
+      <h1 className="font-serif text-2xl font-medium">Page not found</h1>
+      <p className="max-w-sm text-muted-foreground">
+        The page you are looking for might have been removed, had its name
+        changed, or is temporarily unavailable.
+      </p>
+      <Link
+        href="/"
+        className="group text-muted-foreground flex items-center gap-2 p-2 transition-colors hover:text-foreground hover:underline underline-offset-2 font-medium"
+      >
+        <ArrowLeft
+          aria-hidden
+          className="size-4 shrink-0 group-hover:-translate-x-0.5 transition-transform"
+        />
+        Home
+      </Link>
+    </main>
   );
 }

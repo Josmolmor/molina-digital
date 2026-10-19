@@ -1,5 +1,5 @@
 import { TooltipProvider } from '@/components/ui/tooltip';
-import type { Metadata, Viewport } from 'next';
+import type { Metadata } from 'next';
 import { ReactNode } from 'react';
 import './globals.css';
 import { cookies } from 'next/headers';
@@ -31,17 +31,12 @@ export const metadata: Metadata = {
     description:
       "Hey there I'm Molina, get to know me and my work a bit more by checking out my site.",
     site: '@molina.digital',
-    creator: '@josmolmor',
+    creator: '@mlndev',
   },
   robots: {
     index: true,
     follow: true,
   },
-};
-
-export const viewport: Viewport = {
-  maximumScale: 1,
-  userScalable: true,
 };
 
 export default async function RootLayout({

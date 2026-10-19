@@ -3,7 +3,9 @@
 import {
   AnimatePresence,
   motion,
+  MotionConfig,
   useMotionValue,
+  useReducedMotion,
   useSpring,
 } from 'motion/react';
 import {
@@ -24,7 +26,7 @@ interface HoverBlobProps {
 
 const FINE_HOVER_QUERY = '(hover: hover) and (pointer: fine)';
 const VIEWPORT_GUTTER = 12;
-const BLOB_GAP = 12;
+const BLOB_GAP = 20;
 const CLOSE_GRACE_MS = 150;
 const WOBBLE_RANGE = 8;
 
@@ -41,11 +43,19 @@ function wobbleFromPointer(
   };
 }
 
+// Bridges the BLOB_GAP so moving the pointer from the trigger to the blob doesn't close it
 const gapFillerClassName = {
-  top: 'absolute inset-x-0 top-full h-3',
-  bottom: 'absolute inset-x-0 bottom-full h-3',
-  left: 'absolute inset-y-0 left-full w-3',
-  right: 'absolute inset-y-0 right-full w-3',
+  top: 'absolute inset-x-0 top-full',
+  bottom: 'absolute inset-x-0 bottom-full',
+  left: 'absolute inset-y-0 left-full',
+  right: 'absolute inset-y-0 right-full',
+} as const;
+
+const gapFillerStyle = {
+  top: { height: BLOB_GAP },
+  bottom: { height: BLOB_GAP },
+  left: { width: BLOB_GAP },
+  right: { width: BLOB_GAP },
 } as const;
 
 type Coordinates = {
@@ -85,6 +95,7 @@ export function HoverBlob({
   const pointerY = useMotionValue(0);
   const contentX = useSpring(pointerX, { stiffness: 300, damping: 25 });
   const contentY = useSpring(pointerY, { stiffness: 300, damping: 25 });
+  const reducedMotion = useReducedMotion();
 
   isOpenRef.current = isOpen;
 
@@ -232,7 +243,28 @@ export function HoverBlob({
   return (
     <div
       ref={rootRef}
-      className={`touch-hitbox relative inline font-medium ${className ?? ''}`}
+      role="button"
+      tabIndex={0}
+      aria-expanded={isOpen}
+      className={`touch-hitbox token relative inline rounded-sm font-medium ${className ?? ''}`}
+      onFocus={(event) => {
+        if (event.currentTarget.matches(':focus-visible')) openBlob();
+      }}
+      onBlur={(event) => {
+        if (
+          isOpenRef.current &&
+          !event.currentTarget.contains(event.relatedTarget as Node)
+        )
+          closeBlob();
+      }}
+      onKeyDown={(event) => {
+        if (event.key === 'Escape' && isOpen) closeBlob();
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          if (isOpen) closeBlob();
+          else openBlob();
+        }
+      }}
       onPointerEnter={() => {
         if (hasFineHover()) openBlob();
       }}
@@ -242,7 +274,7 @@ export function HoverBlob({
         scheduleClose();
       }}
       onPointerMove={(event) => {
-        if (!hasFineHover()) return;
+        if (reducedMotion || !hasFineHover()) return;
 
         const blob = blobRef.current;
         const content = contentRef.current;
@@ -277,39 +309,44 @@ export function HoverBlob({
       }}
     >
       {children}
-      <AnimatePresence
-        mode="wait"
-        onExitComplete={() => {
-          setIsExiting(false);
-          setIsPositioned(false);
-          setIsReady(false);
-        }}
-      >
-        {isOpen && (
-          <motion.div
-            ref={blobRef}
-            className="fixed z-50"
-            style={{
-              left: coordinates?.left ?? 0,
-              top: coordinates?.top ?? 0,
-              visibility: isReady ? 'visible' : 'hidden',
-            }}
-            initial={false}
-            exit={{
-              opacity: 0,
-              scale: 0.96,
-              ...exitOffset[position],
-              transition: {
-                duration: 0.14,
-                ease: 'easeOut',
-              },
-            }}
-          >
-            <div aria-hidden className={gapFillerClassName[position]} />
+      <MotionConfig reducedMotion="user">
+        <AnimatePresence
+          mode="wait"
+          onExitComplete={() => {
+            setIsExiting(false);
+            setIsPositioned(false);
+            setIsReady(false);
+          }}
+        >
+          {isOpen && (
             <motion.div
-              ref={contentRef}
-              key={isReady ? 'animated' : 'measuring'}
-              className="
+              ref={blobRef}
+              className="fixed z-50"
+              style={{
+                left: coordinates?.left ?? 0,
+                top: coordinates?.top ?? 0,
+                visibility: isReady ? 'visible' : 'hidden',
+              }}
+              initial={false}
+              exit={{
+                opacity: 0,
+                scale: 0.96,
+                ...exitOffset[position],
+                transition: {
+                  duration: 0.14,
+                  ease: 'easeOut',
+                },
+              }}
+            >
+              <div
+                aria-hidden
+                className={gapFillerClassName[position]}
+                style={gapFillerStyle[position]}
+              />
+              <motion.div
+                ref={contentRef}
+                key={isReady ? 'animated' : 'measuring'}
+                className="
                 flex
                 items-center
                 justify-center
@@ -322,45 +359,46 @@ export function HoverBlob({
                 max-w-[calc(100vw-1.5rem)]
                 will-change-transform
               "
-              style={{ x: contentX, y: contentY }}
-              initial={
-                isReady
-                  ? {
-                      opacity: 0,
-                      scaleX: 0.4,
-                      scaleY: 0.5,
-                    }
-                  : false
-              }
-              animate={
-                isReady
-                  ? {
-                      opacity: 1,
-                      scaleX: 1,
-                      scaleY: 1,
-                      transition: { delay: 0.25 },
-                    }
-                  : {
-                      opacity: 1,
-                      scaleX: 1,
-                      scaleY: 1,
-                    }
-              }
-              transition={{
-                type: 'spring',
-                stiffness: 420,
-                damping: 20,
-                mass: 0.55,
-              }}
-            >
-              {imageContent}
-              <span className="text-sm sm:text-default max-w-full text-center whitespace-normal font-normal">
-                {message}
-              </span>
+                style={{ x: contentX, y: contentY }}
+                initial={
+                  isReady
+                    ? {
+                        opacity: 0,
+                        scaleX: 0.4,
+                        scaleY: 0.5,
+                      }
+                    : false
+                }
+                animate={
+                  isReady
+                    ? {
+                        opacity: 1,
+                        scaleX: 1,
+                        scaleY: 1,
+                        transition: { delay: 0.25 },
+                      }
+                    : {
+                        opacity: 1,
+                        scaleX: 1,
+                        scaleY: 1,
+                      }
+                }
+                transition={{
+                  type: 'spring',
+                  stiffness: 420,
+                  damping: 20,
+                  mass: 0.55,
+                }}
+              >
+                {imageContent}
+                <span className="text-sm sm:text-default max-w-full text-center whitespace-normal font-normal">
+                  {message}
+                </span>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      </MotionConfig>
     </div>
   );
 }

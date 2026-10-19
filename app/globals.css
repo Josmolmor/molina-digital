@@ -5,7 +5,10 @@
 :root {
   --background: oklch(0.98 0 0);
   --foreground: oklch(0.1461 0.0153 297.71);
-  --card: oklch(1 0 0);
+  /* Lightness offset from the page background for raised surfaces (card, token): darker on light, lighter on dark */
+  --surface-shift: -0.025;
+  --surface-shift-active: -0.04;
+  --card: oklch(from var(--background) calc(l + var(--surface-shift)) c h);
   --card-foreground: oklch(0.1461 0.0153 297.71);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.1461 0.0153 297.71);
@@ -85,12 +88,21 @@
   --ease-in-out-quint: cubic-bezier(0.86, 0, 0.07, 1);
   --ease-in-out-expo: cubic-bezier(1, 0, 0, 1);
   --ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
+
+  --leaf: oklch(0.72 0.17 155.1);
+  --dog: oklch(0.54 0.26 276.48);
+  --duotone-opacity: 0.35;
+  /* Icon sticker ring. Same in both themes: a sticker is an object, it doesn't adapt to the page */
+  --sticker: oklch(1 0 0);
+  /* How much icon color goes into the sticker fill (rest is --sticker) */
+  --sticker-fill: 55%;
 }
 
 .dark {
-  --background: oklch(0.1436 0.0152 284.32);
+  --background: oklch(0.2 0 0);
   --foreground: oklch(0.9851 0 0);
-  --card: oklch(0.21 0.03 277.16);
+  --surface-shift: 0.05;
+  --surface-shift-active: 0.08;
   --card-foreground: oklch(0.9842 0.0034 247.86);
   --popover: oklch(0.21 0.03 277.16);
   --popover-foreground: oklch(0.9842 0.0034 247.86);
@@ -143,6 +155,8 @@
   --selection-bg: oklch(0.6406 0.1974 252.97);
   --selection-fg: oklch(0.9463 0.0279 243.1);
   --filter: invert(0);
+  --duotone-opacity: 0.3;
+  --sticker-fill: 80%;
 }
 
 @theme inline {
@@ -178,6 +192,8 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-leaf: var(--leaf);
+  --color-dog: var(--dog);
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
@@ -380,9 +396,36 @@ canvas {
     transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
-    min-height: 44px;
+    min-height: 40px;
     min-width: 44px;
     z-index: 9999;
+  }
+}
+
+@utility token {
+  position: relative;
+  isolation: isolate;
+  padding-left: 0.5em;
+  padding-right: 0.55em;
+  margin-inline: -0.08em;
+  &::after {
+    content: '';
+    z-index: -1;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    inset-inline: 0;
+    height: calc(1.1em + 12px);
+    transform: translateY(calc(-50% + 1px));
+    border-radius: 1em;
+    background: var(--card);
+    transition: background-color 0.18s;
+  }
+  &:hover::after,
+  &[aria-expanded='true']::after {
+    background: oklch(
+      from var(--background) calc(l + var(--surface-shift-active)) c h
+    );
   }
 }
 
@@ -563,8 +606,159 @@ canvas {
   }
 }
 
+/* A plus-shaped spark looks the same at 0° and 90°, so the loop is seamless */
+@keyframes twinkle {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  /* Pinch in */
+  35% {
+    transform: scale(0.45) rotate(45deg);
+  }
+
+  /* Pop past full size */
+  65% {
+    transform: scale(1.2) rotate(90deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(90deg);
+  }
+}
+
+/* Leaf folds toward the stem, then unfurls past full size and settles. --grow-tilt sets the fold direction */
+@keyframes grow-leaf {
+  0% {
+    transform: none;
+  }
+
+  18% {
+    transform: scale(0.55) rotate(var(--grow-tilt));
+  }
+
+  60% {
+    transform: scale(1.1) rotate(calc(var(--grow-tilt) * -0.25));
+  }
+
+  80% {
+    transform: scale(0.98) rotate(0deg);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+/* Whole plant squashes and stretches from its base */
+@keyframes grow-stem {
+  0% {
+    transform: none;
+  }
+
+  18% {
+    transform: scaleY(0.88);
+  }
+
+  55% {
+    transform: scaleY(1.05);
+  }
+
+  80% {
+    transform: scaleY(0.99);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+/* Whole paw squashes down like a step, then springs back */
+@keyframes paw-press {
+  0% {
+    transform: none;
+  }
+
+  20% {
+    transform: scale(1.06, 0.88);
+  }
+
+  50% {
+    transform: scale(0.97, 1.05);
+  }
+
+  75% {
+    transform: scale(1.01, 0.99);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+/* Toe pulls in toward the pad, then spreads out. --toe-dx/--toe-dy is its outward direction */
+@keyframes toe-splay {
+  0% {
+    transform: none;
+  }
+
+  20% {
+    transform: translate(
+      calc(var(--toe-dx) * -6px),
+      calc(var(--toe-dy) * -6px)
+    );
+  }
+
+  55% {
+    transform: translate(
+      calc(var(--toe-dx) * 12px),
+      calc(var(--toe-dy) * 12px)
+    );
+  }
+
+  80% {
+    transform: translate(
+      calc(var(--toe-dx) * -2px),
+      calc(var(--toe-dy) * -2px)
+    );
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+/* Big sparkle star: small wind-up, pop and twist, settle. Peaks as the first spark pinches */
+@keyframes star-pop {
+  0% {
+    transform: none;
+  }
+
+  22% {
+    transform: scale(0.92) rotate(-6deg);
+  }
+
+  55% {
+    transform: scale(1.1) rotate(12deg);
+  }
+
+  80% {
+    transform: scale(0.98) rotate(-2deg);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
 @theme {
   --animate-hand-click: hand-click 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  --animate-star-pop: star-pop 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+  --animate-paw-press: paw-press 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+  --animate-toe-splay: toe-splay 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+  --animate-grow-leaf: grow-leaf 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+  --animate-grow-stem: grow-stem 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+  --animate-twinkle: twinkle 1.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 .cursor-none,

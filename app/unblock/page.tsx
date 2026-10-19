@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: 'Design strategies',
     description: 'A deck of strategies to help you get unblocked.',
     site: '@molina.digital',
-    creator: '@josmolmor',
+    creator: '@mlndev',
     images: [OG_IMAGE],
   },
   alternates: {

@@ -24,7 +24,7 @@ const WorkPage = () => {
                 >
                   {item.title}
                 </a>
-                <span className="text-xs text-muted-foreground tabular-nums">
+                <span className="text-xs text-muted-foreground tabular-nums font-mono">
                   {item.date}
                 </span>
               </div>
@@ -39,8 +39,9 @@ const WorkPage = () => {
                         href="https://creator.lottiefiles.com?utm_source=molina.digital&utm_medium=referral"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group inline-flex items-center gap-0.5 relative z-10 text-primary font-medium hover:underline underline-offset-4 shrink-0 ml-1 mr-px"
+                        className="group inline-flex items-center gap-0.5 relative z-10 text-primary font-medium shrink-0 ml-1 mr-px"
                       >
+                        <span className="rounded absolute bottom-0 left-0 h-0.5 w-14 origin-bottom-right scale-x-0 bg-primary transition-transform ease-out-quad group-hover:origin-bottom-left group-hover:scale-x-100" />
                         Creator
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -49,10 +50,10 @@ const WorkPage = () => {
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
-                          strokeWidth="2"
+                          strokeWidth="1.75"
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          className="size-5 mr-1 shrink-0"
+                          className="size-6.5 mr-0.75 shrink-0"
                         >
                           <path
                             className="origin-center group-hover:animate-[cursor-swoop_750ms_cubic-bezier(0.65,0.05,0.36,1)_1] motion-reduce:animate-none fill-primary/25"
