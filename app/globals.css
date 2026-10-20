@@ -91,6 +91,8 @@
 
   --leaf: oklch(0.72 0.17 155.1);
   --dog: oklch(0.54 0.26 276.48);
+  --cook: oklch(0.7 0.17 55);
+  --game: oklch(0.63 0.22 15);
   --duotone-opacity: 0.35;
   /* Icon sticker ring. Same in both themes: a sticker is an object, it doesn't adapt to the page */
   --sticker: oklch(1 0 0);
@@ -194,6 +196,8 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --color-leaf: var(--leaf);
   --color-dog: var(--dog);
+  --color-cook: var(--cook);
+  --color-game: var(--game);
 
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
@@ -751,8 +755,106 @@ canvas {
   }
 }
 
+/* Chef hat jumps up with a tilt and lands with a squash. Origin: bottom of the band */
+@keyframes hat-toss {
+  0% {
+    transform: none;
+  }
+
+  30% {
+    transform: translateY(-28px) rotate(-10deg);
+  }
+
+  /* Landing squash */
+  55% {
+    transform: scale(1.06, 0.9) rotate(3deg);
+  }
+
+  78% {
+    transform: scale(0.98, 1.03) rotate(-1deg);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+/* The puffy top inflates like a soufflé as the hat lands (delayed to the squash) */
+@keyframes puff-rise {
+  0% {
+    transform: none;
+  }
+
+  45% {
+    transform: scale(1.12);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+/* Controller buzzes side to side like force feedback, decaying to rest */
+@keyframes rumble {
+  0% {
+    transform: none;
+  }
+
+  10% {
+    transform: translateX(-5px) rotate(-7deg);
+  }
+
+  20% {
+    transform: translateX(5px) rotate(6deg);
+  }
+
+  30% {
+    transform: translateX(-4px) rotate(-5deg);
+  }
+
+  40% {
+    transform: translateX(3px) rotate(4deg);
+  }
+
+  52% {
+    transform: translateX(-2px) rotate(-2deg);
+  }
+
+  64% {
+    transform: rotate(1deg);
+  }
+
+  76%,
+  100% {
+    transform: none;
+  }
+}
+
+/* A d-pad/button presses in, then pops back past rest */
+@keyframes button-press {
+  0% {
+    transform: none;
+  }
+
+  30% {
+    transform: scale(0.7);
+  }
+
+  60% {
+    transform: scale(1.15);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
 @theme {
   --animate-hand-click: hand-click 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  --animate-hat-toss: hat-toss 0.75s cubic-bezier(0.4, 0, 0.2, 1) both;
+  --animate-puff-rise: puff-rise 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+  --animate-rumble: rumble 0.6s ease-out both;
+  --animate-button-press: button-press 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
   --animate-star-pop: star-pop 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
   --animate-paw-press: paw-press 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
   --animate-toe-splay: toe-splay 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;

@@ -1,4 +1,6 @@
 import { HoverBlob } from '@/components/ui/hover-blob';
+import { ChefHatIcon } from '@/components/ui/icons/chef-hat';
+import { GameControllerIcon } from '@/components/ui/icons/game-controller';
 import { PawPrintIcon } from '@/components/ui/icons/paw-print';
 import { PlantIcon } from '@/components/ui/icons/plant';
 import { Separator } from '@/components/ui/separator';
@@ -11,7 +13,17 @@ const PersonalPage = () => {
       </h2>
       <Separator />
       <div className="text-pretty">
-        <span>On the side, I like to cook, take care of my </span>
+        <span>On the side, I like to </span>
+        {/* No photo for these yet, so a plain token: same pill and hover animation, no popup */}
+        <span>
+          cook{' '}
+          <ChefHatIcon
+            outlineColor="var(--sticker)"
+            outlineWidth={14}
+            className="text-cook inline-block size-8 shrink-0 -rotate-8 -mt-1.5"
+          />
+        </span>
+        <span>, take care of my </span>
         <HoverBlob
           imageContent={
             <img
@@ -53,7 +65,16 @@ const PersonalPage = () => {
             />
           </HoverBlob>
         </span>{' '}
-        <span>is spoiled, play video games, and do logo design.</span>
+        <span>is spoiled, play </span>
+        <span>
+          video games{' '}
+          <GameControllerIcon
+            outlineColor="var(--sticker)"
+            outlineWidth={14}
+            className="text-game inline-block size-8 shrink-0 rotate-10 -mt-1"
+          />
+        </span>
+        <span>, and do logo design.</span>
       </div>
     </section>
   );
