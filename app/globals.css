@@ -431,6 +431,14 @@ canvas {
       from var(--background) calc(l + var(--surface-shift-active)) c h
     );
   }
+  /* The default outline traces each inline fragment (text + icon) separately, so ring the pill instead */
+  &:focus-visible {
+    outline: none;
+  }
+  &:focus-visible::after {
+    outline: 2px solid var(--ring);
+    outline-offset: -2px;
+  }
 }
 
 @layer utilities {
