@@ -12,7 +12,7 @@ const WorkPage = () => {
         {timelineItems.map((item) => (
           <div
             key={item.id}
-            className="relative flex gap-4 hover:bg-card active:bg-card pt-4 pb-5 px-5 rounded-2xl transition-[background-color] motion-reduce:transition-none"
+            className="relative flex gap-4 hover:bg-card active:bg-card pt-4 pb-5 px-5 rounded-2xl transition-[background-color] ease-[ease] motion-reduce:transition-none"
           >
             <div className="flex-1 flex flex-col gap-1.5">
               <div className="flex gap-2 items-center justify-between">
