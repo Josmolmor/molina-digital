@@ -410,7 +410,7 @@ canvas {
   position: relative;
   isolation: isolate;
   padding-left: 0.5em;
-  padding-right: 0.55em;
+  padding-right: 0.5em;
   margin-inline: -0.08em;
   &::after {
     content: '';
@@ -419,7 +419,7 @@ canvas {
     position: absolute;
     top: 50%;
     inset-inline: 0;
-    height: calc(1.1em + 12px);
+    height: calc(1.1em + 8px);
     transform: translateY(calc(-50% + 1px));
     border-radius: 1em;
     background: var(--card);

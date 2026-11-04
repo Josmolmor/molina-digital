@@ -86,9 +86,9 @@ export function HoverBlob({
   const [isPositioned, setIsPositioned] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
-  const blobRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLSpanElement>(null);
+  const blobRef = useRef<HTMLSpanElement>(null);
+  const contentRef = useRef<HTMLSpanElement>(null);
   const isOpenRef = useRef(false);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pointerX = useMotionValue(0);
@@ -241,7 +241,7 @@ export function HoverBlob({
   useEffect(() => () => cancelScheduledClose(), [cancelScheduledClose]);
 
   return (
-    <div
+    <span
       ref={rootRef}
       role="button"
       tabIndex={0}
@@ -319,7 +319,7 @@ export function HoverBlob({
           }}
         >
           {isOpen && (
-            <motion.div
+            <motion.span
               ref={blobRef}
               className="fixed z-50"
               style={{
@@ -338,12 +338,12 @@ export function HoverBlob({
                 },
               }}
             >
-              <div
+              <span
                 aria-hidden
                 className={gapFillerClassName[position]}
                 style={gapFillerStyle[position]}
               />
-              <motion.div
+              <motion.span
                 ref={contentRef}
                 key={isReady ? 'animated' : 'measuring'}
                 className="
@@ -394,11 +394,11 @@ export function HoverBlob({
                 <span className="text-sm sm:text-default max-w-full text-center whitespace-normal font-normal">
                   {message}
                 </span>
-              </motion.div>
-            </motion.div>
+              </motion.span>
+            </motion.span>
           )}
         </AnimatePresence>
       </MotionConfig>
-    </div>
+    </span>
   );
 }
