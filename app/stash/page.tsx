@@ -59,7 +59,7 @@ export default async function Stash({
         )}
       </StickyHeader>
 
-      <main className="flex w-full max-w-full flex-col gap-10 px-8 pt-4 pb-6 sm:px-12 xl:px-20 md:pb-24">
+      <main className="flex w-full max-w-full flex-col gap-10 px-8 sm:pt-4 pb-6 sm:px-12 xl:px-20 md:pb-24">
         {!items || !visible ? (
           <p className="text-muted-foreground text-center">
             The stash is unreachable right now. Try again in a bit.

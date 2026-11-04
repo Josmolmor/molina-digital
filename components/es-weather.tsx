@@ -49,7 +49,7 @@ function describe(code: number, isDay: boolean) {
 }
 
 const CLASS_NAME =
-  'text-muted-foreground flex flex-wrap items-center justify-center gap-x-1.5 gap-y-1 font-mono text-xs tabular-nums';
+  'text-muted-foreground flex flex-wrap items-center justify-start sm:justify-center gap-x-1.5 gap-y-1 font-mono text-xs tabular-nums';
 
 function City() {
   return (
@@ -81,9 +81,9 @@ export async function EsWeather({ className }: { className?: string }) {
     <BlurIn className={cn(CLASS_NAME, className)}>
       <span>{temperature}°C now in</span>
       <City />
-      <span className="ml-1">feels {feelsLike}°C</span>
+      <span>feels {feelsLike}°C</span>
       {condition && (
-        <span className="ml-1 flex items-center gap-1.5">
+        <span className="flex items-center gap-1.5">
           <WeatherIcon name={condition.icon} className="size-3.5 shrink-0" />
           {condition.label}
         </span>

@@ -5,9 +5,9 @@ import { SlideIn } from '@/components/ui/slide-in';
 
 export const Footer = () => {
   return (
-    <footer className="flex flex-col gap-8 pt-20">
-      <SlideIn className="flex flex-col items-start sm:items-center gap-3 sm:flex-row sm:justify-between">
-        <div className="flex flex-col items-start gap-3 sm:flex-row sm:gap-4">
+    <footer className="flex flex-col gap-8 pt-8">
+      <SlideIn className="flex flex-col items-start sm:items-center gap-2 sm:flex-row sm:justify-between">
+        <div className="flex flex-col items-start gap-2 sm:flex-row sm:gap-4">
           {/* City and flag show right away; the weather streams in around them */}
           <Suspense fallback={<EsWeatherFallback />}>
             <EsTime />
