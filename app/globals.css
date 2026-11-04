@@ -857,6 +857,24 @@ canvas {
   }
 }
 
+/* Text caret: holds on, fades out quickly, holds off. Used by /cursor-morph,
+ * which sets the duration on the element so it follows its speed control. */
+@keyframes caret-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  55%,
+  95% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
 @theme {
   --animate-hand-click: hand-click 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   --animate-hat-toss: hat-toss 0.75s cubic-bezier(0.4, 0, 0.2, 1) both;

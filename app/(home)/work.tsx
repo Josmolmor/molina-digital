@@ -8,11 +8,11 @@ const WorkPage = () => {
         Work
       </h2>
       <Separator />
-      <div className="flex flex-col gap-2 -mx-5">
+      <div className="flex flex-col gap-1.5 -mx-4.5">
         {timelineItems.map((item) => (
           <div
             key={item.id}
-            className="relative flex gap-4 hover:bg-card active:bg-card pt-4 pb-5 px-5 rounded-2xl transition-[background-color] ease-[ease] motion-reduce:transition-none"
+            className="relative flex gap-4 hover:bg-card active:bg-card px-4.5 pt-4 pb-4.5 rounded-2xl transition-[background-color] ease-[ease] motion-reduce:transition-none"
           >
             <div className="flex-1 flex flex-col gap-1.5">
               <div className="flex gap-2 items-center justify-between">
@@ -22,7 +22,7 @@ const WorkPage = () => {
                   rel="noopener noreferrer"
                   className="after:absolute after:inset-0 after:rounded-2xl"
                 >
-                  {item.title}
+                  <span className="leading-6.5 block">{item.title}</span>
                 </a>
                 <span className="text-xs text-muted-foreground tabular-nums font-mono">
                   {item.date}
