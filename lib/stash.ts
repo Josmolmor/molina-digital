@@ -30,6 +30,7 @@ export type StashItem = StashBase &
     | {
         kind: 'image';
         fileId: string;
+        /* video/* means an animation: a GIF, which Telegram stores as MP4 */
         mimeType: string;
         width?: number;
         height?: number;
@@ -45,6 +46,13 @@ export const STASH_IMAGE_TYPES = new Set([
   'image/gif',
   'image/avif',
 ]);
+
+/* Telegram's GIFs ("animations") are silent MP4 loops */
+export const STASH_ANIMATION_TYPES = new Set(['video/mp4', 'image/gif']);
+
+export function isAnimation(mimeType: string) {
+  return mimeType.startsWith('video/');
+}
 
 const ITEMS_KEY = 'stash:items';
 const ORDER_KEY = 'stash:order';

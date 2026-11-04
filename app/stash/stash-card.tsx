@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
 
-import type { StashItem } from '@/lib/stash';
+import { isAnimation, type StashItem } from '@/lib/stash';
 import { cn } from '@/lib/utils';
 import { parseYouTube, youTubeWatchUrl } from '@/lib/youtube';
 
+import { AnimatedImage } from './animated-image';
 import { PreviewImage } from './preview-image';
 import { YouTubePlayer } from './youtube-player';
 
@@ -46,7 +47,7 @@ function DateTime({
   return (
     <time
       dateTime={new Date(item.createdAt).toISOString()}
-      className={cn('font-mono text-xs tabular-nums', className)}
+      className={cn('font-mono tabular-nums', className)}
     >
       {dateFormat.format(item.createdAt)}
     </time>
@@ -55,7 +56,7 @@ function DateTime({
 
 function Meta({ item, label }: { item: StashItem; label?: string }) {
   return (
-    <p className="flex items-center justify-between gap-3 font-mono text-xs tabular-nums text-muted-foreground">
+    <p className="flex items-center justify-between gap-3 font-mono text-[10px] tabular-nums text-muted-foreground">
       {label && <span className="min-w-0 truncate">{label}</span>}
       <DateTime item={item} className="ml-auto shrink-0" />
     </p>
@@ -105,7 +106,6 @@ function Tags({
         <li key={tag}>
           <Link
             href={`/stash?tag=${encodeURIComponent(tag)}`}
-            scroll={false}
             aria-current={tag === active ? 'page' : undefined}
             className={cn(CHIP, tag === active ? styles.active : styles.idle)}
           >
@@ -119,7 +119,7 @@ function Tags({
 
 function Note({ children }: { children?: string }) {
   if (!children) return null;
-  return <p className="whitespace-pre-wrap text-pretty">{children}</p>;
+  return <p className="whitespace-pre-wrap text-xs text-pretty">{children}</p>;
 }
 
 export function StashCard({
@@ -197,12 +197,12 @@ export function StashCard({
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="leading-6.5 font-medium text-pretty underline-offset-2 outline-none group-hover:underline after:absolute after:inset-0 after:rounded-2xl focus-visible:after:outline-2 focus-visible:after:outline-ring"
+                className="leading-5 text-sm font-medium text-pretty underline-offset-2 outline-none group-hover:underline after:absolute after:inset-0 after:rounded-2xl focus-visible:after:outline-2 focus-visible:after:outline-ring"
               >
                 {preview?.title ?? hostname(item.url)}
               </a>
               {preview?.description && (
-                <span className="line-clamp-3 text-sm text-muted-foreground text-pretty">
+                <span className="line-clamp-3 text-xs text-muted-foreground text-pretty">
                   {preview.description}
                 </span>
               )}
@@ -218,16 +218,25 @@ export function StashCard({
       return (
         <figure className={CARD} style={enter(index)}>
           <div className="relative">
-            {/* eslint-disable-next-line @next/next/no-img-element -- streamed from Telegram via our proxy */}
-            <img
-              src={`/api/stash/image/${item.id}`}
-              alt={item.note ?? ''}
-              width={item.width}
-              height={item.height}
-              loading="lazy"
-              decoding="async"
-              className="h-auto w-full bg-muted"
-            />
+            {isAnimation(item.mimeType) ? (
+              <AnimatedImage
+                src={`/api/stash/image/${item.id}`}
+                label={item.note ?? 'GIF'}
+                width={item.width}
+                height={item.height}
+              />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element -- streamed from Telegram via our proxy
+              <img
+                src={`/api/stash/image/${item.id}`}
+                alt={item.note ?? ''}
+                width={item.width}
+                height={item.height}
+                loading="lazy"
+                decoding="async"
+                className="h-auto w-full bg-muted"
+              />
+            )}
             <Tags tags={item.tags} active={activeTag} overlay />
             {/* Fixed dark pill: it sits on arbitrary photos, so it can't follow the theme */}
             <DateTime

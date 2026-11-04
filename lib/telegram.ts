@@ -27,6 +27,13 @@ export type TelegramMessage = {
   caption_entities?: TelegramEntity[];
   photo?: TelegramPhotoSize[];
   document?: { file_id: string; mime_type?: string };
+  /* GIFs: Telegram converts them to silent MP4s (document is set too) */
+  animation?: {
+    file_id: string;
+    width: number;
+    height: number;
+    mime_type?: string;
+  };
   reply_to_message?: { message_id: number };
 };
 
@@ -60,13 +67,18 @@ export async function callTelegram<T = unknown>(
 }
 
 /* Resolves a file_id to a downloadable response. The URL embeds the token, so stream it, never expose it */
-export async function downloadFile(fileId: string) {
+export async function downloadFile(
+  fileId: string,
+  /* Forwarded Range header: Safari won't play video without byte ranges */
+  range?: string | null,
+) {
   const { file_path } = await callTelegram<{ file_path?: string }>('getFile', {
     file_id: fileId,
   });
   if (!file_path) throw new Error('Telegram getFile: no file_path');
 
   return fetch(`https://api.telegram.org/file/bot${token()}/${file_path}`, {
+    headers: range ? { Range: range } : undefined,
     signal: AbortSignal.timeout(10000),
   });
 }

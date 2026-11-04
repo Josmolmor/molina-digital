@@ -8,6 +8,7 @@ import {
   mergeTags,
   normalizeTag,
   removeItem,
+  STASH_ANIMATION_TYPES,
   STASH_IMAGE_TYPES,
   updateItem,
   type StashItem,
@@ -22,7 +23,7 @@ import {
 const HELP = [
   'Send me anything to stash it on molina.digital/stash:',
   '• a link (with an optional note)',
-  '• a photo, or an image sent as a file',
+  '• a photo or GIF, or an image sent as a file',
   '• plain text',
   '',
   'Add #hashtags anywhere to tag it.',
@@ -168,6 +169,21 @@ async function toItem(
     };
   }
 
+  /* Before document: Telegram sets both for a GIF, and document lacks the size */
+  if (message.animation) {
+    const mimeType = message.animation.mime_type ?? 'video/mp4';
+    if (!STASH_ANIMATION_TYPES.has(mimeType)) return null;
+    return {
+      ...base,
+      kind: 'image',
+      fileId: message.animation.file_id,
+      mimeType,
+      width: message.animation.width,
+      height: message.animation.height,
+      note: parsed.rest,
+    };
+  }
+
   const mimeType = message.document?.mime_type;
   if (message.document && mimeType && STASH_IMAGE_TYPES.has(mimeType)) {
     return {
@@ -283,7 +299,9 @@ async function handle(message: TelegramMessage) {
   }
 
   /* Only hashtags: tag the message being replied to */
-  const isMedia = Boolean(message.photo?.length || message.document);
+  const isMedia = Boolean(
+    message.photo?.length || message.document || message.animation,
+  );
   if (!isMedia && !parsed.url && !parsed.rest && parsed.tags.length) {
     const done = await retag(message, (tags) => [...tags, ...parsed.tags]);
     if (!done) {
@@ -299,7 +317,7 @@ async function handle(message: TelegramMessage) {
   if (!item) {
     await reply(
       message,
-      "I can't stash that yet. Links, images and text only.",
+      "I can't stash that yet. Links, images, GIFs and text only.",
     );
     return;
   }

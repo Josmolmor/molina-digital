@@ -24,6 +24,11 @@ const projects = [
       'An experiment in cursors that morph between states instead of switching.',
     href: '/cursor-morph',
   },
+  {
+    title: 'Skills',
+    description: 'Skills for both personal and work projects.',
+    href: 'https://github.com/Josmolmor/skills',
+  },
 ];
 
 export default function ProjectsPage() {
@@ -34,18 +39,24 @@ export default function ProjectsPage() {
       </h2>
       <Separator />
       <div className="flex flex-col">
-        {projects.map((project) => (
-          <Link
-            key={project.href}
-            href={project.href}
-            className="-mx-4.5 flex-1 flex flex-col hover:bg-card active:bg-card px-4.5 pt-4 pb-4.5 rounded-2xl transition-[background-color] ease-[ease] motion-reduce:transition-none"
-          >
-            <span className="leading-6.5 block">{project.title}</span>
-            <span className="leading-6.5 text-muted-foreground flex flex-col gap-1">
-              {project.description}
-            </span>
-          </Link>
-        ))}
+        {projects.map((project) => {
+          // Off-site entries open in a new tab, like the Work section's links
+          const external = project.href.startsWith('http');
+          return (
+            <Link
+              key={project.href}
+              href={project.href}
+              target={external ? '_blank' : undefined}
+              rel={external ? 'noopener noreferrer' : undefined}
+              className="-mx-4.5 flex-1 flex flex-col hover:bg-card active:bg-card px-4.5 pt-4 pb-4.5 rounded-2xl transition-[background-color] ease-[ease] motion-reduce:transition-none"
+            >
+              <span className="leading-6.5 block">{project.title}</span>
+              <span className="leading-6.5 text-muted-foreground flex flex-col gap-1">
+                {project.description}
+              </span>
+            </Link>
+          );
+        })}
       </div>
     </section>
   );

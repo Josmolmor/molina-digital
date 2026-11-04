@@ -24,8 +24,6 @@ function Pill({
   return (
     <Link
       href={href}
-      /* Filtering shouldn't throw you back to the top */
-      scroll={false}
       aria-current={active ? 'page' : undefined}
       className={cn(PILL, active ? ACTIVE : IDLE)}
     >
