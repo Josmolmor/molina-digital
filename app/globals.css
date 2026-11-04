@@ -875,7 +875,17 @@ canvas {
   }
 }
 
+/* Stash cards settling in: a hair small and soft, then sharp. */
+@keyframes stash-in {
+  from {
+    opacity: 0;
+    scale: 0.98;
+    filter: blur(2px);
+  }
+}
+
 @theme {
+  --animate-stash-in: stash-in 0.45s cubic-bezier(0.23, 1, 0.32, 1) both;
   --animate-hand-click: hand-click 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   --animate-hat-toss: hat-toss 0.75s cubic-bezier(0.4, 0, 0.2, 1) both;
   --animate-puff-rise: puff-rise 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;

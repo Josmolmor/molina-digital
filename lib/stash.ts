@@ -1,5 +1,7 @@
 import { Redis } from '@upstash/redis';
 
+import { parseYouTube, youTubeWatchUrl } from '@/lib/youtube';
+
 /*
  * Stash: things saved from around the internet, sent to a private Telegram
  * bot and rendered publicly at /stash. Server-only: never import from a
@@ -187,9 +189,40 @@ function absolute(url: string | undefined, base: string) {
   }
 }
 
+/* Small JSON instead of ~1.5MB of HTML; the card builds its own thumbnail */
+async function fetchYouTubePreview(
+  url: string,
+): Promise<LinkPreview | undefined> {
+  const video = parseYouTube(url);
+  if (!video) return undefined;
+  try {
+    const endpoint = new URL('https://www.youtube.com/oembed');
+    endpoint.searchParams.set('format', 'json');
+    endpoint.searchParams.set('url', youTubeWatchUrl(video));
+    const response = await fetch(endpoint, {
+      signal: AbortSignal.timeout(PREVIEW_TIMEOUT_MS),
+    });
+    if (!response.ok) return undefined;
+    const data: { title?: string; author_name?: string } =
+      await response.json();
+    if (!data.title) return undefined;
+    return {
+      title: data.title,
+      description: data.author_name,
+      siteName: 'YouTube',
+    };
+  } catch {
+    return undefined;
+  }
+}
+
 export async function fetchLinkPreview(
   url: string,
 ): Promise<LinkPreview | undefined> {
+  // Private or age-gated videos have no oEmbed: fall through to the page
+  const youTube = await fetchYouTubePreview(url);
+  if (youTube) return youTube;
+
   try {
     const response = await fetch(url, {
       headers: { 'User-Agent': USER_AGENT, Accept: 'text/html' },

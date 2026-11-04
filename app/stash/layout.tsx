@@ -10,7 +10,7 @@ const OG_IMAGE = {
 
 const TITLE = 'Stash';
 const DESCRIPTION =
-  'Things I’ve saved from around the internet: inspiration, ideas and TODOs.';
+  "Things I've saved from around the internet: inspiration, ideas and TODOs.";
 
 export const metadata: Metadata = {
   title: TITLE,

@@ -48,20 +48,44 @@ function withScheme(url: string) {
 }
 
 /* Offsets are UTF-16 code units, which is exactly how JS strings index */
+const LOOKS_LIKE_URL = /^(https?:\/\/)?[\w-]+(\.[\w-]+)+(\/\S*)?$/i;
+
+function isLink(entity: TelegramEntity) {
+  return entity.type === 'url' || (entity.type === 'text_link' && entity.url);
+}
+
+/*
+ * The first link becomes the item; the rest of the text is the note. Share
+ * sheets often repeat the URL (or send it as a link labelled with itself),
+ * so every bare URL is stripped, and a text_link only keeps its label when
+ * the label is actual words.
+ */
 function findLink(text: string, entities: TelegramEntity[] = []) {
-  for (const entity of entities) {
-    if (entity.type === 'url') {
-      const url = text.slice(entity.offset, entity.offset + entity.length);
-      const note =
-        text.slice(0, entity.offset) +
-        text.slice(entity.offset + entity.length);
-      return { url: withScheme(url), note: note.trim() || undefined };
+  const links = entities.filter(isLink);
+  if (links.length === 0) return null;
+
+  const first = links[0];
+  const url =
+    first.type === 'text_link'
+      ? first.url!
+      : withScheme(text.slice(first.offset, first.offset + first.length));
+
+  // Cut from the end so earlier offsets stay valid
+  let note = text;
+  for (const entity of [...links].sort((a, b) => b.offset - a.offset)) {
+    const label = text.slice(entity.offset, entity.offset + entity.length);
+    if (entity.type === 'text_link' && !LOOKS_LIKE_URL.test(label.trim())) {
+      continue;
     }
-    if (entity.type === 'text_link' && entity.url) {
-      return { url: entity.url, note: text.trim() || undefined };
-    }
+    note =
+      note.slice(0, entity.offset) + note.slice(entity.offset + entity.length);
   }
-  return null;
+
+  note = note
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+  return { url, note: note || undefined };
 }
 
 async function toItem(message: TelegramMessage): Promise<StashItem | null> {
@@ -137,7 +161,9 @@ async function handle(message: TelegramMessage) {
     }
     const removed = await removeItem(target);
     if (removed) revalidatePath('/stash');
-    await (removed ? react(message, '👌') : reply(message, 'Not in the stash.'));
+    await (removed
+      ? react(message, '👌')
+      : reply(message, 'Not in the stash.'));
     return;
   }
 
@@ -148,7 +174,10 @@ async function handle(message: TelegramMessage) {
 
   const item = await toItem(message);
   if (!item) {
-    await reply(message, "I can't stash that yet. Links, images and text only.");
+    await reply(
+      message,
+      "I can't stash that yet. Links, images and text only.",
+    );
     return;
   }
 
@@ -162,7 +191,9 @@ export async function POST(request: Request) {
     return new Response('Unauthorized', { status: 401 });
   }
 
-  const update = (await request.json().catch(() => null)) as TelegramUpdate | null;
+  const update = (await request
+    .json()
+    .catch(() => null)) as TelegramUpdate | null;
   const message = update?.message;
 
   /* Always 200 for anything we ignore, or Telegram keeps retrying it */
