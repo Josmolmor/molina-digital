@@ -48,17 +48,19 @@ export default async function Stash({
 
       <main className="flex w-full max-w-full flex-col gap-10 px-8 pt-24 pb-10 sm:px-12 xl:px-20 md:pb-24">
         {!items || !visible ? (
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-center">
             The stash is unreachable right now. Try again in a bit.
           </p>
         ) : items.length === 0 ? (
-          <p className="text-muted-foreground">Nothing stashed yet.</p>
+          <p className="text-muted-foreground text-center">
+            Nothing stashed yet.
+          </p>
         ) : (
           <div className="flex flex-col gap-6">
             <TagBar tags={countTags(items)} active={tag} total={items.length} />
 
             {visible.length === 0 ? (
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground text-center">
                 Nothing tagged #{tag} yet.{' '}
                 <Link
                   href="/stash"
