@@ -4,6 +4,7 @@ import { getItems, normalizeTag, type StashItem } from '@/lib/stash';
 
 import { BackLink } from './back-link';
 import { BackToTop } from './back-to-top';
+import { CardEnter } from './card-enter';
 import { StashCard } from './stash-card';
 import { StickyHeader } from './sticky-header';
 import { TagBar, type TagCount } from './tag-bar';
@@ -80,12 +81,9 @@ export default async function Stash({
         ) : (
           <div className="columns-1 gap-4 sm:columns-2 lg:columns-4 xl:columns-5">
             {visible.map((item, index) => (
-              <StashCard
-                key={item.id}
-                item={item}
-                index={index}
-                activeTag={tag}
-              />
+              <CardEnter key={item.id} index={index}>
+                <StashCard item={item} activeTag={tag} />
+              </CardEnter>
             ))}
           </div>
         )}

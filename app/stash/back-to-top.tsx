@@ -33,11 +33,10 @@ export function BackToTop() {
       tabIndex={visible ? 0 : -1}
       className={cn(
         'fixed right-6 bottom-[calc(1.5rem+env(safe-area-inset-bottom))] z-20 grid size-11 place-items-center rounded-full bg-foreground text-background shadow-lg',
-        'transition-[opacity,scale,translate] duration-200 ease-out motion-reduce:transition-none',
-        'active:scale-95',
+        'transition-[opacity,scale,translate] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97] active:duration-150',
         visible
           ? 'opacity-100'
-          : 'pointer-events-none translate-y-2 scale-90 opacity-0',
+          : 'pointer-events-none translate-y-2 scale-90 opacity-0 motion-reduce:translate-y-0 motion-reduce:scale-100',
       )}
     >
       <ArrowUp aria-hidden className="size-5" />

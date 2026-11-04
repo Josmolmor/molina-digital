@@ -52,7 +52,7 @@ export function YouTubePlayer({
             className="absolute inset-0 size-full object-cover"
           />
           {/* Fixed dark disc: it sits on arbitrary thumbnails, so it can't follow the theme */}
-          <span className="relative grid size-12 place-items-center rounded-full bg-black/60 text-white backdrop-blur-sm transition-transform duration-200 ease-out group-hover/play:scale-110 group-active/play:scale-95 motion-reduce:transition-none">
+          <span className="relative grid size-12 place-items-center rounded-full bg-black/60 text-white backdrop-blur-sm transition-transform duration-200 ease-[cubic-bezier(0.23,1,0.32,1)] motion-safe:group-hover/play:scale-105 motion-safe:group-active/play:scale-[0.97] motion-safe:group-active/play:duration-150">
             <Play aria-hidden className="size-5 translate-x-px" />
           </span>
         </button>

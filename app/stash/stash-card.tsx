@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import type { CSSProperties } from 'react';
 
 import { isAnimation, type StashItem } from '@/lib/stash';
 import { cn } from '@/lib/utils';
@@ -16,18 +15,8 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', {
   timeZone: 'Europe/Madrid',
 });
 
-const CARD =
-  'mb-4 flex break-inside-avoid flex-col overflow-hidden rounded-2xl bg-card animate-stash-in motion-reduce:animate-none';
-
-/* Quick stagger, capped so a long stash never makes anyone wait */
-const STAGGER_MS = 40;
-const STAGGER_MAX_STEPS = 10;
-
-function enter(index: number): CSSProperties {
-  return {
-    animationDelay: `${Math.min(index, STAGGER_MAX_STEPS) * STAGGER_MS}ms`,
-  };
-}
+/* The entrance animation lives on the wrapper: see card-enter.tsx */
+const CARD = 'flex flex-col overflow-hidden rounded-2xl bg-card';
 
 function hostname(url: string) {
   try {
@@ -64,7 +53,7 @@ function Meta({ item, label }: { item: StashItem; label?: string }) {
 }
 
 const CHIP =
-  'pointer-events-auto block rounded-full px-2 py-1 font-mono text-xs transition-colors motion-reduce:transition-none';
+  'pointer-events-auto block rounded-full px-2 py-1 font-mono text-xs transition-[background-color,color] duration-150 ease-[ease]';
 
 const CHIP_STYLES = {
   /* Fixed dark glass: it sits on arbitrary images, so it can't follow the theme */
@@ -124,11 +113,9 @@ function Note({ children }: { children?: string }) {
 
 export function StashCard({
   item,
-  index,
   activeTag,
 }: {
   item: StashItem;
-  index: number;
   activeTag?: string;
 }) {
   switch (item.kind) {
@@ -140,7 +127,7 @@ export function StashCard({
       if (video) {
         const title = preview?.title ?? 'YouTube video';
         return (
-          <article className={CARD} style={enter(index)}>
+          <article className={CARD}>
             <YouTubePlayer
               video={video}
               title={title}
@@ -175,7 +162,7 @@ export function StashCard({
        * while the tag chips (z-1) stay links of their own. Links can't nest.
        */
       return (
-        <article className={cn(CARD, 'group relative')} style={enter(index)}>
+        <article className={cn(CARD, 'group relative')}>
           {preview?.image && (
             <PreviewImage
               src={preview.image}
@@ -216,7 +203,7 @@ export function StashCard({
 
     case 'image':
       return (
-        <figure className={CARD} style={enter(index)}>
+        <figure className={CARD}>
           <div className="relative">
             {isAnimation(item.mimeType) ? (
               <AnimatedImage
@@ -254,7 +241,7 @@ export function StashCard({
 
     case 'text':
       return (
-        <article className={cn(CARD, 'gap-3 p-4.5')} style={enter(index)}>
+        <article className={cn(CARD, 'gap-3 p-4.5')}>
           <Tags tags={item.tags} active={activeTag} />
           <p className="font-serif text-lg leading-7 whitespace-pre-wrap text-pretty">
             {item.text}

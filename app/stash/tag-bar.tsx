@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 export type TagCount = { tag: string; count: number };
 
 const PILL =
-  'flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-sm transition-[background-color,color] ease-[ease] motion-reduce:transition-none';
+  'flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-sm [transition:background-color_150ms_ease,color_150ms_ease,scale_160ms_cubic-bezier(0.23,1,0.32,1)] active:scale-[0.97] motion-reduce:active:scale-100';
 const IDLE = 'bg-card text-muted-foreground hover:text-foreground';
 const ACTIVE = 'bg-foreground text-background';
 

@@ -931,8 +931,16 @@ canvas {
   }
 }
 
+/* Opacity only: cards revealed by a filter, and reduced motion */
+@keyframes stash-fade {
+  from {
+    opacity: 0;
+  }
+}
+
 @theme {
-  --animate-stash-in: stash-in 0.45s cubic-bezier(0.23, 1, 0.32, 1) both;
+  --animate-stash-in: stash-in 0.3s cubic-bezier(0.23, 1, 0.32, 1) both;
+  --animate-stash-fade: stash-fade 0.15s cubic-bezier(0.23, 1, 0.32, 1) both;
   --animate-hand-click: hand-click 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   --animate-hat-toss: hat-toss 0.75s cubic-bezier(0.4, 0, 0.2, 1) both;
   --animate-puff-rise: puff-rise 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
