@@ -107,7 +107,7 @@ export async function getItems(): Promise<StashItem[]> {
 /* ------------------------------------------------------------------ */
 
 const PREVIEW_TIMEOUT_MS = 5000;
-/* <head> is all we need; YouTube alone puts its OG tags ~780KB in */
+/* Upper bound on HTML read per link; YouTube's page alone puts its tags ~780KB in */
 const MAX_HTML_BYTES = 1536 * 1024;
 const USER_AGENT =
   'Mozilla/5.0 (compatible; StashBot/1.0; +https://molina.digital/stash)';
@@ -146,7 +146,11 @@ async function readHead(response: Response) {
     if (done) break;
     bytes += value.byteLength;
     html += decoder.decode(value, { stream: true });
-    if (/<\/head>/i.test(html)) break;
+    /*
+     * Past </head> isn't enough: Next.js 15 streams metadata into the body
+     * for UAs it doesn't know as bots, so keep going until og:image shows up
+     */
+    if (/<\/head>/i.test(html) && /og:image/i.test(html)) break;
   }
 
   reader.cancel().catch(() => {});
