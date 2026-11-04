@@ -18,6 +18,12 @@ const projects = [
       'An experiment in cursors that morph between states instead of switching.',
     href: '/cursor-morph',
   },
+  {
+    title: 'Stash',
+    description:
+      'Things I’ve saved from around the internet: inspiration, ideas and TODOs.',
+    href: '/stash',
+  },
 ];
 
 export default function ProjectsPage() {

@@ -1,0 +1,223 @@
+import { Redis } from '@upstash/redis';
+
+/*
+ * Stash: things saved from around the internet, sent to a private Telegram
+ * bot and rendered publicly at /stash. Server-only: never import from a
+ * client component.
+ */
+
+export type LinkPreview = {
+  title?: string;
+  description?: string;
+  image?: string;
+  siteName?: string;
+};
+
+type StashBase = {
+  /* The Telegram message_id: unique per chat, so webhook retries can't duplicate */
+  id: number;
+  createdAt: number;
+  note?: string;
+};
+
+export type StashItem = StashBase &
+  (
+    | { kind: 'link'; url: string; preview?: LinkPreview }
+    | {
+        kind: 'image';
+        fileId: string;
+        mimeType: string;
+        width?: number;
+        height?: number;
+      }
+    | { kind: 'text'; text: string }
+  );
+
+/* Raster only: an SVG served from our origin could run script */
+export const STASH_IMAGE_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/avif',
+]);
+
+const ITEMS_KEY = 'stash:items';
+const ORDER_KEY = 'stash:order';
+const PAGE_SIZE = 200;
+
+let client: Redis | null = null;
+
+/* The Vercel Marketplace injects KV_* or UPSTASH_* names depending on how it was linked */
+function redis() {
+  if (client) return client;
+  const url = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
+  const token =
+    process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
+  if (!url || !token) throw new Error('Stash: Redis env vars are missing');
+  client = new Redis({ url, token });
+  return client;
+}
+
+/* Returns false when the item already exists (a retried webhook) */
+export async function addItem(item: StashItem) {
+  const created = await redis().hsetnx(ITEMS_KEY, String(item.id), item);
+  if (!created) return false;
+  await redis().zadd(ORDER_KEY, { score: item.createdAt, member: item.id });
+  return true;
+}
+
+export async function removeItem(id: number) {
+  const [removed] = await Promise.all([
+    redis().hdel(ITEMS_KEY, String(id)),
+    redis().zrem(ORDER_KEY, id),
+  ]);
+  return removed > 0;
+}
+
+export async function getItem(id: number) {
+  return redis().hget<StashItem>(ITEMS_KEY, String(id));
+}
+
+/* Newest first */
+export async function getItems(): Promise<StashItem[]> {
+  const ids = await redis().zrange<(string | number)[]>(
+    ORDER_KEY,
+    0,
+    PAGE_SIZE - 1,
+    { rev: true },
+  );
+  if (ids.length === 0) return [];
+
+  const items = await redis().hmget<Record<string, StashItem>>(
+    ITEMS_KEY,
+    ...ids.map(String),
+  );
+  if (!items) return [];
+
+  return ids
+    .map((id) => items[String(id)])
+    .filter((item): item is StashItem => Boolean(item));
+}
+
+/* ------------------------------------------------------------------ */
+/* Link previews                                                       */
+/* ------------------------------------------------------------------ */
+
+const PREVIEW_TIMEOUT_MS = 5000;
+/* <head> is all we need; YouTube alone puts its OG tags ~780KB in */
+const MAX_HTML_BYTES = 1536 * 1024;
+const USER_AGENT =
+  'Mozilla/5.0 (compatible; StashBot/1.0; +https://molina.digital/stash)';
+
+const ENTITIES: Record<string, string> = {
+  amp: '&',
+  lt: '<',
+  gt: '>',
+  quot: '"',
+  apos: "'",
+  nbsp: ' ',
+};
+
+function decodeEntities(value: string) {
+  return value.replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, (match, entity: string) => {
+    if (entity[0] === '#') {
+      const code =
+        entity[1].toLowerCase() === 'x'
+          ? parseInt(entity.slice(2), 16)
+          : parseInt(entity.slice(1), 10);
+      return Number.isFinite(code) ? String.fromCodePoint(code) : match;
+    }
+    return ENTITIES[entity.toLowerCase()] ?? match;
+  });
+}
+
+async function readHead(response: Response) {
+  if (!response.body) return '';
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let html = '';
+  let bytes = 0;
+
+  while (bytes < MAX_HTML_BYTES) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    bytes += value.byteLength;
+    html += decoder.decode(value, { stream: true });
+    if (/<\/head>/i.test(html)) break;
+  }
+
+  reader.cancel().catch(() => {});
+  return html;
+}
+
+function parseMeta(html: string) {
+  const meta = new Map<string, string>();
+
+  for (const [tag] of html.matchAll(/<meta\b[^>]*>/gi)) {
+    const attrs = new Map<string, string>();
+    for (const [, name, , double, single] of tag.matchAll(
+      /([\w:-]+)\s*=\s*("([^"]*)"|'([^']*)')/g,
+    )) {
+      attrs.set(name.toLowerCase(), double ?? single ?? '');
+    }
+
+    const key = (attrs.get('property') ?? attrs.get('name'))?.toLowerCase();
+    const content = attrs.get('content');
+    if (key && content && !meta.has(key)) {
+      meta.set(key, decodeEntities(content).trim());
+    }
+  }
+
+  const title = html.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1];
+  if (title) meta.set('<title>', decodeEntities(title).trim());
+
+  return meta;
+}
+
+function absolute(url: string | undefined, base: string) {
+  if (!url) return undefined;
+  try {
+    const resolved = new URL(url, base);
+    return resolved.protocol === 'https:' || resolved.protocol === 'http:'
+      ? resolved.toString()
+      : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export async function fetchLinkPreview(
+  url: string,
+): Promise<LinkPreview | undefined> {
+  try {
+    const response = await fetch(url, {
+      headers: { 'User-Agent': USER_AGENT, Accept: 'text/html' },
+      redirect: 'follow',
+      signal: AbortSignal.timeout(PREVIEW_TIMEOUT_MS),
+    });
+    if (!response.ok) return undefined;
+    if (!response.headers.get('content-type')?.includes('text/html')) {
+      return undefined;
+    }
+
+    const meta = parseMeta(await readHead(response));
+    const pick = (...keys: string[]) =>
+      keys.map((key) => meta.get(key)).find(Boolean) || undefined;
+
+    const preview: LinkPreview = {
+      title: pick('og:title', 'twitter:title', '<title>'),
+      description: pick('og:description', 'twitter:description', 'description'),
+      image: absolute(
+        pick('og:image', 'og:image:url', 'twitter:image', 'twitter:image:src'),
+        response.url || url,
+      ),
+      siteName: pick('og:site_name', 'application-name'),
+    };
+
+    return Object.values(preview).some(Boolean) ? preview : undefined;
+  } catch {
+    // A preview is a nice-to-have: the link still gets saved without one
+    return undefined;
+  }
+}
