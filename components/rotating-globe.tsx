@@ -15,13 +15,13 @@ type PathPair = {
 
 const SIZE = 256;
 const CENTER = SIZE / 2;
-const RADIUS = 116;
+const RADIUS = 120;
 
 const MERIDIANS = 10;
 const LATITUDES = 6;
 const SEGMENTS = 94;
 
-const STROKE_WIDTH = 10;
+const STROKE_WIDTH = 12;
 
 function project(
   latitude: number,

@@ -76,7 +76,7 @@ export const Intro = () => {
         <span>Squinting at a screen counting pixels for a living.</span>
         <p>
           I{' '}
-          <HoverBlob variant="plain" message="ask agents to write software">
+          <HoverBlob variant="plain" message="ask agents to write software*">
             <WavyStrike>write software</WavyStrike>
           </HoverBlob>
           , mostly the frontend kind. I like figuring out how things work,
