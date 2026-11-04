@@ -15,7 +15,7 @@ export const Footer = () => {
           </Suspense>
         </div>
         <BlurIn className="text-muted-foreground flex items-center gap-1">
-          <span className="text-base font-mono">&copy;</span>
+          <span className="text-sm sm:text-base font-mono">&copy;</span>
           <span className="text-xs tabular-nums font-mono">
             {new Date().getFullYear()}
           </span>
