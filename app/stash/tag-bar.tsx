@@ -1,0 +1,74 @@
+import Link from 'next/link';
+
+import { cn } from '@/lib/utils';
+
+export type TagCount = { tag: string; count: number };
+
+const PILL =
+  'flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm transition-[background-color,color] ease-[ease] motion-reduce:transition-none';
+const IDLE = 'bg-card text-muted-foreground hover:text-foreground';
+const ACTIVE = 'bg-foreground text-background';
+
+function Pill({
+  href,
+  active,
+  label,
+  count,
+}: {
+  href: string;
+  active: boolean;
+  label: string;
+  count?: number;
+}) {
+  return (
+    <Link
+      href={href}
+      /* Filtering shouldn't throw you back to the top */
+      scroll={false}
+      aria-current={active ? 'page' : undefined}
+      className={cn(PILL, active ? ACTIVE : IDLE)}
+    >
+      {label}
+      {count !== undefined && (
+        <span
+          className={cn(
+            'font-mono text-xs tabular-nums',
+            active ? 'text-background/70' : 'text-muted-foreground',
+          )}
+        >
+          {count}
+        </span>
+      )}
+    </Link>
+  );
+}
+
+export function TagBar({
+  tags,
+  active,
+  total,
+}: {
+  tags: TagCount[];
+  active?: string;
+  total: number;
+}) {
+  if (tags.length === 0) return null;
+
+  return (
+    <nav aria-label="Filter by tag" className="flex flex-wrap gap-2">
+      <Pill href="/stash" active={!active} label="All" count={total} />
+      {tags.map(({ tag, count }) => (
+        <Pill
+          key={tag}
+          /* Tapping the active tag clears the filter */
+          href={
+            active === tag ? '/stash' : `/stash?tag=${encodeURIComponent(tag)}`
+          }
+          active={active === tag}
+          label={`#${tag}`}
+          count={count}
+        />
+      ))}
+    </nav>
+  );
+}

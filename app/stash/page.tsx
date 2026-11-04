@@ -1,7 +1,10 @@
-import { getItems, type StashItem } from '@/lib/stash';
+import Link from 'next/link';
+
+import { getItems, normalizeTag, type StashItem } from '@/lib/stash';
 
 import { BackLink } from './back-link';
 import { StashCard } from './stash-card';
+import { TagBar, type TagCount } from './tag-bar';
 
 async function loadItems(): Promise<StashItem[] | null> {
   try {
@@ -12,25 +15,71 @@ async function loadItems(): Promise<StashItem[] | null> {
   }
 }
 
-export default async function Stash() {
+/* Most used first, alphabetical on ties */
+function countTags(items: StashItem[]): TagCount[] {
+  const counts = new Map<string, number>();
+  for (const item of items) {
+    for (const tag of item.tags ?? []) {
+      counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    }
+  }
+  return [...counts]
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+}
+
+export default async function Stash({
+  searchParams,
+}: {
+  searchParams: Promise<{ tag?: string | string[] }>;
+}) {
+  const { tag: rawTag } = await searchParams;
+  const tag =
+    typeof rawTag === 'string' ? normalizeTag(rawTag) || undefined : undefined;
+
   const items = await loadItems();
+  const visible = tag
+    ? items?.filter((item) => item.tags?.includes(tag))
+    : items;
 
   return (
     <div className="relative min-h-dvh">
       <BackLink />
 
       <main className="flex w-full max-w-full flex-col gap-10 px-8 pt-24 pb-10 sm:px-12 xl:px-20 md:pb-24">
-        {items === null ? (
+        {!items || !visible ? (
           <p className="text-muted-foreground">
             The stash is unreachable right now. Try again in a bit.
           </p>
         ) : items.length === 0 ? (
           <p className="text-muted-foreground">Nothing stashed yet.</p>
         ) : (
-          <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
-            {items.map((item, index) => (
-              <StashCard key={item.id} item={item} index={index} />
-            ))}
+          <div className="flex flex-col gap-6">
+            <TagBar tags={countTags(items)} active={tag} total={items.length} />
+
+            {visible.length === 0 ? (
+              <p className="text-muted-foreground">
+                Nothing tagged #{tag} yet.{' '}
+                <Link
+                  href="/stash"
+                  scroll={false}
+                  className="text-foreground underline underline-offset-2"
+                >
+                  See everything
+                </Link>
+              </p>
+            ) : (
+              <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
+                {visible.map((item, index) => (
+                  <StashCard
+                    key={item.id}
+                    item={item}
+                    index={index}
+                    activeTag={tag}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </main>

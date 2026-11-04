@@ -4,8 +4,12 @@ import { revalidatePath } from 'next/cache';
 import {
   addItem,
   fetchLinkPreview,
+  getItems,
+  mergeTags,
+  normalizeTag,
   removeItem,
   STASH_IMAGE_TYPES,
+  updateItem,
   type StashItem,
 } from '@/lib/stash';
 import {
@@ -21,7 +25,11 @@ const HELP = [
   '• a photo, or an image sent as a file',
   '• plain text',
   '',
-  'Reply /delete to a message to remove it.',
+  'Add #hashtags anywhere to tag it.',
+  'Reply #tags to a saved message to tag it later.',
+  'Reply /untag #tag to remove a tag.',
+  'Reply /delete to remove it.',
+  '/tags lists every tag.',
 ].join('\n');
 
 /* Hash both sides so timingSafeEqual gets equal lengths and leaks nothing */
@@ -54,43 +62,98 @@ function isLink(entity: TelegramEntity) {
   return entity.type === 'url' || (entity.type === 'text_link' && entity.url);
 }
 
+const HASHTAG_RUN = /^(\s*#[\p{L}\p{N}_]+)*\s*$/u;
+
+type ParsedText = {
+  /* The first link, if any: it becomes the item */
+  url?: string;
+  /* What's left once links and tag runs are cut: the note, or a text item's body */
+  rest?: string;
+  tags: string[];
+};
+
 /*
- * The first link becomes the item; the rest of the text is the note. Share
- * sheets often repeat the URL (or send it as a link labelled with itself),
- * so every bare URL is stripped, and a text_link only keeps its label when
- * the label is actual words.
+ * One pass over the entities, from the end so earlier offsets stay valid:
+ * - Bare URLs are cut. Share sheets often repeat them or send a link
+ *   labelled with itself, so a text_link only keeps its label when the
+ *   label is actual words.
+ * - Hashtags become tags. Runs at the start or end of a line are cut
+ *   ("https://x.com #inspo #web"); one inside a sentence keeps its word
+ *   ("love the #type here" → "love the type here").
  */
-function findLink(text: string, entities: TelegramEntity[] = []) {
+function parseText(text = '', entities: TelegramEntity[] = []): ParsedText {
+  const span = (entity: TelegramEntity) =>
+    text.slice(entity.offset, entity.offset + entity.length);
+
   const links = entities.filter(isLink);
-  if (links.length === 0) return null;
+  const hashtags = entities.filter((entity) => entity.type === 'hashtag');
 
   const first = links[0];
-  const url =
-    first.type === 'text_link'
+  const url = first
+    ? first.type === 'text_link'
       ? first.url!
-      : withScheme(text.slice(first.offset, first.offset + first.length));
+      : withScheme(span(first))
+    : undefined;
 
-  // Cut from the end so earlier offsets stay valid
-  let note = text;
-  for (const entity of [...links].sort((a, b) => b.offset - a.offset)) {
-    const label = text.slice(entity.offset, entity.offset + entity.length);
-    if (entity.type === 'text_link' && !LOOKS_LIKE_URL.test(label.trim())) {
+  const tags = [
+    ...new Set(hashtags.map((entity) => normalizeTag(span(entity)))),
+  ].filter(Boolean);
+
+  const cuts = [
+    ...links.filter(
+      (entity) =>
+        entity.type === 'url' || LOOKS_LIKE_URL.test(span(entity).trim()),
+    ),
+    ...hashtags,
+  ].sort((a, b) => b.offset - a.offset);
+
+  let rest = text;
+  for (const entity of cuts) {
+    const start = entity.offset;
+    const end = entity.offset + entity.length;
+
+    if (entity.type === 'hashtag') {
+      const lineStart = rest.lastIndexOf('\n', start - 1) + 1;
+      const newline = rest.indexOf('\n', end);
+      const lineEnd = newline === -1 ? rest.length : newline;
+      const atEdge =
+        HASHTAG_RUN.test(rest.slice(lineStart, start)) ||
+        HASHTAG_RUN.test(rest.slice(end, lineEnd));
+      // Inline: drop only the '#'
+      rest = atEdge
+        ? rest.slice(0, start) + rest.slice(end)
+        : rest.slice(0, start) + rest.slice(start + 1);
       continue;
     }
-    note =
-      note.slice(0, entity.offset) + note.slice(entity.offset + entity.length);
+
+    rest = rest.slice(0, start) + rest.slice(end);
   }
 
-  note = note
+  rest = rest
+    .replace(/[ \t]{2,}/g, ' ')
     .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n[ \t]+/g, '\n')
     .replace(/\n{3,}/g, '\n\n')
     .trim();
-  return { url, note: note || undefined };
+
+  return { url, rest: rest || undefined, tags };
 }
 
-async function toItem(message: TelegramMessage): Promise<StashItem | null> {
-  const base = { id: message.message_id, createdAt: message.date * 1000 };
-  const caption = message.caption?.trim() || undefined;
+function parseMessage(message: TelegramMessage) {
+  return message.text !== undefined
+    ? parseText(message.text, message.entities)
+    : parseText(message.caption, message.caption_entities);
+}
+
+async function toItem(
+  message: TelegramMessage,
+  parsed: ParsedText,
+): Promise<StashItem | null> {
+  const base = {
+    id: message.message_id,
+    createdAt: message.date * 1000,
+    tags: mergeTags(parsed.tags),
+  };
 
   if (message.photo?.length) {
     const largest = message.photo[message.photo.length - 1];
@@ -101,7 +164,7 @@ async function toItem(message: TelegramMessage): Promise<StashItem | null> {
       mimeType: 'image/jpeg',
       width: largest.width,
       height: largest.height,
-      note: caption,
+      note: parsed.rest,
     };
   }
 
@@ -112,25 +175,22 @@ async function toItem(message: TelegramMessage): Promise<StashItem | null> {
       kind: 'image',
       fileId: message.document.file_id,
       mimeType,
-      note: caption,
+      note: parsed.rest,
     };
   }
 
-  const text = message.text ?? message.caption;
-  if (!text?.trim()) return null;
-
-  const link = findLink(text, message.entities ?? message.caption_entities);
-  if (link) {
+  if (parsed.url) {
     return {
       ...base,
       kind: 'link',
-      url: link.url,
-      note: link.note,
-      preview: await fetchLinkPreview(link.url),
+      url: parsed.url,
+      note: parsed.rest,
+      preview: await fetchLinkPreview(parsed.url),
     };
   }
 
-  return { ...base, kind: 'text', text: text.trim() };
+  if (!parsed.rest) return null;
+  return { ...base, kind: 'text', text: parsed.rest };
 }
 
 function reply(message: TelegramMessage, text: string) {
@@ -150,8 +210,32 @@ function react(message: TelegramMessage, emoji: string) {
   });
 }
 
+function formatTags(tags: string[]) {
+  return tags.map((tag) => `#${tag}`).join(' ');
+}
+
+async function retag(
+  message: TelegramMessage,
+  change: (tags: string[]) => string[] | undefined,
+) {
+  const target = message.reply_to_message?.message_id;
+  if (!target) return false;
+  const updated = await updateItem(target, (item) => ({
+    ...item,
+    tags: mergeTags(change(item.tags ?? [])),
+  }));
+  if (!updated) {
+    await reply(message, 'Not in the stash.');
+    return true;
+  }
+  revalidatePath('/stash');
+  await react(message, '👍');
+  return true;
+}
+
 async function handle(message: TelegramMessage) {
   const command = message.text?.trim().split(/\s|@/)[0].toLowerCase();
+  const parsed = parseMessage(message);
 
   if (command === '/delete' || command === '/rm') {
     const target = message.reply_to_message?.message_id;
@@ -167,12 +251,51 @@ async function handle(message: TelegramMessage) {
     return;
   }
 
+  if (command === '/tags') {
+    const counts = new Map<string, number>();
+    for (const item of await getItems()) {
+      for (const tag of item.tags ?? []) {
+        counts.set(tag, (counts.get(tag) ?? 0) + 1);
+      }
+    }
+    const lines = [...counts]
+      .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+      .map(([tag, count]) => `#${tag} ${count}`);
+    await reply(message, lines.length ? lines.join('\n') : 'No tags yet.');
+    return;
+  }
+
+  if (command === '/untag') {
+    const done =
+      parsed.tags.length > 0 &&
+      (await retag(message, (tags) =>
+        tags.filter((tag) => !parsed.tags.includes(tag)),
+      ));
+    if (!done) {
+      await reply(message, 'Reply /untag #tag to the message to untag.');
+    }
+    return;
+  }
+
   if (command?.startsWith('/')) {
     await reply(message, HELP);
     return;
   }
 
-  const item = await toItem(message);
+  /* Only hashtags: tag the message being replied to */
+  const isMedia = Boolean(message.photo?.length || message.document);
+  if (!isMedia && !parsed.url && !parsed.rest && parsed.tags.length) {
+    const done = await retag(message, (tags) => [...tags, ...parsed.tags]);
+    if (!done) {
+      await reply(
+        message,
+        `Reply ${formatTags(parsed.tags)} to a saved message to tag it.`,
+      );
+    }
+    return;
+  }
+
+  const item = await toItem(message, parsed);
   if (!item) {
     await reply(
       message,

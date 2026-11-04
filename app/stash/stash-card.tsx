@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { CSSProperties } from 'react';
 
 import type { StashItem } from '@/lib/stash';
@@ -61,12 +62,43 @@ function Meta({ item, label }: { item: StashItem; label?: string }) {
   );
 }
 
+/* z-1 lifts the chips above a link card's stretched overlay */
+function Tags({ tags, active }: { tags?: string[]; active?: string }) {
+  if (!tags?.length) return null;
+  return (
+    <ul className="relative z-1 flex flex-wrap gap-x-2.5 gap-y-1 font-mono text-xs">
+      {tags.map((tag) => (
+        <li key={tag}>
+          <Link
+            href={`/stash?tag=${encodeURIComponent(tag)}`}
+            scroll={false}
+            className={cn(
+              'transition-colors hover:text-foreground motion-reduce:transition-none',
+              tag === active ? 'text-foreground' : 'text-muted-foreground',
+            )}
+          >
+            #{tag}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 function Note({ children }: { children?: string }) {
   if (!children) return null;
   return <p className="whitespace-pre-wrap text-pretty">{children}</p>;
 }
 
-export function StashCard({ item, index }: { item: StashItem; index: number }) {
+export function StashCard({
+  item,
+  index,
+  activeTag,
+}: {
+  item: StashItem;
+  index: number;
+  activeTag?: string;
+}) {
   switch (item.kind) {
     case 'link': {
       const { preview } = item;
@@ -95,6 +127,7 @@ export function StashCard({ item, index }: { item: StashItem; index: number }) {
                 )}
               </div>
               <Note>{item.note}</Note>
+              <Tags tags={item.tags} active={activeTag} />
               <Meta item={item} label="YouTube" />
             </div>
           </article>
@@ -102,20 +135,23 @@ export function StashCard({ item, index }: { item: StashItem; index: number }) {
       }
 
       const site = preview?.siteName ?? hostname(item.url);
+      /*
+       * Stretched link: the title's overlay makes the whole card clickable,
+       * while the tag chips (z-1) stay links of their own. Links can't nest.
+       */
       return (
-        <a
-          href={item.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={cn(CARD, 'group')}
-          style={enter(index)}
-        >
+        <article className={cn(CARD, 'group relative')} style={enter(index)}>
           {preview?.image && <PreviewImage src={preview.image} />}
           <div className="flex flex-col gap-2 p-4.5">
             <div className="flex flex-col gap-1">
-              <span className="leading-6.5 font-medium text-pretty underline-offset-2 group-hover:underline">
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="leading-6.5 font-medium text-pretty underline-offset-2 outline-none group-hover:underline after:absolute after:inset-0 after:rounded-2xl focus-visible:after:outline-2 focus-visible:after:outline-ring"
+              >
                 {preview?.title ?? hostname(item.url)}
-              </span>
+              </a>
               {preview?.description && (
                 <span className="line-clamp-3 text-sm text-muted-foreground text-pretty">
                   {preview.description}
@@ -123,9 +159,10 @@ export function StashCard({ item, index }: { item: StashItem; index: number }) {
               )}
             </div>
             <Note>{item.note}</Note>
+            <Tags tags={item.tags} active={activeTag} />
             <Meta item={item} label={site} />
           </div>
-        </a>
+        </article>
       );
     }
 
@@ -149,9 +186,10 @@ export function StashCard({ item, index }: { item: StashItem; index: number }) {
               className="absolute top-3 right-3 rounded-full bg-black/50 px-2 py-1 text-white backdrop-blur-sm"
             />
           </div>
-          {item.note && (
-            <figcaption className="p-4.5">
+          {(item.note || item.tags?.length) && (
+            <figcaption className="flex flex-col gap-2 p-4.5">
               <Note>{item.note}</Note>
+              <Tags tags={item.tags} active={activeTag} />
             </figcaption>
           )}
         </figure>
@@ -163,6 +201,7 @@ export function StashCard({ item, index }: { item: StashItem; index: number }) {
           <p className="font-serif text-lg leading-7 whitespace-pre-wrap text-pretty">
             {item.text}
           </p>
+          <Tags tags={item.tags} active={activeTag} />
           <Meta item={item} />
         </article>
       );

@@ -20,6 +20,8 @@ type StashBase = {
   id: number;
   createdAt: number;
   note?: string;
+  /* Normalised: lowercase, no '#'. See normalizeTag */
+  tags?: string[];
 };
 
 export type StashItem = StashBase &
@@ -75,6 +77,32 @@ export async function removeItem(id: number) {
     redis().zrem(ORDER_KEY, id),
   ]);
   return removed > 0;
+}
+
+/* Read-modify-write: fine for a single writer (the owner's bot) */
+export async function updateItem(
+  id: number,
+  update: (item: StashItem) => StashItem,
+) {
+  const item = await getItem(id);
+  if (!item) return false;
+  await redis().hset(ITEMS_KEY, { [String(id)]: update(item) });
+  return true;
+}
+
+export const MAX_TAGS = 10;
+
+/* "#Inspo" → "inspo". Letters (any script), digits and _, like Telegram hashtags */
+export function normalizeTag(raw: string) {
+  return raw
+    .replace(/^#/, '')
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}_]/gu, '');
+}
+
+export function mergeTags(...lists: (string[] | undefined)[]) {
+  const tags = [...new Set(lists.flat().filter((tag): tag is string => !!tag))];
+  return tags.length ? tags.slice(0, MAX_TAGS) : undefined;
 }
 
 export async function getItem(id: number) {
