@@ -22,13 +22,20 @@ interface HoverBlobProps {
   message: string;
   className?: string;
   position?: 'top' | 'bottom' | 'left' | 'right';
+  // `token` draws the pill behind the trigger; `plain` leaves the text as-is so children can style the affordance
+  variant?: 'token' | 'plain';
 }
 
 const FINE_HOVER_QUERY = '(hover: hover) and (pointer: fine)';
 const VIEWPORT_GUTTER = 12;
-const BLOB_GAP = 20;
+// Image blobs need room so the photo doesn't crowd the trigger; a bare label should sit close like a tooltip
+const IMAGE_BLOB_GAP = 20;
+const LABEL_BLOB_GAP = 8;
 const CLOSE_GRACE_MS = 150;
 const WOBBLE_RANGE = 8;
+// Ignore sub-pixel jitter; any real scroll detaches the blob from its trigger
+const SCROLL_CLOSE_THRESHOLD = 2;
+const SCROLL_HOVER_COOLDOWN_MS = 150;
 
 function wobbleFromPointer(
   clientX: number,
@@ -43,7 +50,7 @@ function wobbleFromPointer(
   };
 }
 
-// Bridges the BLOB_GAP so moving the pointer from the trigger to the blob doesn't close it
+// Bridges the gap so moving the pointer from the trigger to the blob doesn't close it
 const gapFillerClassName = {
   top: 'absolute inset-x-0 top-full',
   bottom: 'absolute inset-x-0 bottom-full',
@@ -51,12 +58,14 @@ const gapFillerClassName = {
   right: 'absolute inset-y-0 right-full',
 } as const;
 
-const gapFillerStyle = {
-  top: { height: BLOB_GAP },
-  bottom: { height: BLOB_GAP },
-  left: { width: BLOB_GAP },
-  right: { width: BLOB_GAP },
-} as const;
+function gapFillerStyle(
+  position: keyof typeof gapFillerClassName,
+  gap: number,
+) {
+  return position === 'top' || position === 'bottom'
+    ? { height: gap }
+    : { width: gap };
+}
 
 type Coordinates = {
   left: number;
@@ -80,6 +89,7 @@ export function HoverBlob({
   message,
   className,
   position = 'top',
+  variant = 'token',
 }: HoverBlobProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
@@ -91,11 +101,14 @@ export function HoverBlob({
   const contentRef = useRef<HTMLSpanElement>(null);
   const isOpenRef = useRef(false);
   const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastScrollAtRef = useRef(-Infinity);
+  const pendingHoverRef = useRef(false);
   const pointerX = useMotionValue(0);
   const pointerY = useMotionValue(0);
   const contentX = useSpring(pointerX, { stiffness: 300, damping: 25 });
   const contentY = useSpring(pointerY, { stiffness: 300, damping: 25 });
   const reducedMotion = useReducedMotion();
+  const gap = imageContent ? IMAGE_BLOB_GAP : LABEL_BLOB_GAP;
 
   isOpenRef.current = isOpen;
 
@@ -186,25 +199,25 @@ export function HoverBlob({
     const placement = {
       top: {
         left: centeredLeft,
-        top: targetRect.top - blobHeight - BLOB_GAP,
+        top: targetRect.top - blobHeight - gap,
       },
       bottom: {
         left: centeredLeft,
-        top: targetRect.bottom + BLOB_GAP,
+        top: targetRect.bottom + gap,
       },
       left: {
-        left: targetRect.left - blobWidth - BLOB_GAP,
+        left: targetRect.left - blobWidth - gap,
         top: centeredTop,
       },
       right: {
-        left: targetRect.right + BLOB_GAP,
+        left: targetRect.right + gap,
         top: centeredTop,
       },
     };
 
     setCoordinates(placement[position]);
     setIsPositioned(true);
-  }, [adjustToViewport, isExiting, isOpen, isPositioned, position]);
+  }, [adjustToViewport, gap, isExiting, isOpen, isPositioned, position]);
 
   useLayoutEffect(() => {
     if (!isOpen || isExiting || !isPositioned || isReady) return;
@@ -238,6 +251,59 @@ export function HoverBlob({
     return () => window.removeEventListener('resize', reposition);
   }, [isOpen]);
 
+  // The blob is position: fixed, so once its trigger scrolls it's pointing at nothing — close it
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const target = rootRef.current;
+    if (!target) return;
+    const { top, left } = target.getBoundingClientRect();
+
+    const closeOnScroll = () => {
+      const rect = target.getBoundingClientRect();
+      if (
+        Math.abs(rect.top - top) > SCROLL_CLOSE_THRESHOLD ||
+        Math.abs(rect.left - left) > SCROLL_CLOSE_THRESHOLD
+      )
+        closeBlob();
+    };
+
+    // Capture so scrolls inside any ancestor container are caught too
+    window.addEventListener('scroll', closeOnScroll, {
+      capture: true,
+      passive: true,
+    });
+    return () =>
+      window.removeEventListener('scroll', closeOnScroll, { capture: true });
+  }, [closeBlob, isOpen]);
+
+  // Browsers fire pointerenter when content scrolls under a resting cursor; remember scrolls so those don't open the blob
+  useEffect(() => {
+    const markScroll = () => {
+      lastScrollAtRef.current = performance.now();
+    };
+    window.addEventListener('scroll', markScroll, {
+      capture: true,
+      passive: true,
+    });
+    return () =>
+      window.removeEventListener('scroll', markScroll, { capture: true });
+  }, []);
+
+  const hoverOpen = () => {
+    if (!hasFineHover()) return;
+    if (
+      performance.now() - lastScrollAtRef.current <
+      SCROLL_HOVER_COOLDOWN_MS
+    ) {
+      // Defer to the next real pointer movement instead
+      pendingHoverRef.current = true;
+      return;
+    }
+    pendingHoverRef.current = false;
+    openBlob();
+  };
+
   useEffect(() => () => cancelScheduledClose(), [cancelScheduledClose]);
 
   return (
@@ -246,7 +312,8 @@ export function HoverBlob({
       role="button"
       tabIndex={0}
       aria-expanded={isOpen}
-      className={`touch-hitbox token relative inline rounded-sm font-medium ${className ?? ''}`}
+      // The trigger is a stacking context (relative + `token`'s isolation), so the blob's z-50 can't escape it; lift the whole trigger while the blob is visible
+      className={`touch-hitbox relative inline rounded-sm ${isOpen || isExiting ? 'z-50' : ''} ${variant === 'token' ? 'token font-medium' : 'outline-offset-2'} ${className ?? ''}`}
       onFocus={(event) => {
         if (event.currentTarget.matches(':focus-visible')) openBlob();
       }}
@@ -265,15 +332,15 @@ export function HoverBlob({
           else openBlob();
         }
       }}
-      onPointerEnter={() => {
-        if (hasFineHover()) openBlob();
-      }}
+      onPointerEnter={hoverOpen}
       onPointerLeave={() => {
+        pendingHoverRef.current = false;
         pointerX.set(0);
         pointerY.set(0);
         scheduleClose();
       }}
       onPointerMove={(event) => {
+        if (pendingHoverRef.current) hoverOpen();
         if (reducedMotion || !hasFineHover()) return;
 
         const blob = blobRef.current;
@@ -341,7 +408,7 @@ export function HoverBlob({
               <span
                 aria-hidden
                 className={gapFillerClassName[position]}
-                style={gapFillerStyle[position]}
+                style={gapFillerStyle(position, gap)}
               />
               <motion.span
                 ref={contentRef}
@@ -391,7 +458,7 @@ export function HoverBlob({
                 }}
               >
                 {imageContent}
-                <span className="text-sm sm:text-default max-w-full text-center whitespace-normal font-normal">
+                <span className="text-sm sm:text-default max-w-full text-center whitespace-normal font-normal cursor-default">
                   {message}
                 </span>
               </motion.span>

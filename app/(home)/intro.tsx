@@ -13,6 +13,33 @@ function yearsOfExperience(now = new Date()) {
   return now.getMonth() < CAREER_START.month ? years - 1 : years;
 }
 
+// 16 half-waves across a 100-wide box; stretched to the text width via preserveAspectRatio="none"
+const WAVE_PATH = `M0 4 q3.125 -4 6.25 0${' t6.25 0'.repeat(15)}`;
+
+// Draws a wavy strikethrough left to right while the parent HoverBlob is open
+const WavyStrike = ({ children }: { children: React.ReactNode }) => (
+  <span className="relative whitespace-nowrap transition-colors duration-300 in-aria-expanded:text-muted-foreground">
+    {children}
+    <svg
+      aria-hidden
+      viewBox="0 0 100 8"
+      preserveAspectRatio="none"
+      className="pointer-events-none absolute inset-x-0 top-1/2 h-[0.5em] w-full -translate-y-1/3 overflow-visible text-primary"
+    >
+      <path
+        d={WAVE_PATH}
+        pathLength={1}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        vectorEffect="non-scaling-stroke"
+        className="opacity-0 [stroke-dasharray:1] [stroke-dashoffset:1] transition-[stroke-dashoffset,opacity] duration-200 ease-in motion-reduce:transition-none in-aria-expanded:opacity-100 in-aria-expanded:[stroke-dashoffset:0] in-aria-expanded:duration-500 in-aria-expanded:ease-out"
+      />
+    </svg>
+  </span>
+);
+
 export const Intro = () => {
   return (
     <section className="flex flex-col gap-8">
@@ -48,9 +75,13 @@ export const Intro = () => {
       <div className="flex flex-col gap-2">
         <span>Squinting at a screen counting pixels for a living.</span>
         <p>
-          I write software, mostly the frontend kind. I like figuring out how
-          things work, making them work better, and occasionally spending an
-          unreasonable amount of time getting one tiny
+          I{' '}
+          <HoverBlob variant="plain" message="ask agents to write software">
+            <WavyStrike>write software</WavyStrike>
+          </HoverBlob>
+          , mostly the frontend kind. I like figuring out how things work,
+          making them work better, and occasionally spending an unreasonable
+          amount of time getting one tiny
           <HoverBlob
             className="text-wrap font-normal mx-0.75"
             imageContent={
