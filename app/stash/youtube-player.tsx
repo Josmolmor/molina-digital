@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 
 import { Play } from '@/components/ui/icons/play';
 import {
@@ -17,9 +17,12 @@ import {
 export function YouTubePlayer({
   video,
   title,
+  overlay,
 }: {
   video: YouTubeVideo;
   title: string;
+  /* Shown over the thumbnail only: it would get in the way of the video */
+  overlay?: ReactNode;
 }) {
   const [playing, setPlaying] = useState(false);
 
@@ -54,6 +57,7 @@ export function YouTubePlayer({
           </span>
         </button>
       )}
+      {!playing && overlay}
     </div>
   );
 }

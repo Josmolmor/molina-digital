@@ -3,6 +3,12 @@ import Link from 'next/link';
 
 const projects = [
   {
+    title: 'Stash',
+    description:
+      "Things I've saved from around the internet: inspiration, ideas and TODOs.",
+    href: '/stash',
+  },
+  {
     title: 'Design strategies',
     description: 'A deck of strategies to help you get unblocked.',
     href: '/unblock',
@@ -17,12 +23,6 @@ const projects = [
     description:
       'An experiment in cursors that morph between states instead of switching.',
     href: '/cursor-morph',
-  },
-  {
-    title: 'Stash',
-    description:
-      'Things I’ve saved from around the internet: inspiration, ideas and TODOs.',
-    href: '/stash',
   },
 ];
 

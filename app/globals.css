@@ -875,6 +875,53 @@ canvas {
   }
 }
 
+/*
+ * Horizontal scroller with edge fades (components/ui/scroll-fade.tsx sets
+ * the data attributes). Registered so the fade sizes can transition.
+ */
+@property --fade-start {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --fade-end {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+.scroll-fade {
+  --fade-size: 2.5rem;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fade-start),
+    #000 calc(100% - var(--fade-end)),
+    transparent
+  );
+  transition:
+    --fade-start 0.2s ease,
+    --fade-end 0.2s ease;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &[data-fade-start='true'] {
+    --fade-start: var(--fade-size);
+  }
+
+  &[data-fade-end='true'] {
+    --fade-end: var(--fade-size);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
 /* Stash cards settling in: a hair small and soft, then sharp. */
 @keyframes stash-in {
   from {

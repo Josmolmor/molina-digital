@@ -1,11 +1,12 @@
 import Link from 'next/link';
 
+import { ScrollFade } from '@/components/ui/scroll-fade';
 import { cn } from '@/lib/utils';
 
 export type TagCount = { tag: string; count: number };
 
 const PILL =
-  'flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm transition-[background-color,color] ease-[ease] motion-reduce:transition-none';
+  'flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-sm transition-[background-color,color] ease-[ease] motion-reduce:transition-none';
 const IDLE = 'bg-card text-muted-foreground hover:text-foreground';
 const ACTIVE = 'bg-foreground text-background';
 
@@ -55,20 +56,25 @@ export function TagBar({
   if (tags.length === 0) return null;
 
   return (
-    <nav aria-label="Filter by tag" className="flex flex-wrap gap-2">
-      <Pill href="/stash" active={!active} label="All" count={total} />
-      {tags.map(({ tag, count }) => (
-        <Pill
-          key={tag}
-          /* Tapping the active tag clears the filter */
-          href={
-            active === tag ? '/stash' : `/stash?tag=${encodeURIComponent(tag)}`
-          }
-          active={active === tag}
-          label={`#${tag}`}
-          count={count}
-        />
-      ))}
+    <nav aria-label="Filter by tag">
+      {/* One row that scrolls sideways; py-1 keeps focus rings unclipped */}
+      <ScrollFade className="-my-1 flex gap-2 py-1">
+        <Pill href="/stash" active={!active} label="All" count={total} />
+        {tags.map(({ tag, count }) => (
+          <Pill
+            key={tag}
+            /* Tapping the active tag clears the filter */
+            href={
+              active === tag
+                ? '/stash'
+                : `/stash?tag=${encodeURIComponent(tag)}`
+            }
+            active={active === tag}
+            label={`#${tag}`}
+            count={count}
+          />
+        ))}
+      </ScrollFade>
     </nav>
   );
 }
