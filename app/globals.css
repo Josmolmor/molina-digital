@@ -358,14 +358,18 @@
   h4,
   h5,
   h6 {
-    text-wrap: balance;
+    /* Longhand: the text-wrap shorthand would also reset text-wrap-mode to
+       wrap, overriding a nowrap inherited from the parent */
+    text-wrap-style: balance;
     font-size: var(--text-lg);
     font-weight: 500;
   }
 
+  /* Longhand, same reason: with the shorthand, a span inside a
+     whitespace-nowrap parent could still wrap (and shift layout) */
   span,
   p {
-    text-wrap: pretty;
+    text-wrap-style: pretty;
   }
 }
 

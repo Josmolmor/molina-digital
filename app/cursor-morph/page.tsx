@@ -11,10 +11,26 @@ import { cn } from '@/lib/utils';
 import { PREVIEW_PATHS, STROKE_WIDTH } from './compiled';
 import { IDLE, MorphCursor, type CursorSnapshot } from './morph-cursor';
 import { MorphStage } from './morph-stage';
-import { CURSOR_SHAPES, TILE_STATES, type CursorStateId } from './shapes';
+import {
+  CURSOR_SHAPES,
+  CURSOR_STATES,
+  TILE_STATES,
+  type CursorStateId,
+} from './shapes';
 import { useFinePointer } from './use-fine-pointer';
 
 const EASE_OUT = 'ease-(--ease-out-quint)';
+
+/*
+ * The readout is monospace, so 1ch is exactly one character: reserving
+ * "cursor: <longest>;" keeps the label (and the slider beside it) from
+ * resizing as the cursor changes. Derived from the data, so a longer
+ * cursor name later still fits.
+ */
+const READOUT_WIDTH = `${
+  'cursor: ;'.length +
+  Math.max(...CURSOR_STATES.map((id) => CURSOR_SHAPES[id].css.length))
+}ch`;
 
 /* Playback speed for the morph: 0× pauses it, 1× is real time. */
 const MAX_SPEED = 2;
@@ -64,7 +80,7 @@ export default function CursorMorph() {
         </motion.div>
       </MotionConfig>
 
-      <main className="flex w-full max-w-232 flex-col gap-10 px-6 pt-24 pb-14 sm:px-12 md:px-24 md:pb-28">
+      <main className="flex w-full max-w-232 flex-col gap-8 sm:gap-10 px-6 pt-24 pb-14 sm:px-12 md:px-24 md:pb-28">
         <header className="flex flex-col gap-3">
           <h1 className="font-serif text-2xl font-medium">Cursor morph</h1>
           <p className="max-w-prose text-muted-foreground">
@@ -76,9 +92,13 @@ export default function CursorMorph() {
           </p>
         </header>
 
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
-            <p className="font-mono text-sm text-muted-foreground">
+        <div className="flex flex-col gap-2 sm:gap-4">
+          {/* Always one row, fixed widths: the readout reserves its longest value, the slider takes the rest on phones */}
+          <div className="flex items-center justify-between gap-4 sm:gap-6">
+            <p
+              className="shrink-0 whitespace-nowrap font-mono text-sm text-muted-foreground"
+              style={{ width: READOUT_WIDTH }}
+            >
               cursor:{' '}
               <span className="text-foreground">
                 {CURSOR_SHAPES[current].css}
@@ -97,7 +117,7 @@ export default function CursorMorph() {
               value={[speed]}
               onValueChange={([value]) => setSpeed(value)}
               onReset={() => setSpeed(REAL_TIME)}
-              className="w-56"
+              className="min-w-0 flex-1 sm:w-56 sm:flex-none"
             />
           </div>
 
@@ -109,7 +129,8 @@ export default function CursorMorph() {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {/* Three across on phones: two rows fewer than a 2-up grid, so the stage above stays in view while tapping the last tiles */}
+          <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
             {TILE_STATES.map((id) => {
               const shape = CURSOR_SHAPES[id];
               const active = finePointer
