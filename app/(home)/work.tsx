@@ -8,7 +8,7 @@ const WorkPage = () => {
         Work
       </h2>
       <Separator />
-      <div className="flex flex-col gap-1.5 -mx-4.5">
+      <div className="flex flex-col gap-2 -mx-4.5">
         {timelineItems.map((item) => (
           <div
             key={item.id}

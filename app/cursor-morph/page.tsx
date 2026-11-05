@@ -18,8 +18,10 @@ import {
   type CursorStateId,
 } from './shapes';
 import { useFinePointer } from './use-fine-pointer';
+import { useTapSound } from './use-tap-sound';
 
 const EASE_OUT = 'ease-(--ease-out-quint)';
+const TAP_SOUND = '/assets/sound/cursor-morph/tile-tap.mp3';
 
 /*
  * The readout is monospace, so 1ch is exactly one character: reserving
@@ -48,6 +50,7 @@ export default function CursorMorph() {
   /* Touch has no cursor to replace: tapping a tile drives the stage instead. */
   const [selected, setSelected] = useState<CursorStateId>('default');
   const [speed, setSpeed] = useState(REAL_TIME);
+  const playTap = useTapSound(TAP_SOUND);
 
   const current = finePointer ? cursor.state : selected;
 
@@ -80,15 +83,12 @@ export default function CursorMorph() {
         </motion.div>
       </MotionConfig>
 
-      <main className="flex w-full max-w-232 flex-col gap-8 sm:gap-10 px-6 pt-24 pb-14 sm:px-12 md:px-24 md:pb-28">
+      <main className="flex w-full max-w-232 flex-col gap-6 sm:gap-10 px-6 pt-16 sm:pt-20 md:pt-24 pb-14 sm:px-12 md:px-24 md:pb-28">
         <header className="flex flex-col gap-3">
           <h1 className="font-serif text-2xl font-medium">Cursor morph</h1>
           <p className="max-w-prose text-muted-foreground">
             An experiment in cursors that morph between states instead of
             switching.
-          </p>
-          <p className="text-muted-foreground pointer-fine:hidden">
-            Best with a mouse or trackpad. Here, tap a tile to morph the shape.
           </p>
         </header>
 
@@ -144,10 +144,17 @@ export default function CursorMorph() {
                   key={id}
                   data-cursor-state={id}
                   data-active={active || undefined}
-                  onClick={finePointer ? undefined : () => setSelected(id)}
+                  onClick={
+                    finePointer
+                      ? undefined
+                      : () => {
+                          playTap();
+                          setSelected(id);
+                        }
+                  }
                   className={cn(
                     'group relative flex aspect-square touch-manipulation select-none flex-col justify-between rounded-2xl bg-card p-4',
-                    'transition-[background-color] duration-200 ease-[ease] data-active:bg-[oklch(from_var(--background)_calc(l+var(--surface-shift-active))_c_h)]',
+                    'transition-[background-color] duration-200 ease-[ease] pointer-coarse:data-active:ring pointer-coarse:data-active:ring-primary data-active:bg-[oklch(from_var(--background)_calc(l+var(--surface-shift-active))_c_h)]',
                   )}
                 >
                   {/* The preview ghosts while hovered: the shape has moved into the cursor. */}

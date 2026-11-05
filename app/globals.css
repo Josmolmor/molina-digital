@@ -416,6 +416,12 @@ canvas {
   padding-left: 0.5em;
   padding-right: 0.5em;
   margin-inline: -0.08em;
+  /* The pill is absolutely positioned inside an inline box, so if the token
+   * wraps (browsers may break after the inline-block icon, stranding the end
+   * padding or the icon on the next line) its containing block spans from the
+   * first fragment to the last, which then lies further left. That box has
+   * negative width and the pill vanishes. One line keeps the pill. */
+  white-space: nowrap;
   &::after {
     content: '';
     z-index: -1;
