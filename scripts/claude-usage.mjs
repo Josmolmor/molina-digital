@@ -12,7 +12,9 @@
  *
  * Env (or ~/.claude/claude-usage.env, KEY=value lines):
  *   CLAUDE_USAGE_SECRET  required to push
- *   CLAUDE_USAGE_URL     defaults to https://molina.digital
+ *   CLAUDE_USAGE_URL     defaults to https://www.molina.digital (the apex
+ *                        redirects there, and a cross-host redirect drops
+ *                        the Authorization header)
  *   CLAUDE_CONFIG_DIR    defaults to ~/.claude
  *
  * Runs from a SessionEnd hook, so it never fails loudly: errors go to stderr
@@ -135,7 +137,7 @@ async function main() {
     );
     return;
   }
-  const base = process.env.CLAUDE_USAGE_URL ?? 'https://molina.digital';
+  const base = process.env.CLAUDE_USAGE_URL ?? 'https://www.molina.digital';
   const response = await fetch(new URL('/api/claude-usage', base), {
     method: 'POST',
     headers: {
@@ -143,9 +145,15 @@ async function main() {
       'content-type': 'application/json',
     },
     body: JSON.stringify({ days: sorted }),
+    /* Don't follow: the retry would arrive without the secret and read as a 401 */
+    redirect: 'manual',
     signal: AbortSignal.timeout(10_000),
   });
-  if (!response.ok) {
+  if (response.status >= 300 && response.status < 400) {
+    console.error(
+      `claude-usage: ${base} redirects to ${response.headers.get('location')}, set CLAUDE_USAGE_URL to that host`,
+    );
+  } else if (!response.ok) {
     console.error(`claude-usage: push failed with ${response.status}`);
   }
 }
