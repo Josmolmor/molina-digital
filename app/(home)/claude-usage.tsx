@@ -1,6 +1,7 @@
 import { buildCalendar, getUsage, todayKey } from '@/lib/claude-usage';
 import { formatDay, formatMonthDay, formatTokens } from './usage-format';
 import { UsageGrid } from './usage-grid';
+import { SlideIn } from '@/components/ui/slide-in';
 import { cn } from '@/lib/utils';
 
 /* Renders nothing until there's data, so a missing or empty Redis never shows an empty grid */
@@ -24,7 +25,10 @@ export default async function ClaudeUsage({
 
   return (
     <section className={cn('flex flex-col gap-8', className)}>
-      <UsageGrid calendar={calendar} summary={summary} />
+      {/* Same entrance as the footer: slides up the first time it scrolls into view */}
+      <SlideIn>
+        <UsageGrid calendar={calendar} summary={summary} />
+      </SlideIn>
     </section>
   );
 }

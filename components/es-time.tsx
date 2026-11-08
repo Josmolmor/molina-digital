@@ -2,6 +2,11 @@
 
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
 const CLASS_NAME =
@@ -84,11 +89,14 @@ export default function EsTime({ className }: { className?: string }) {
     : minutesSinceMidnight >= 8 * 60 && minutesSinceMidnight <= 18 * 60
       ? {
           color: 'bg-green-500 animate-pulse',
-          label: 'Working hours in Seville',
+          label: "Working hours in Seville, I'm around",
         }
       : minutesSinceMidnight > 18 * 60 && minutesSinceMidnight <= 22 * 60
-        ? { color: 'bg-amber-500', label: 'Evening in Seville' }
-        : { color: 'bg-red-500', label: 'Night time in Seville' };
+        ? {
+            color: 'bg-amber-500',
+            label: 'Evening in Seville, slower to reply',
+          }
+        : { color: 'bg-red-500', label: 'Night in Seville, probably asleep' };
 
   useEffect(() => {
     setIsMounted(true);
@@ -124,19 +132,26 @@ export default function EsTime({ className }: { className?: string }) {
         // Invisible spacer: holds the clock's width so neighbors don't shift when it mounts
         <span aria-hidden="true" className="invisible h-4 w-21.5" />
       )}
-      <motion.span
-        aria-label={status.label}
-        title={status.label}
-        className={cn(
-          'size-1.5 shrink-0 rounded-full',
-          REDUCED_MOTION_VISIBLE,
-          status.color,
-        )}
-        role="img"
-        initial={timeHidden}
-        animate={timeVisible}
-        transition={timeTransition}
-      />
+      <Tooltip>
+        <TooltipTrigger asChild>
+          {/* The dot is 6px: pad the trigger so it's hoverable, and cancel the padding so layout doesn't move */}
+          <span className="-m-2 flex p-2">
+            <motion.span
+              aria-label={status.label}
+              className={cn(
+                'size-1.5 shrink-0 rounded-full',
+                REDUCED_MOTION_VISIBLE,
+                status.color,
+              )}
+              role="img"
+              initial={timeHidden}
+              animate={timeVisible}
+              transition={timeTransition}
+            />
+          </span>
+        </TooltipTrigger>
+        <TooltipContent>{status.label}</TooltipContent>
+      </Tooltip>
     </span>
   );
 }
