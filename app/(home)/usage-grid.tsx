@@ -5,7 +5,7 @@ import { useState, type PointerEvent } from 'react';
 import { ScrollFade } from '@/components/ui/scroll-fade';
 import type { UsageCalendar } from '@/lib/claude-usage';
 import { cn } from '@/lib/utils';
-import { formatDay, formatTokens } from './usage-format';
+import { formatDay, formatMonthDay, formatTokens } from './usage-format';
 
 /* Empty days sit on the border colour; activity mixes in the primary, so both themes follow */
 const LEVELS = [
@@ -18,7 +18,7 @@ const LEVELS = [
 
 const WEEKDAYS = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
 
-type Hovered = { date: string; tokens: number } | null;
+type Hovered = { date: string; tokens: number; estimated: boolean } | null;
 
 export function UsageGrid({
   calendar,
@@ -39,6 +39,7 @@ export function UsageGrid({
     setHovered({
       date: cell.dataset.date!,
       tokens: Number(cell.dataset.tokens),
+      estimated: cell.dataset.estimated === 'true',
     });
   };
 
@@ -48,7 +49,7 @@ export function UsageGrid({
         <div
           role="img"
           aria-label={summary}
-          className="grid min-w-[40rem] grid-cols-[auto_1fr] gap-x-2 gap-y-1.5"
+          className="grid min-w-160 grid-cols-[auto_1fr] gap-x-2 gap-y-1.5"
         >
           <div aria-hidden />
           <div
@@ -71,7 +72,7 @@ export function UsageGrid({
 
           <div
             aria-hidden
-            className="grid grid-rows-7 gap-[3px] text-muted-foreground font-mono text-[10px] leading-none"
+            className="grid grid-rows-7 gap-0.75 text-muted-foreground font-mono text-[10px] leading-none"
           >
             {WEEKDAYS.map((label, i) => (
               <span key={i} className="flex items-center">
@@ -83,7 +84,7 @@ export function UsageGrid({
             aria-hidden
             onPointerOver={onPointerOver}
             onPointerLeave={() => setHovered(null)}
-            className="grid grid-flow-col grid-rows-7 auto-cols-fr gap-[3px]"
+            className="grid grid-flow-col grid-rows-7 auto-cols-fr gap-0.75"
           >
             {calendar.weeks.flatMap((week, w) =>
               week.map((cell, d) =>
@@ -92,11 +93,12 @@ export function UsageGrid({
                     key={cell.date}
                     data-date={cell.date}
                     data-tokens={cell.tokens}
+                    data-estimated={cell.estimated}
                     className={cn(
                       'aspect-square rounded-[2px]',
                       LEVELS[cell.level],
                       hovered?.date === cell.date &&
-                        'outline outline-1 outline-offset-1 outline-foreground/40',
+                        'outline outline-offset-1 outline-foreground/40',
                     )}
                   />
                 ) : (
@@ -108,19 +110,33 @@ export function UsageGrid({
         </div>
       </ScrollFade>
 
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 font-mono text-xs tabular-nums text-muted-foreground">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 font-mono text-xs tabular-nums text-muted-foreground pl-6">
         {/* Swaps instantly: it tracks the pointer, so any transition would lag behind it */}
         <span aria-hidden>
           {hovered
-            ? `${formatDay(hovered.date)} · ${hovered.tokens ? `${formatTokens(hovered.tokens)} tokens` : 'no usage'}`
-            : `${formatTokens(calendar.total)} tokens in the last year`}
+            ? `${formatDay(hovered.date)} · ${
+                !hovered.tokens
+                  ? 'no usage'
+                  : hovered.estimated
+                    ? `~${formatTokens(hovered.tokens)} tokens (estimated)`
+                    : `${formatTokens(hovered.tokens)} tokens`
+              }`
+            : `${calendar.estimatedBefore ? '~' : ''}${formatTokens(calendar.total)} tokens in the last year`}
+          {/* Says up front that part of the year is estimated, not only on hover */}
+          {!hovered && calendar.estimatedBefore && (
+            <span className="text-muted-foreground/70 max-sm:block">
+              {/* On phones the note takes its own line, so drop the separator */}
+              <span className="max-sm:hidden"> · </span>
+              estimated before {formatMonthDay(calendar.estimatedBefore)}
+            </span>
+          )}
         </span>
         <span aria-hidden className="flex shrink-0 items-center gap-1">
-          Less
+          <span className="mr-1">Less</span>
           {LEVELS.map((level) => (
             <span key={level} className={cn('size-2.5 rounded-[2px]', level)} />
           ))}
-          More
+          <span className="ml-1">More</span>
         </span>
       </div>
     </div>

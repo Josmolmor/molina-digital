@@ -11,10 +11,11 @@ const Home = () => {
       <Intro />
       <Projects />
       <Work />
-      <Personal />
-      <Suspense>
-        <ClaudeUsage />
-      </Suspense>
+      <Personal>
+        <Suspense>
+          <ClaudeUsage className="mt-2" />
+        </Suspense>
+      </Personal>
     </>
   );
 };

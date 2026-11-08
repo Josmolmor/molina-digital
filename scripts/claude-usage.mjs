@@ -9,6 +9,13 @@
  *
  *   node scripts/claude-usage.mjs            # push
  *   node scripts/claude-usage.mjs --dry-run  # print the daily totals only
+ *   node scripts/claude-usage.mjs --backfill [--dry-run]
+ *
+ * --backfill estimates the days from before the oldest surviving session log
+ * (Claude Code prunes them) using the prompt history in history.jsonl, which
+ * outlives the logs: prompts that day × the average tokens per prompt,
+ * measured on the days that have both. Estimates are stored apart from real
+ * totals, are labelled on the site, and never override a real day.
  *
  * Env (or ~/.claude/claude-usage.env, KEY=value lines):
  *   CLAUDE_USAGE_SECRET  required to push
@@ -28,6 +35,7 @@ import { createInterface } from 'node:readline';
 
 const TIME_ZONE = 'Europe/Madrid';
 const dryRun = process.argv.includes('--dry-run');
+const backfill = process.argv.includes('--backfill');
 
 async function loadEnvFile(path) {
   try {
@@ -110,6 +118,119 @@ async function collect(projectsDir) {
   return days;
 }
 
+/* Prompts per day, from the history Claude Code keeps of everything typed */
+async function promptsPerDay(historyFile) {
+  const days = {};
+  let lines;
+  try {
+    lines = createInterface({
+      input: createReadStream(historyFile),
+      crlfDelay: Infinity,
+    });
+    for await (const line of lines) {
+      let entry;
+      try {
+        entry = JSON.parse(line);
+      } catch {
+        continue;
+      }
+      if (!Number.isFinite(entry?.timestamp)) continue;
+      const day = dayOf.format(new Date(entry.timestamp));
+      days[day] = (days[day] ?? 0) + 1;
+    }
+  } catch {
+    // No history yet
+  }
+  return days;
+}
+
+/*
+ * Claude Code's /stats cache keeps real per-day input + output tokens, but
+ * cache writes only as a running total per model. Split that total across
+ * its days by message count, so the days still add up to the real total.
+ */
+async function statsCacheDays(statsFile) {
+  let stats;
+  try {
+    stats = JSON.parse(await readFile(statsFile, 'utf8'));
+  } catch {
+    return {};
+  }
+  const activity = stats.dailyActivity ?? [];
+  const inOut = Object.fromEntries(
+    (stats.dailyModelTokens ?? []).map(({ date, tokensByModel }) => [
+      date,
+      Object.values(tokensByModel ?? {}).reduce((a, b) => a + b, 0),
+    ]),
+  );
+  const cacheWrites = Object.values(stats.modelUsage ?? {}).reduce(
+    (sum, model) => sum + (model.cacheCreationInputTokens ?? 0),
+    0,
+  );
+  const messages = activity.reduce((sum, day) => sum + day.messageCount, 0);
+
+  const days = {};
+  for (const { date, messageCount } of activity) {
+    const share = messages > 0 ? messageCount / messages : 0;
+    days[date] = Math.round((inOut[date] ?? 0) + cacheWrites * share);
+  }
+  return days;
+}
+
+const dayNumber = (day) => Date.parse(`${day}T00:00:00Z`) / 86_400_000;
+
+/* Tokens per prompt across a set of days, placed at the set's middle day */
+function anchor(totals, prompts) {
+  const days = Object.keys(totals).filter((day) => prompts[day] > 0);
+  const count = days.reduce((sum, day) => sum + prompts[day], 0);
+  if (count === 0) return null;
+  const tokens = days.reduce((sum, day) => sum + totals[day], 0);
+  const at = days.reduce((sum, day) => sum + dayNumber(day), 0) / days.length;
+  return { ratio: tokens / count, at, days: days.length };
+}
+
+/*
+ * Every day before the oldest log gets an estimate: the stats-cache figure
+ * where there is one, else prompts × a tokens-per-prompt ratio that slides
+ * linearly between the two measured periods (and holds flat outside them).
+ */
+function estimate(real, prompts, stats) {
+  const firstReal = Object.keys(real).sort()[0];
+  if (!firstReal) return { estimates: {}, anchors: [], firstReal };
+
+  const anchors = [anchor(stats, prompts), anchor(real, prompts)]
+    .filter(Boolean)
+    .sort((a, b) => a.at - b.at);
+  const ratioOn = (day) => {
+    const x = dayNumber(day);
+    const [first, last] = [anchors[0], anchors.at(-1)];
+    if (x <= first.at) return first.ratio;
+    if (x >= last.at) return last.ratio;
+    const t = (x - first.at) / (last.at - first.at);
+    return first.ratio + t * (last.ratio - first.ratio);
+  };
+
+  const estimates = {};
+  for (const day of new Set([...Object.keys(prompts), ...Object.keys(stats)])) {
+    if (day >= firstReal) continue;
+    const tokens = stats[day] ?? Math.round((prompts[day] ?? 0) * ratioOn(day));
+    if (tokens > 0) estimates[day] = tokens;
+  }
+  return { estimates, anchors, firstReal };
+}
+
+function printTable(days) {
+  const format = new Intl.NumberFormat('en');
+  let total = 0;
+  for (const [day, tokens] of Object.entries(days).sort(([a], [b]) =>
+    a.localeCompare(b),
+  )) {
+    total += tokens;
+    console.log(`${day}  ${format.format(tokens).padStart(14)}`);
+  }
+  console.log(`${'total'.padEnd(10)}  ${format.format(total).padStart(14)}`);
+}
+
 async function main() {
   const configDir = process.env.CLAUDE_CONFIG_DIR ?? join(homedir(), '.claude');
   await loadEnvFile(join(configDir, 'claude-usage.env'));
@@ -119,14 +240,27 @@ async function main() {
     Object.entries(days).sort(([a], [b]) => a.localeCompare(b)),
   );
 
-  if (dryRun) {
-    const format = new Intl.NumberFormat('en');
-    let total = 0;
-    for (const [day, tokens] of Object.entries(sorted)) {
-      total += tokens;
-      console.log(`${day}  ${format.format(tokens).padStart(14)}`);
+  let payload = { days: sorted };
+  if (backfill) {
+    const prompts = await promptsPerDay(join(configDir, 'history.jsonl'));
+    const stats = await statsCacheDays(join(configDir, 'stats-cache.json'));
+    const { estimates, anchors, firstReal } = estimate(sorted, prompts, stats);
+    for (const { ratio, at, days } of anchors) {
+      const day = new Date(at * 86_400_000).toISOString().slice(0, 10);
+      console.log(
+        `claude-usage: ~${Math.round(ratio).toLocaleString('en')} tokens per prompt around ${day} (${days} days)`,
+      );
     }
-    console.log(`${'total'.padEnd(10)}  ${format.format(total).padStart(14)}`);
+    console.log(
+      `claude-usage: estimating ${Object.keys(estimates).length} days before ${firstReal}`,
+    );
+    payload = { estimates };
+    if (dryRun) {
+      printTable(estimates);
+      return;
+    }
+  } else if (dryRun) {
+    printTable(sorted);
     return;
   }
 
@@ -144,7 +278,7 @@ async function main() {
       authorization: `Bearer ${secret}`,
       'content-type': 'application/json',
     },
-    body: JSON.stringify({ days: sorted }),
+    body: JSON.stringify(payload),
     /* Don't follow: the retry would arrive without the secret and read as a 401 */
     redirect: 'manual',
     signal: AbortSignal.timeout(10_000),

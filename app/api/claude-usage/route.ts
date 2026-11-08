@@ -1,9 +1,17 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
 import { revalidateTag } from 'next/cache';
 
-import { mergeUsageDays, parseUsageDays, USAGE_TAG } from '@/lib/claude-usage';
+import {
+  mergeUsageDays,
+  parseDayMap,
+  replaceUsageEstimates,
+  USAGE_TAG,
+} from '@/lib/claude-usage';
 
-/* Receives daily token totals from scripts/claude-usage.mjs */
+/*
+ * Receives daily token totals from scripts/claude-usage.mjs:
+ * { days?: {...}, estimates?: {...} }, at least one of them
+ */
 
 /* Hash both sides so timingSafeEqual gets equal lengths and leaks nothing */
 function isAuthorized(request: Request) {
@@ -27,10 +35,22 @@ export async function POST(request: Request) {
   } catch {
     return Response.json({ error: 'invalid json' }, { status: 400 });
   }
-  const days = parseUsageDays(body);
-  if (!days) return Response.json({ error: 'invalid days' }, { status: 400 });
+  const { days, estimates } = (body ?? {}) as Record<string, unknown>;
+  const parsedDays = days === undefined ? undefined : parseDayMap(days);
+  const parsedEstimates =
+    estimates === undefined ? undefined : parseDayMap(estimates);
+  if (
+    parsedDays === null ||
+    parsedEstimates === null ||
+    (!parsedDays && !parsedEstimates)
+  ) {
+    return Response.json({ error: 'invalid days' }, { status: 400 });
+  }
 
-  const updated = await mergeUsageDays(days);
-  if (updated > 0) revalidateTag(USAGE_TAG);
-  return Response.json({ updated });
+  const updated = parsedDays ? await mergeUsageDays(parsedDays) : 0;
+  const estimated = parsedEstimates
+    ? await replaceUsageEstimates(parsedEstimates)
+    : 0;
+  if (updated > 0 || parsedEstimates) revalidateTag(USAGE_TAG);
+  return Response.json({ updated, estimated });
 }

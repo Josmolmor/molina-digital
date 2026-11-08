@@ -16,3 +16,12 @@ export const formatTokens = (tokens: number) => compact.format(tokens);
 /* Day keys are plain YYYY-MM-DD, so format them in UTC to keep the same day */
 export const formatDay = (date: string) =>
   dayLabel.format(new Date(`${date}T00:00:00Z`));
+
+const monthDay = new Intl.DateTimeFormat('en', {
+  month: 'short',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+
+export const formatMonthDay = (date: string) =>
+  monthDay.format(new Date(`${date}T00:00:00Z`));

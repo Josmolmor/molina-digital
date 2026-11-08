@@ -5,7 +5,7 @@ import { PawPrintIcon } from '@/components/ui/icons/paw-print';
 import { PlantIcon } from '@/components/ui/icons/plant';
 import { Separator } from '@/components/ui/separator';
 
-const PersonalPage = () => {
+const PersonalPage = ({ children }: { children: React.ReactNode }) => {
   return (
     <section className="flex flex-col gap-8">
       <h2 id="personal" className="font-medium text-2xl font-serif">
@@ -76,6 +76,8 @@ const PersonalPage = () => {
         </span>
         <span>, and do logo design.</span>
       </div>
+
+      {children}
     </section>
   );
 };

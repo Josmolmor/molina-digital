@@ -5,6 +5,10 @@ import { redis } from '@/lib/redis';
 /*
  * Daily Claude Code token totals, pushed from my machine by
  * scripts/claude-usage.mjs and rendered as the home page usage graph.
+ *
+ * Two hashes: real totals from the session logs, and estimates for days
+ * whose logs were gone before tracking started (prompts that day × the
+ * average tokens per prompt). A real total always wins over an estimate.
  * Server-only: never import from a client component.
  */
 
@@ -13,15 +17,14 @@ export type UsageDays = Record<string, number>;
 export const USAGE_TAG = 'claude-usage';
 export const USAGE_TIME_ZONE = 'Europe/Madrid';
 const DAYS_KEY = 'claude-usage:days';
+const ESTIMATES_KEY = 'claude-usage:estimates';
 const WEEKS = 53;
 
 const DAY_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const MAX_DAYS = 800;
 
-/* Returns null unless the body is { days: { "YYYY-MM-DD": non-negative integer } } */
-export function parseUsageDays(body: unknown): UsageDays | null {
-  if (!body || typeof body !== 'object') return null;
-  const days = (body as { days?: unknown }).days;
+/* Returns null unless value is { "YYYY-MM-DD": non-negative integer } */
+export function parseDayMap(days: unknown): UsageDays | null {
   if (!days || typeof days !== 'object' || Array.isArray(days)) return null;
   const entries = Object.entries(days);
   if (entries.length > MAX_DAYS) return null;
@@ -46,23 +49,45 @@ export async function mergeUsageDays(incoming: UsageDays) {
   return Object.keys(changed).length;
 }
 
+/* Estimates are replaced wholesale, so a recalibrated backfill drops stale days */
+export async function replaceUsageEstimates(estimates: UsageDays) {
+  const tx = redis().multi();
+  tx.del(ESTIMATES_KEY);
+  if (Object.keys(estimates).length > 0) tx.hset(ESTIMATES_KEY, estimates);
+  await tx.exec();
+  return Object.keys(estimates).length;
+}
+
+export type Usage = { days: UsageDays; estimates: UsageDays };
+
 /* Refreshed by revalidateTag on every push; the daily revalidate is a fallback */
-const readUsageDays = unstable_cache(
-  async () => (await redis().hgetall<UsageDays>(DAYS_KEY)) ?? {},
-  [DAYS_KEY],
+const readUsage = unstable_cache(
+  async (): Promise<Usage> => {
+    const [days, estimates] = await Promise.all([
+      redis().hgetall<UsageDays>(DAYS_KEY),
+      redis().hgetall<UsageDays>(ESTIMATES_KEY),
+    ]);
+    return { days: days ?? {}, estimates: estimates ?? {} };
+  },
+  [DAYS_KEY, ESTIMATES_KEY],
   { tags: [USAGE_TAG], revalidate: 86400 },
 );
 
 /* Failures are caught outside the cache, so a Redis hiccup isn't cached for a day */
-export async function getUsageDays(): Promise<UsageDays> {
+export async function getUsage(): Promise<Usage> {
   try {
-    return await readUsageDays();
+    return await readUsage();
   } catch {
-    return {};
+    return { days: {}, estimates: {} };
   }
 }
 
-export type UsageCell = { date: string; tokens: number; level: number };
+export type UsageCell = {
+  date: string;
+  tokens: number;
+  level: number;
+  estimated: boolean;
+};
 
 export type UsageCalendar = {
   /* WEEKS columns of 7 days, Sunday first; null for days after today */
@@ -70,6 +95,8 @@ export type UsageCalendar = {
   months: { column: number; label: string }[];
   total: number;
   busiest: UsageCell | null;
+  /* First day with a real total, when any day in view is an estimate */
+  estimatedBefore: string | null;
 };
 
 const toKey = (date: Date) => date.toISOString().slice(0, 10);
@@ -92,7 +119,10 @@ function quartiles(values: number[]) {
 }
 
 /* All date math in UTC on plain YYYY-MM-DD keys, so DST never shifts a day */
-export function buildCalendar(days: UsageDays, today: string): UsageCalendar {
+export function buildCalendar(
+  { days, estimates }: Usage,
+  today: string,
+): UsageCalendar {
   const end = new Date(`${today}T00:00:00Z`);
   const start = new Date(end);
   start.setUTCDate(end.getUTCDate() - end.getUTCDay() - (WEEKS - 1) * 7);
@@ -102,9 +132,10 @@ export function buildCalendar(days: UsageDays, today: string): UsageCalendar {
     dates.push(toKey(d));
   }
 
-  const active = dates
-    .map((date) => Number(days[date]) || 0)
-    .filter((tokens) => tokens > 0);
+  const real = (date: string) => Number(days[date]) || 0;
+  const tokensOn = (date: string) => real(date) || Number(estimates[date]) || 0;
+
+  const active = dates.map(tokensOn).filter((tokens) => tokens > 0);
   const [q1, q2, q3] = active.length ? quartiles(active) : [0, 0, 0];
   const levelOf = (tokens: number) =>
     tokens <= 0
@@ -125,6 +156,7 @@ export function buildCalendar(days: UsageDays, today: string): UsageCalendar {
   });
   let total = 0;
   let busiest: UsageCell | null = null;
+  let anyEstimated = false;
 
   for (let w = 0; w < WEEKS; w++) {
     const week: (UsageCell | null)[] = [];
@@ -134,8 +166,10 @@ export function buildCalendar(days: UsageDays, today: string): UsageCalendar {
         week.push(null);
         continue;
       }
-      const tokens = Number(days[date]) || 0;
-      const cell = { date, tokens, level: levelOf(tokens) };
+      const tokens = tokensOn(date);
+      const estimated = tokens > 0 && real(date) === 0;
+      anyEstimated ||= estimated;
+      const cell = { date, tokens, level: levelOf(tokens), estimated };
       total += tokens;
       if (tokens > 0 && (!busiest || tokens > busiest.tokens)) busiest = cell;
       week.push(cell);
@@ -153,5 +187,10 @@ export function buildCalendar(days: UsageDays, today: string): UsageCalendar {
     }
   }
 
-  return { weeks, months, total, busiest };
+  const firstReal = Object.keys(days)
+    .filter((date) => real(date) > 0)
+    .sort()[0];
+  const estimatedBefore = anyEstimated ? (firstReal ?? null) : null;
+
+  return { weeks, months, total, busiest, estimatedBefore };
 }
