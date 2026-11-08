@@ -1,5 +1,4 @@
-import { Redis } from '@upstash/redis';
-
+import { redis } from '@/lib/redis';
 import { parseYouTube, youTubeWatchUrl } from '@/lib/youtube';
 
 /*
@@ -57,19 +56,6 @@ export function isAnimation(mimeType: string) {
 const ITEMS_KEY = 'stash:items';
 const ORDER_KEY = 'stash:order';
 const PAGE_SIZE = 200;
-
-let client: Redis | null = null;
-
-/* The Vercel Marketplace injects KV_* or UPSTASH_* names depending on how it was linked */
-function redis() {
-  if (client) return client;
-  const url = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
-  const token =
-    process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token) throw new Error('Stash: Redis env vars are missing');
-  client = new Redis({ url, token });
-  return client;
-}
 
 /* Returns false when the item already exists (a retried webhook) */
 export async function addItem(item: StashItem) {

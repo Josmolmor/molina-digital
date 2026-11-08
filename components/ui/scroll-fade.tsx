@@ -11,13 +11,22 @@ import { cn } from '@/lib/utils';
  *
  * An [aria-current="page"] child that starts out of view is scrolled into
  * view, without scrollIntoView, which would also move the page.
+ * startAtEnd opens scrolled all the way right instead (e.g. a timeline
+ * whose newest entries are last). Only on mount, never after the user scrolls.
  */
 export function ScrollFade({
   className,
   children,
+  startAtEnd = false,
   ...props
-}: ComponentProps<'div'>) {
+}: ComponentProps<'div'> & { startAtEnd?: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (el && startAtEnd) el.scrollLeft = el.scrollWidth;
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount only
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
