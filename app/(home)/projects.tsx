@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
 
+import { BlurIn } from '@/components/es-time';
 import { CalendarDotsIcon } from '@/components/ui/icons/calendar-dots';
 import { Separator } from '@/components/ui/separator';
 import { getLastCommitDate } from '@/lib/github';
@@ -57,13 +58,19 @@ async function RepoUpdated({ repo }: { repo: string }) {
   const date = await getLastCommitDate(repo);
   if (!date) return null;
 
-  // nowrap keeps the icon with its label instead of stranding it at the end of a line
+  // nowrap keeps the icon with its label instead of stranding it at the end of a line.
+  // It streams in after the page, so it uses the same blur-in as the footer's clock and weather.
   return (
-    <span className="whitespace-nowrap">
+    <BlurIn className="whitespace-nowrap text-sm">
       <CalendarDotsIcon className="mr-1 inline size-4 shrink-0 align-[-0.1875em]" />
       Last updated on:{' '}
-      <time dateTime={date.toISOString()}>{formatter.format(date)}</time>
-    </span>
+      <time
+        className="text-xs font-mono bg-card p-1 px-2 rounded-md"
+        dateTime={date.toISOString()}
+      >
+        {formatter.format(date)}
+      </time>
+    </BlurIn>
   );
 }
 
