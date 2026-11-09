@@ -9,6 +9,11 @@
   --surface-shift: -0.025;
   --surface-shift-active: -0.04;
   --card: oklch(from var(--background) calc(l + var(--surface-shift)) c h);
+  /* Surface steps built in CSS: Tailwind's canonicalizer strips the spaces around `+` in arbitrary calc(), which breaks them. */
+  --card-active: oklch(from var(--background) calc(l + var(--surface-shift-active)) c h);
+  --scrub-hover: oklch(from var(--background) calc(l + var(--surface-shift) * 1.6) c h);
+  --scrub-range: oklch(from var(--background) calc(l + var(--surface-shift) * 3) c h);
+  --scrub-range-hover: oklch(from var(--background) calc(l + var(--surface-shift) * 4) c h);
   --card-foreground: oklch(0.1461 0.0153 297.71);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.1461 0.0153 297.71);
@@ -165,6 +170,10 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
+  --color-card-active: var(--card-active);
+  --color-scrub-hover: var(--scrub-hover);
+  --color-scrub-range: var(--scrub-range);
+  --color-scrub-range-hover: var(--scrub-range-hover);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
@@ -437,9 +446,7 @@ canvas {
   }
   &:hover::after,
   &[aria-expanded='true']::after {
-    background: oklch(
-      from var(--background) calc(l + var(--surface-shift-active)) c h
-    );
+    background: var(--card-active);
   }
   /* The default outline traces each inline fragment (text + icon) separately, so ring the pill instead */
   &:focus-visible {

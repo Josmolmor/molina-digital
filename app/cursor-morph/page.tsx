@@ -154,7 +154,7 @@ export default function CursorMorph() {
                   }
                   className={cn(
                     'group relative flex aspect-square touch-manipulation select-none flex-col justify-between rounded-2xl bg-card p-4',
-                    'transition-[background-color] duration-200 ease-[ease] pointer-coarse:data-active:ring pointer-coarse:data-active:ring-primary data-active:bg-[oklch(from_var(--background)_calc(l+var(--surface-shift-active))_c_h)]',
+                    'transition-[background-color] duration-200 ease-[ease] pointer-coarse:data-active:ring pointer-coarse:data-active:ring-primary data-active:bg-card-active',
                   )}
                 >
                   {/* The preview ghosts while hovered: the shape has moved into the cursor. */}

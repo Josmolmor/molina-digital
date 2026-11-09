@@ -115,14 +115,14 @@ export const ScrubSlider = forwardRef<
         className={cn(
           'group/scrub relative flex h-9 w-full touch-none select-none items-center overflow-hidden rounded-lg bg-card',
           /* Hover lifts the bar and fill one step; colour only, so it can't move anything. */
-          'transition-[background-color] duration-150 ease-[ease] hover:bg-[oklch(from_var(--background)_calc(l+var(--surface-shift)*1.6)_c_h)]',
+          'transition-[background-color] duration-150 ease-[ease] hover:bg-scrub-hover',
           'has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-ring',
           className,
         )}
         {...props}
       >
         <SliderPrimitive.Track className="absolute inset-0">
-          <SliderPrimitive.Range className="absolute inset-y-0 bg-[oklch(from_var(--background)_calc(l+var(--surface-shift)*3)_c_h)] transition-[background-color] duration-150 ease-[ease] group-hover/scrub:bg-[oklch(from_var(--background)_calc(l+var(--surface-shift)*4)_c_h)]" />
+          <SliderPrimitive.Range className="absolute inset-y-0 bg-scrub-range transition-[background-color] duration-150 ease-[ease] group-hover/scrub:bg-scrub-range-hover" />
         </SliderPrimitive.Track>
         {/*
          * The handle: a pill on the edge of the fill. Hidden at rest; shown on
