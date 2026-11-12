@@ -84,7 +84,7 @@ export function UsageGrid({
             aria-hidden
             onPointerOver={onPointerOver}
             onPointerLeave={() => setHovered(null)}
-            className="grid grid-flow-col grid-rows-7 auto-cols-fr gap-0.75"
+            className="grid grid-flow-col grid-rows-7 auto-cols-fr gap-0.75 mb-px sm:mb-0.5"
           >
             {calendar.weeks.flatMap((week, w) =>
               week.map((cell, d) =>
@@ -110,7 +110,7 @@ export function UsageGrid({
         </div>
       </ScrollFade>
 
-      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 font-mono text-xs tabular-nums text-muted-foreground pl-6">
+      <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center justify-between gap-x-4 gap-y-2 font-mono text-xs tabular-nums text-muted-foreground pl-6">
         {/* Swaps instantly: it tracks the pointer, so any transition would lag behind it */}
         <span aria-hidden>
           {hovered
@@ -122,16 +122,8 @@ export function UsageGrid({
                     : `${formatTokens(hovered.tokens)} tokens`
               }`
             : `${calendar.estimatedBefore ? '~' : ''}${formatTokens(calendar.total)} tokens in the last year`}
-          {/* Says up front that part of the year is estimated, not only on hover */}
-          {!hovered && calendar.estimatedBefore && (
-            <span className="text-muted-foreground/70 max-sm:block">
-              {/* On phones the note takes its own line, so drop the separator */}
-              <span className="max-sm:hidden"> · </span>
-              estimated before {formatMonthDay(calendar.estimatedBefore)}
-            </span>
-          )}
         </span>
-        <span aria-hidden className="flex shrink-0 items-center gap-1">
+        <span aria-hidden className="flex shrink-0 items-center gap-0.75">
           <span className="mr-1">Less</span>
           {LEVELS.map((level) => (
             <span key={level} className={cn('size-2.5 rounded-[2px]', level)} />
