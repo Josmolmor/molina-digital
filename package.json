@@ -35,7 +35,8 @@
     "react-dom": "19.0.0-rc-cd22717c-20241013",
     "sonner": "^2.0.8",
     "tailwindcss-animate": "^1.0.7",
-    "three": "^0.169.0"
+    "three": "^0.169.0",
+    "vaul": "^1.1.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.7",

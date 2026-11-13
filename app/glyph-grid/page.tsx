@@ -6,6 +6,8 @@ import {
   useEffect,
   useRef,
   useState,
+  type CSSProperties,
+  useSyncExternalStore,
   type PointerEvent as ReactPointerEvent,
 } from 'react';
 import {
@@ -23,6 +25,7 @@ import { toast } from 'sonner';
 
 import { ArrowLeft } from '@/components/ui/icons/arrow-left';
 import { ScrubSlider } from '@/components/ui/scrub-slider';
+import { cn } from '@/lib/utils';
 
 import { ActionButton, Segmented, Toggle } from './controls';
 import { DEFAULT_BRUSH, DEFAULTS, MAX_COLS, randomLook } from './defaults';
@@ -41,6 +44,7 @@ import { inkColor, type PaletteId } from './palettes';
 import { ControlPanel } from './panel';
 import { drawPreview, drawScene } from './render';
 import { paintRandomDrawing } from './shapes';
+import { SettingsDrawer } from './settings-drawer';
 import { findSvg, stampSvg } from './svg-import';
 import {
   ASPECTS,
@@ -50,6 +54,28 @@ import {
   type PosterSettings,
   type Scene,
 } from './scene';
+
+/* Where the layout goes from one column to two (Tailwind's lg). */
+const DESKTOP = '(min-width: 64rem)';
+
+function subscribeDesktop(notify: () => void) {
+  const query = window.matchMedia(DESKTOP);
+  query.addEventListener('change', notify);
+  return () => query.removeEventListener('change', notify);
+}
+
+/* The server can't know, so it renders the two-column version, which CSS
+ * hides on small screens until the client takes over. */
+function useIsDesktop() {
+  return useSyncExternalStore(
+    subscribeDesktop,
+    () => window.matchMedia(DESKTOP).matches,
+    () => true,
+  );
+}
+
+/* How far a pointer may travel (CSS px) and still count as a tap. */
+const TAP_SLOP = 8;
 
 type RoleId = 'shape' | 'accent' | 'erase';
 type Tool = 'brush' | 'fill';
@@ -151,6 +177,8 @@ export default function GlyphGrid() {
   /* Whether Randomize also replaces the drawing. Off by default: the
    * drawing is the one thing here the user made by hand. */
   const [shuffleDrawing, setShuffleDrawing] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const isDesktop = useIsDesktop();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rawRef = useRef<HTMLCanvasElement>(null);
@@ -180,7 +208,12 @@ export default function GlyphGrid() {
     /* From the box's top-left to where it was grabbed, in poster units. */
     dx: number;
     dy: number;
+    /* Where the press landed on screen, to tell a tap from a drag. */
+    downX: number;
+    downY: number;
   } | null>(null);
+  /* The last tap on a piece of type, waiting for a second one. */
+  const tapRef = useRef<{ field: string; time: number } | null>(null);
 
   const rows = gridRows(settings.cols, settings.aspect);
   const [aspectW, aspectH] = ASPECTS[settings.aspect];
@@ -506,6 +539,32 @@ export default function GlyphGrid() {
 
   /* What is under the pointer: any type that can be picked up there.
    * Labels sit on top, then the wordmark, then the headline. */
+  /* Brings a text field into view, focused, with its text selected. On small
+   * screens the settings open first, and the field only exists once the
+   * sheet has mounted, so it is looked for over the next few frames. */
+  function editField(id: string, tries = 20) {
+    if (!isDesktop && !settingsOpen) setSettingsOpen(true);
+    const field = document.getElementById(id);
+    if (!(
+      field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement
+    )) {
+      if (tries > 0) requestAnimationFrame(() => editField(id, tries - 1));
+      return;
+    }
+    field.focus({ preventScroll: true });
+    field.select();
+    /* In the sheet, scroll only the sheet: it is still sliding up, and
+     * scrollIntoView would drag the page along with it. */
+    const sheet = field.closest<HTMLElement>('[data-settings-scroll]');
+    if (sheet) {
+      const offset =
+        field.getBoundingClientRect().top - sheet.getBoundingClientRect().top;
+      sheet.scrollTop += offset - (sheet.clientHeight - field.offsetHeight) / 2;
+    } else {
+      field.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+  }
+
   function hitTest(event: ReactPointerEvent<HTMLCanvasElement>) {
     const scene = sceneRef.current;
     if (!scene) return null;
@@ -538,6 +597,8 @@ export default function GlyphGrid() {
         pointerId: event.pointerId,
         dx: hit.x - hit.handle.left,
         dy: hit.y - hit.handle.top,
+        downX: event.clientX,
+        downY: event.clientY,
       };
       return;
     }
@@ -643,9 +704,37 @@ export default function GlyphGrid() {
   }
 
   function onPointerEnd(event: ReactPointerEvent<HTMLCanvasElement>) {
-    if (dragRef.current?.pointerId === event.pointerId) {
+    const drag = dragRef.current;
+    if (drag?.pointerId === event.pointerId) {
       dragRef.current = null;
       event.currentTarget.style.cursor = 'grab';
+      /* Two taps on the same piece of type, without dragging it, edit it.
+       * Counted here rather than with dblclick, which touch browsers don't
+       * all fire, and on release so the press can't take the focus back. */
+      const still =
+        event.type === 'pointerup' &&
+        Math.hypot(event.clientX - drag.downX, event.clientY - drag.downY) <
+          TAP_SLOP;
+      const field =
+        drag.kind === 'label' ? `glyph-label-${drag.id}` : `glyph-${drag.kind}`;
+      const last = tapRef.current;
+      tapRef.current = null;
+      if (still && last?.field === field && event.timeStamp - last.time < 400) {
+        /* After a touch, browsers send a mouse press as well, and its
+         * default would take the focus straight back from the field. It can
+         * land anywhere (the poster may have just docked), so it is caught
+         * on the document, once. */
+        const keepFocus = (press: MouseEvent) => press.preventDefault();
+        const options = { capture: true, once: true };
+        document.addEventListener('mousedown', keepFocus, options);
+        setTimeout(
+          () => document.removeEventListener('mousedown', keepFocus, options),
+          500,
+        );
+        editField(field);
+      } else if (still) {
+        tapRef.current = { field, time: event.timeStamp };
+      }
     } else if (strokeRef.current?.pointerId === event.pointerId) {
       strokeRef.current = null;
     } else {
@@ -697,6 +786,21 @@ export default function GlyphGrid() {
     update(randomLook());
   }
 
+  const panel = (
+    <ControlPanel
+      settings={settings}
+      rows={rows}
+      update={update}
+      showRaw={showRaw}
+      onShowRaw={setShowRaw}
+      onPreviewPalette={setPreviewPalette}
+      onSavePng={savePng}
+      onSaveSvg={saveSvg}
+    />
+  );
+  /* On small screens, opening the settings docks the poster above them. */
+  const docked = settingsOpen && !isDesktop;
+
   return (
     <div className="relative min-h-dvh">
       {/* reducedMotion="user" drops the slide and keeps the fade. */}
@@ -720,7 +824,7 @@ export default function GlyphGrid() {
         </motion.div>
       </MotionConfig>
 
-      <main className="mx-auto flex w-full max-w-340 flex-col gap-6 px-4 pt-16 pb-14 sm:gap-10 sm:px-12 sm:pt-20">
+      <main className="mx-auto flex w-full max-w-340 flex-col gap-6 px-4 pt-16 pb-24 sm:gap-10 sm:px-12 sm:pt-20 lg:pb-14">
         <header className="flex flex-col gap-3">
           <h1 className="font-serif text-2xl font-medium">Glyph grid</h1>
           <p className="max-w-prose text-muted-foreground">
@@ -748,46 +852,58 @@ export default function GlyphGrid() {
            * grid: rows are whole numbers, so the poster's true ratio drifts
            * by a percent or so with the column count (30 columns is 30:38),
            * and sizing from that made the layout jump. The poster is fitted
-           * inside the frame instead. */}
+           * inside the frame instead.
+           *
+           * The height cap uses lvh, which stays put: dvh changes as a
+           * phone's address bar collapses, and the poster resized with every
+           * scroll. On phones the cap only stops tall formats from outgrowing
+           * the screen; otherwise the poster takes the full width. */}
           <div
-            className="mx-auto flex w-full flex-col gap-3 lg:sticky lg:top-6"
-            style={{
-              maxWidth: `calc(max(20rem, 100dvh - 22rem) * ${aspectW / aspectH})`,
-            }}
+            className="mx-auto flex w-full max-w-[calc(max(16rem,100lvh-12rem)*var(--ratio))] flex-col gap-3 lg:sticky lg:top-6 lg:max-w-[calc(max(20rem,100lvh-22rem)*var(--ratio))]"
+            style={{ '--ratio': aspectW / aspectH } as CSSProperties}
           >
+            {/* The frame keeps its place in the page while the stage inside
+             * it is docked, so nothing below moves. */}
             <div
-              className="flex w-full items-center justify-center"
+              className="w-full"
               style={{ aspectRatio: `${aspectW} / ${aspectH}` }}
             >
               <div
-                className="relative"
-                style={{
-                  aspectRatio: `${settings.cols} / ${rows}`,
-                  /* Whichever side the poster touches the frame on. */
-                  ...(settings.cols / rows >= aspectW / aspectH
-                    ? { width: '100%' }
-                    : { height: '100%' }),
-                }}
+                className={cn(
+                  '@container-size flex items-center justify-center',
+                  docked
+                    ? 'fixed inset-x-0 top-0 z-40 h-[45dvh] bg-background p-4'
+                    : 'size-full',
+                )}
               >
-                <canvas
-                  ref={canvasRef}
-                  aria-label="Poster canvas: draw here"
-                  className="absolute inset-0 size-full cursor-crosshair touch-none select-none"
-                  onPointerDown={onPointerDown}
-                  onPointerMove={onPointerMove}
-                  onPointerUp={onPointerEnd}
-                  onPointerCancel={onPointerEnd}
-                  onPointerLeave={() => {
-                    /* Captured strokes fire leave too; they keep their outline. */
-                    if (!strokeRef.current) clearHover();
+                <div
+                  className="relative"
+                  style={{
+                    aspectRatio: `${settings.cols} / ${rows}`,
+                    /* Contained in the stage, whatever its shape. */
+                    width: `min(100cqw, 100cqh * ${settings.cols / rows})`,
                   }}
-                />
-                <canvas
-                  ref={rawRef}
-                  aria-hidden
-                  hidden={!showRaw}
-                  className="pointer-events-none absolute inset-0 size-full opacity-30"
-                />
+                >
+                  <canvas
+                    ref={canvasRef}
+                    aria-label="Poster canvas: draw here"
+                    className="absolute inset-0 size-full cursor-crosshair touch-none select-none"
+                    onPointerDown={onPointerDown}
+                    onPointerMove={onPointerMove}
+                    onPointerUp={onPointerEnd}
+                    onPointerCancel={onPointerEnd}
+                    onPointerLeave={() => {
+                      /* Captured strokes fire leave too; they keep their outline. */
+                      if (!strokeRef.current) clearHover();
+                    }}
+                  />
+                  <canvas
+                    ref={rawRef}
+                    aria-hidden
+                    hidden={!showRaw}
+                    className="pointer-events-none absolute inset-0 size-full opacity-30"
+                  />
+                </div>
               </div>
             </div>
 
@@ -889,16 +1005,15 @@ export default function GlyphGrid() {
             </p>
           </div>
 
-          <ControlPanel
-            settings={settings}
-            rows={rows}
-            update={update}
-            showRaw={showRaw}
-            onShowRaw={setShowRaw}
-            onPreviewPalette={setPreviewPalette}
-            onSavePng={savePng}
-            onSaveSvg={saveSvg}
-          />
+          {/* One panel, in one of two places: beside the poster, or in a
+           * bottom sheet on small screens. */}
+          {isDesktop ? (
+            <div className="max-lg:hidden">{panel}</div>
+          ) : (
+            <SettingsDrawer open={settingsOpen} onOpenChange={setSettingsOpen}>
+              {panel}
+            </SettingsDrawer>
+          )}
         </div>
       </main>
     </div>

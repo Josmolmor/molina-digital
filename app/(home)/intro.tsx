@@ -87,7 +87,7 @@ export const Intro = () => {
             imageContent={
               <img
                 loading="lazy"
-                src="/assets/images/osborn.gif"
+                src="/assets/images/osborn.webp"
                 alt="A gif of Norman Osborn from the original Spider-Man movie saying 'You know, I'm something of a scientist myself' used often as a meme.."
                 className="rounded-lg absolute -top-30 left-1/2 -translate-x-1/2 h-26 object-cover w-auto ring-6 ring-card drop-shadow-lg"
               />

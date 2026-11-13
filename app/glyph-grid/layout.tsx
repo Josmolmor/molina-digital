@@ -3,10 +3,10 @@ import type { ReactNode } from 'react';
 
 /* A poster made with the tool itself; regenerate it if the look changes. */
 const OG_IMAGE = {
-  url: '/assets/images/glyph-grid-og.png',
-  width: 1200,
-  height: 675,
-  alt: 'A glyph-mosaic poster: a star drawn in colored cells of monospace characters',
+  url: '/assets/images/glyph-og.png',
+  width: 2160,
+  height: 1134,
+  alt: 'A glyph-mosaic poster: a shape drawn in colored cells of monospace digits, with the headline Glyph Grid',
 };
 
 const TITLE = 'Glyph grid';

@@ -313,8 +313,8 @@ export function ControlPanel({
 
       <Section title="Text">
         <p className="text-xs text-muted-foreground">
-          You can drag the headline, wordmark and labels on the poster to move
-          them around.
+          Drag the headline, wordmark and labels on the poster to move them.
+          Double-click one to edit its text.
         </p>
         <Field label="Headline" htmlFor="glyph-headline">
           <textarea
@@ -365,6 +365,7 @@ export function ControlPanel({
             {settings.labels.map((label) => (
               <div key={label.id} className="flex gap-2">
                 <input
+                  id={`glyph-label-${label.id}`}
                   aria-label="Label text"
                   className={cn(INPUT, 'min-w-0 flex-1 font-mono uppercase')}
                   value={label.text}
