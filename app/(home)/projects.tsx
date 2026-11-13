@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import Link from 'next/link';
 
 import { BlurIn } from '@/components/es-time';
+import { HoverPreviews } from '@/components/hover-previews';
 import { CalendarDotsIcon } from '@/components/ui/icons/calendar-dots';
 import { Separator } from '@/components/ui/separator';
 import { getLastCommitDate } from '@/lib/github';
@@ -10,42 +11,52 @@ type Project = {
   title: string;
   description: string;
   href: string;
+  /* Shown beside the cursor while the row is hovered */
+  preview: string;
   /* GitHub `owner/name`: shows when the repo was last updated */
   repo?: string;
 };
+
+const PREVIEWS = '/assets/images/projects/preview';
 
 const projects: Project[] = [
   {
     title: 'Glyph grid',
     description: 'Draw a shape and turn it into a glyph-mosaic poster.',
     href: '/glyph-grid',
+    preview: `${PREVIEWS}/glyph-grid.webp`,
   },
   {
     title: 'Stash',
     description:
       "Things I've saved from around the internet: inspiration, ideas and TODOs.",
     href: '/stash',
+    preview: `${PREVIEWS}/stash.webp`,
   },
   {
     title: 'Design strategies',
     description: 'A deck of strategies to help you get unblocked.',
     href: '/unblock',
+    preview: `${PREVIEWS}/oblique.webp`,
   },
   {
     title: 'Shapes',
     description: 'A generative grid of shapes and colors.',
     href: '/shapes',
+    preview: `${PREVIEWS}/shapes.webp`,
   },
   {
     title: 'Cursor morph',
     description:
       'An experiment in cursors that morph between states instead of switching.',
     href: '/cursor-morph',
+    preview: `${PREVIEWS}/cursor-morph.webp`,
   },
   {
     title: 'Skills',
     description: 'Both for personal and work projects.',
     href: 'https://github.com/Josmolmor/skills',
+    preview: `${PREVIEWS}/skills.webp`,
     repo: 'Josmolmor/skills',
   },
 ];
@@ -86,7 +97,10 @@ export default function ProjectsPage() {
         Playground
       </h2>
       <Separator />
-      <div className="flex flex-col">
+      <HoverPreviews
+        className="flex flex-col"
+        images={projects.map((project) => project.preview)}
+      >
         {projects.map((project) => {
           // Off-site entries open in a new tab, like the Work section's links
           const external = project.href.startsWith('http');
@@ -96,6 +110,7 @@ export default function ProjectsPage() {
               href={project.href}
               target={external ? '_blank' : undefined}
               rel={external ? 'noopener noreferrer' : undefined}
+              data-preview={project.preview}
               className="-mx-4.5 flex-1 flex flex-col hover:bg-card active:bg-card px-4.5 pt-4 pb-4.5 rounded-2xl transition-[background-color] ease-[ease] motion-reduce:transition-none"
             >
               <span className="leading-6.5 block">{project.title}</span>
@@ -114,7 +129,7 @@ export default function ProjectsPage() {
             </Link>
           );
         })}
-      </div>
+      </HoverPreviews>
     </section>
   );
 }
