@@ -74,7 +74,7 @@ export default async function RootLayout({
       </head>
       <body className="antialiased">
         <Toaster position="top-center" />
-        <TooltipProvider delayDuration={200}>{children}</TooltipProvider>
+        <TooltipProvider delayDuration={500}>{children}</TooltipProvider>
       </body>
     </html>
   );

@@ -16,6 +16,11 @@ type Project = {
 
 const projects: Project[] = [
   {
+    title: 'Glyph grid',
+    description: 'Draw a shape and turn it into a glyph-mosaic poster.',
+    href: '/glyph-grid',
+  },
+  {
     title: 'Stash',
     description:
       "Things I've saved from around the internet: inspiration, ideas and TODOs.",
