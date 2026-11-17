@@ -7,6 +7,8 @@ import {
   useMotionValue,
   useReducedMotion,
   useSpring,
+  useTransform,
+  useVelocity,
 } from 'motion/react';
 import {
   useCallback,
@@ -36,6 +38,17 @@ const WOBBLE_RANGE = 8;
 // Ignore sub-pixel jitter; any real scroll detaches the blob from its trigger
 const SCROLL_CLOSE_THRESHOLD = 2;
 const SCROLL_HOVER_COOLDOWN_MS = 150;
+// Pointer speed (px/s) at which the blob reaches its steepest tilt
+const TILT_SPEED = 2400;
+const MAX_TILT = 6;
+
+// The blob pivots on the edge facing its trigger, so its free end trails the pointer; `axis` is the motion that swings that end, `sign` turns that motion into a trailing (not leading) rotation
+const tilt = {
+  top: { origin: '50% 100%', axis: 'x', sign: -1 },
+  bottom: { origin: '50% 0%', axis: 'x', sign: 1 },
+  left: { origin: '100% 50%', axis: 'y', sign: 1 },
+  right: { origin: '0% 50%', axis: 'y', sign: -1 },
+} as const;
 
 function wobbleFromPointer(
   clientX: number,
@@ -107,6 +120,19 @@ export function HoverBlob({
   const pointerY = useMotionValue(0);
   const contentX = useSpring(pointerX, { stiffness: 300, damping: 25 });
   const contentY = useSpring(pointerY, { stiffness: 300, damping: 25 });
+  // Raw pointer position, smoothed so its velocity doesn't jitter between pointer events
+  const trackX = useMotionValue(0);
+  const trackY = useMotionValue(0);
+  const followX = useSpring(trackX, { stiffness: 500, damping: 40, mass: 0.6 });
+  const followY = useSpring(trackY, { stiffness: 500, damping: 40, mass: 0.6 });
+  const velocityX = useVelocity(followX);
+  const velocityY = useVelocity(followY);
+  const { origin, axis, sign } = tilt[position];
+  const lean = useTransform(axis === 'x' ? velocityX : velocityY, (speed) => {
+    const amount = Math.max(-1, Math.min(1, speed / TILT_SPEED));
+    return sign * amount * MAX_TILT;
+  });
+  const rotate = useSpring(lean, { stiffness: 300, damping: 18, mass: 0.5 });
   const reducedMotion = useReducedMotion();
   const gap = imageContent ? IMAGE_BLOB_GAP : LABEL_BLOB_GAP;
 
@@ -332,7 +358,14 @@ export function HoverBlob({
           else openBlob();
         }
       }}
-      onPointerEnter={hoverOpen}
+      onPointerEnter={(event) => {
+        // Start from where the pointer is, so entering doesn't read as a fling
+        trackX.jump(event.clientX);
+        trackY.jump(event.clientY);
+        followX.jump(event.clientX);
+        followY.jump(event.clientY);
+        hoverOpen();
+      }}
       onPointerLeave={() => {
         pendingHoverRef.current = false;
         pointerX.set(0);
@@ -342,6 +375,9 @@ export function HoverBlob({
       onPointerMove={(event) => {
         if (pendingHoverRef.current) hoverOpen();
         if (reducedMotion || !hasFineHover()) return;
+
+        trackX.set(event.clientX);
+        trackY.set(event.clientY);
 
         const blob = blobRef.current;
         const content = contentRef.current;
@@ -393,6 +429,8 @@ export function HoverBlob({
                 left: coordinates?.left ?? 0,
                 top: coordinates?.top ?? 0,
                 visibility: isReady ? 'visible' : 'hidden',
+                rotate: reducedMotion ? 0 : rotate,
+                transformOrigin: origin,
               }}
               initial={false}
               exit={{

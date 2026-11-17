@@ -10,16 +10,7 @@ import {
   useSyncExternalStore,
   type PointerEvent as ReactPointerEvent,
 } from 'react';
-import {
-  Brush,
-  Eraser,
-  PaintBucket,
-  Redo2,
-  RotateCcw,
-  Shuffle,
-  Trash2,
-  Undo2,
-} from 'lucide-react';
+import { Redo2, RotateCcw, Shuffle, Trash2, Undo2 } from 'lucide-react';
 import { motion, MotionConfig } from 'motion/react';
 import { toast } from 'sonner';
 
@@ -87,38 +78,14 @@ const ROLE_VALUES: Record<RoleId, MaskValue> = {
 };
 
 const ROLE_OPTIONS = [
-  { value: 'shape', label: 'Shape' },
-  { value: 'accent', label: 'Accent' },
-  {
-    value: 'erase',
-    label: (
-      <>
-        <Eraser aria-hidden className="size-3.5" />
-        Erase
-      </>
-    ),
-  },
+  { value: 'shape', label: 'Shape', shortcut: 's' },
+  { value: 'accent', label: 'Accent', shortcut: 'a' },
+  { value: 'erase', label: 'Erase', shortcut: 'e' },
 ] as const;
 
 const TOOL_OPTIONS = [
-  {
-    value: 'brush',
-    label: (
-      <>
-        <Brush aria-hidden className="size-3.5" />
-        Brush
-      </>
-    ),
-  },
-  {
-    value: 'fill',
-    label: (
-      <>
-        <PaintBucket aria-hidden className="size-3.5" />
-        Fill
-      </>
-    ),
-  },
+  { value: 'brush', label: 'Brush', shortcut: 'b' },
+  { value: 'fill', label: 'Fill', shortcut: 'f' },
 ] as const;
 
 const clamp = (value: number, min: number, max: number) =>
@@ -451,6 +418,31 @@ export default function GlyphGrid() {
     masterRef.current?.data.fill(EMPTY);
     render();
   }
+
+  /* Single-key shortcuts for the role and tool, as shown on their buttons.
+   * Bare keys only, so ⌘S, ⌘F and the like still reach the browser. */
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      if (
+        event.metaKey ||
+        event.ctrlKey ||
+        event.altKey ||
+        event.repeat ||
+        event.defaultPrevented ||
+        isTyping(event.target)
+      ) {
+        return;
+      }
+      const key = event.key.toLowerCase();
+      const role = ROLE_OPTIONS.find((option) => option.shortcut === key);
+      const tool = TOOL_OPTIONS.find((option) => option.shortcut === key);
+      if (role) setRole(role.value);
+      else if (tool) setTool(tool.value);
+    }
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {

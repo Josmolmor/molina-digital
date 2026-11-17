@@ -7,6 +7,8 @@ import {
   useMotionValue,
   useReducedMotion,
   useSpring,
+  useTransform,
+  useVelocity,
 } from 'motion/react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
@@ -16,6 +18,9 @@ const WIDTH = 288;
 const HEIGHT = 180;
 const CURSOR_GAP = 24;
 const VIEWPORT_GUTTER = 12;
+/* Horizontal speed (px/s) at which the preview reaches its steepest tilt. */
+const TILT_SPEED = 2400;
+const MAX_TILT = 8;
 
 /*
  * A list whose rows show an image beside the cursor while hovered. Rows opt
@@ -47,6 +52,17 @@ export function HoverPreviews({
   const targetY = useMotionValue(0);
   const x = useSpring(targetX, { stiffness: 500, damping: 40, mass: 0.6 });
   const y = useSpring(targetY, { stiffness: 500, damping: 40, mass: 0.6 });
+  /* Hangs from its top edge: the bottom trails behind the direction of
+   * travel and swings back upright, with a little overshoot, as the follow
+   * spring comes to rest. Read from the spring rather than the pointer, so
+   * it's smooth between pointer events. */
+  const xVelocity = useVelocity(x);
+  const lean = useTransform(
+    xVelocity,
+    [-TILT_SPEED, TILT_SPEED],
+    [-MAX_TILT, MAX_TILT],
+  );
+  const rotate = useSpring(lean, { stiffness: 300, damping: 18, mass: 0.5 });
 
   function show(src: string | null) {
     activeRef.current = src;
@@ -112,7 +128,7 @@ export function HoverPreviews({
           <motion.div
             aria-hidden
             className="pointer-events-none fixed top-0 left-0 z-50"
-            style={{ x, y }}
+            style={{ x, y, rotate: reducedMotion ? 0 : rotate, originY: 0 }}
             exit={{
               opacity: 0,
               transition: { duration: 0.14, ease: 'easeOut' },

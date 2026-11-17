@@ -63,7 +63,34 @@ export function Field({
   );
 }
 
-type Option<T extends string> = { value: T; label: ReactNode };
+type Option<T extends string> = {
+  value: T;
+  label: ReactNode;
+  /* A bare key that picks this option; the page listens for it. */
+  shortcut?: string;
+};
+
+/*
+ * A key hint. Drawn in the text's own colour, so it dims and brightens with
+ * the button around it. Hidden on touch screens, which rarely have the keys.
+ */
+export function Kbd({ className, ...props }: ComponentPropsWithoutRef<'kbd'>) {
+  return (
+    <kbd
+      {...props}
+      className={cn(
+        'inline-grid h-4.5 min-w-4.5 place-items-center rounded-[5px] px-1',
+        'font-mono text-[10px]/none font-medium uppercase',
+        /* A keycap: a faint face, a heavier bottom edge for the side of the
+         * key, a soft drop below it and a hairline of light along the top.
+         * All in currentColor, so it reads in both themes and both states. */
+        'border border-b-2 border-current/30 bg-current/10',
+        'opacity-70 pointer-coarse:hidden',
+        className,
+      )}
+    />
+  );
+}
 
 /*
  * An explanation for a control whose name isn't self-evident. Shown on hover
@@ -114,6 +141,7 @@ export function Segmented<T extends string>({
             type="button"
             role="radio"
             aria-checked={active}
+            aria-keyshortcuts={option.shortcut?.toUpperCase()}
             onClick={() => onChange(option.value)}
             className={cn(
               /* Taller on touch screens, where 28px is a small target. */
@@ -126,6 +154,8 @@ export function Segmented<T extends string>({
             )}
           >
             {option.label}
+            {/* Announced through aria-keyshortcuts instead of read as text. */}
+            {option.shortcut && <Kbd aria-hidden>{option.shortcut}</Kbd>}
           </button>
         );
       })}
